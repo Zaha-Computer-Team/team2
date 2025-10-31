@@ -1,0 +1,12 @@
+.photo-hover {
+    position: absolute;
+    width: 100px; /* Adjust the size as needed */
+    height: auto;
+    pointer-events: none; /* Prevent the photo from interfering with mouse events */
+    transition: opacity 0.3s ease; /* Smooth transition for opacity */
+    opacity: 0; /* Initially hidden */
+}
+
+.photo-hover.visible {
+    opacity: 1; /* Show the photo when it has the 'visible' class */
+}
