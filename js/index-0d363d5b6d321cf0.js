@@ -1,5 +1,10 @@
-// ...existing code...
+
+
 (self.webpackChunk_N_E = self.webpackChunk_N_E || []).push([
+
+    
+
+
     [405],
     {
         5557: function (s, e, a) {
@@ -279,190 +284,226 @@
                                 }),
                             }),
 
-                            (0, i.jsxs)("div", {
-                                className: "skills-content",
-                                children: [
-                                    (0, i.jsxs)("div", {
-                                        children: [
-                                            (0, i.jsxs)("div", {
-                                                className: "animated-layer fade-in-down-animation fadeInLeft wow",
-                                                children: [
-                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-computer" }) }),
-                                                    (0, i.jsx)("h4", { children: "Programming Team" }),
-                                                ],
-                                            }),
+                           (0, i.jsxs)("div", {
+    className: "skills-content",
+    children: [
+        (0, i.jsxs)("div", {
+            children: [
+                (0, i.jsxs)("div", {
+                    className: "animated-layer fade-in-down-animation fadeInLeft wow",
+                    onClick: () => sendTeamMessage("Programming"),
+                    style: { cursor: "pointer" },
+                    children: [
+                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-computer" }) }),
+                        (0, i.jsx)("h4", { children: "Programming Team" }),
+                    ],
+                }),
 
-                                            (0, i.jsxs)("div", {
-                                                className: "animated-layer fade-in-up-animation fadeInRight wow",
-                                                children: [
-                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fas fa-fist-raised" }) }),
-                                                    (0, i.jsx)("h4", { children: "Taekwondo" }),
-                                                ],
-                                            }),
-                                        ],
-                                    }),
+                (0, i.jsxs)("div", {
+                    className: "animated-layer fade-in-up-animation fadeInRight wow",
+                    onClick: () => sendTeamMessage("Taekwondo"),
+                    style: { cursor: "pointer" },
+                    children: [
+                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fas fa-fist-raised" }) }),
+                        (0, i.jsx)("h4", { children: "Taekwondo" }),
+                    ],
+                }),
+            ],
+        }),
 
-                                    (0, i.jsxs)("div", {
-                                        children: [
-                                            (0, i.jsxs)("div", {
-                                                className: "animated-layer fade-in-down-animation fadeInLeft wow",
-                                                children: [
-                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-masks-theater" }) }),
-                                                    (0, i.jsx)("h4", { children: "Theater" }),
-                                                ],
-                                            }),
+        (0, i.jsxs)("div", {
+            children: [
+                (0, i.jsxs)("div", {
+                    className: "animated-layer fade-in-down-animation fadeInLeft wow",
+                    onClick: () => sendTeamMessage("Theater"),
+                    style: { cursor: "pointer" },
+                    children: [
+                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-masks-theater" }) }),
+                        (0, i.jsx)("h4", { children: "Theater" }),
+                    ],
+                }),
 
-                                            (0, i.jsxs)("div", {
-                                                className: "animated-layer fade-in-up-animation fadeInRight wow",
-                                                children: [
-                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-record-vinyl" }) }),
-                                                    (0, i.jsx)("h4", { children: "Photography" }),
-                                                ],
-                                            }),
-                                        ],
-                                    }),
+                (0, i.jsxs)("div", {
+                    className: "animated-layer fade-in-up-animation fadeInRight wow",
+                    onClick: () => sendTeamMessage("Photography"),
+                    style: { cursor: "pointer" },
+                    children: [
+                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-record-vinyl" }) }),
+                        (0, i.jsx)("h4", { children: "Photography" }),
+                    ],
+                }),
+            ],
+        }),
 
-                                    (0, i.jsxs)("div", {
-                                        children: [
-                                            (0, i.jsxs)("div", {
-                                                className: "animated-layer fade-in-down-animation fadeInLeft wow",
-                                                children: [
-                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-guitar" }) }),
-                                                    (0, i.jsx)("h4", { children: "Guitar" }),
-                                                ],
-                                            }),
+        (0, i.jsxs)("div", {
+            children: [
+                (0, i.jsxs)("div", {
+                    className: "animated-layer fade-in-down-animation fadeInLeft wow",
+                    onClick: () => sendTeamMessage("Guitar"),
+                    style: { cursor: "pointer" },
+                    children: [
+                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-guitar" }) }),
+                        (0, i.jsx)("h4", { children: "Guitar" }),
+                    ],
+                }),
 
-                                            (0, i.jsxs)("div", {
-                                                className: "animated-layer fade-in-up-animation fadeInRight wow",
-                                                children: [
-                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-chess" }) }),
-                                                    (0, i.jsx)("h4", { children: "Chess" }),
-                                                ],
-                                            }),
-                                        ],
-                                    }),
+                (0, i.jsxs)("div", {
+                    className: "animated-layer fade-in-up-animation fadeInRight wow",
+                    onClick: () => sendTeamMessage("Chess"),
+                    style: { cursor: "pointer" },
+                    children: [
+                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-chess" }) }),
+                        (0, i.jsx)("h4", { children: "Chess" }),
+                    ],
+                }),
+            ],
+        }),
 
-                                    (0, i.jsxs)("div", {
-                                        children: [
-                                            (0, i.jsxs)("div", {
-                                                className: "animated-layer fade-in-down-animation fadeInLeft wow",
-                                                children: [
-                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-person-dress" }) }),
-                                                    (0, i.jsx)("h4", { children: "Ballet" }),
-                                                ],
-                                            }),
+        (0, i.jsxs)("div", {
+            children: [
+                (0, i.jsxs)("div", {
+                    className: "animated-layer fade-in-down-animation fadeInLeft wow",
+                    onClick: () => sendTeamMessage("Ballet"),
+                    style: { cursor: "pointer" },
+                    children: [
+                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-person-dress" }) }),
+                        (0, i.jsx)("h4", { children: "Ballet" }),
+                    ],
+                }),
 
-                                            (0, i.jsxs)("div", {
-                                                className: "animated-layer fade-in-up-animation fadeInRight wow",
-                                                children: [
-                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-person-dress" }) }),
-                                                    (0, i.jsx)("h4", { children: "Zumba" }),
-                                                ],
-                                            }),
-                                        ],
-                                    }),
+                (0, i.jsxs)("div", {
+                    className: "animated-layer fade-in-up-animation fadeInRight wow",
+                    onClick: () => sendTeamMessage("Zumba"),
+                    style: { cursor: "pointer" },
+                    children: [
+                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-person-dress" }) }),
+                        (0, i.jsx)("h4", { children: "Zumba" }),
+                    ],
+                }),
+            ],
+        }),
 
-                                    (0, i.jsxs)("div", {
-                                        children: [
-                                            (0, i.jsxs)("div", {
-                                                className: "animated-layer fade-in-down-animation fadeInLeft wow",
-                                                children: [
-                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-person" }) }),
-                                                    (0, i.jsx)("h4", { children: "Dabke" }),
-                                                ],
-                                            }),
+        (0, i.jsxs)("div", {
+            children: [
+                (0, i.jsxs)("div", {
+                    className: "animated-layer fade-in-down-animation fadeInLeft wow",
+                    onClick: () => sendTeamMessage("Dabke"),
+                    style: { cursor: "pointer" },
+                    children: [
+                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-person" }) }),
+                        (0, i.jsx)("h4", { children: "Dabke" }),
+                    ],
+                }),
 
-                                            (0, i.jsxs)("div", {
-                                                className: "animated-layer fade-in-up-animation fadeInRight wow",
-                                                children: [
-                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-microphone-lines" }) }),
-                                                    (0, i.jsx)("h4", { children: "Orchestra" }),
-                                                ],
-                                            }),
-                                        ],
-                                    }),
+                (0, i.jsxs)("div", {
+                    className: "animated-layer fade-in-up-animation fadeInRight wow",
+                    onClick: () => sendTeamMessage("Orchestra"),
+                    style: { cursor: "pointer" },
+                    children: [
+                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-microphone-lines" }) }),
+                        (0, i.jsx)("h4", { children: "Orchestra" }),
+                    ],
+                }),
+            ],
+        }),
 
-                                    (0, i.jsxs)("div", {
-                                        children: [
-                                            (0, i.jsxs)("div", {
-                                                className: "animated-layer fade-in-down-animation fadeInLeft wow",
-                                                children: [
-                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-music" }) }),
-                                                    (0, i.jsx)("h4", { children: "Piano" }),
-                                                ],
-                                            }),
+        (0, i.jsxs)("div", {
+            children: [
+                (0, i.jsxs)("div", {
+                    className: "animated-layer fade-in-down-animation fadeInLeft wow",
+                    onClick: () => sendTeamMessage("Piano"),
+                    style: { cursor: "pointer" },
+                    children: [
+                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-music" }) }),
+                        (0, i.jsx)("h4", { children: "Piano" }),
+                    ],
+                }),
 
-                                            (0, i.jsxs)("div", {
-                                                className: "animated-layer fade-in-up-animation fadeInRight wow",
-                                                children: [
-                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-pencil" }) }),
-                                                    (0, i.jsx)("h4", { children: "Caricarure Drawing" }),
-                                                ],
-                                            }),
-                                        ],
-                                    }),
+                (0, i.jsxs)("div", {
+                    className: "animated-layer fade-in-up-animation fadeInRight wow",
+                    onClick: () => sendTeamMessage("Caricature Drawing"),
+                    style: { cursor: "pointer" },
+                    children: [
+                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-pencil" }) }),
+                        (0, i.jsx)("h4", { children: "Caricature Drawing" }),
+                    ],
+                }),
+            ],
+        }),
 
-                                    (0, i.jsxs)("div", {
-                                        children: [
-                                            (0, i.jsxs)("div", {
-                                                className: "animated-layer fade-in-down-animation fadeInLeft wow",
-                                                children: [
-                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-book" }) }),
-                                                    (0, i.jsx)("h4", { children: "Booking" }),
-                                                ],
-                                            }),
+        (0, i.jsxs)("div", {
+            children: [
+                (0, i.jsxs)("div", {
+                    className: "animated-layer fade-in-down-animation fadeInLeft wow",
+                    onClick: () => sendTeamMessage("Booking"),
+                    style: { cursor: "pointer" },
+                    children: [
+                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-book" }) }),
+                        (0, i.jsx)("h4", { children: "Booking" }),
+                    ],
+                }),
 
-                                            (0, i.jsxs)("div", {
-                                                className: "animated-layer fade-in-up-animation fadeInRight wow",
-                                                children: [
-                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-dragon" }) }),
-                                                    (0, i.jsx)("h4", { children: "Animation" }),
-                                                ],
-                                            }),
-                                        ],
-                                    }),
+                (0, i.jsxs)("div", {
+                    className: "animated-layer fade-in-up-animation fadeInRight wow",
+                    onClick: () => sendTeamMessage("Animation"),
+                    style: { cursor: "pointer" },
+                    children: [
+                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-dragon" }) }),
+                        (0, i.jsx)("h4", { children: "Animation" }),
+                    ],
+                }),
+            ],
+        }),
 
-                                    (0, i.jsxs)("div", {
-                                        children: [
-                                            (0, i.jsxs)("div", {
-                                                className: "animated-layer fade-in-down-animation fadeInLeft wow",
-                                                children: [
-                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-flag" }) }),
-                                                    (0, i.jsx)("h4", { children: "Flags" }),
-                                                ],
-                                            }),
+        (0, i.jsxs)("div", {
+            children: [
+                (0, i.jsxs)("div", {
+                    className: "animated-layer fade-in-down-animation fadeInLeft wow",
+                    onClick: () => sendTeamMessage("Flags"),
+                    style: { cursor: "pointer" },
+                    children: [
+                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-flag" }) }),
+                        (0, i.jsx)("h4", { children: "Flags" }),
+                    ],
+                }),
 
-                                            (0, i.jsxs)("div", {
-                                                className: "animated-layer fade-in-up-animation fadeInRight wow",
-                                                children: [
-                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-drum" }) }),
-                                                    (0, i.jsx)("h4", { children: "Drums" }),
-                                                ],
-                                            }),
-                                        ],
-                                    }),
+                (0, i.jsxs)("div", {
+                    className: "animated-layer fade-in-up-animation fadeInRight wow",
+                    onClick: () => sendTeamMessage("Drums"),
+                    style: { cursor: "pointer" },
+                    children: [
+                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-drum" }) }),
+                        (0, i.jsx)("h4", { children: "Drums" }),
+                    ],
+                }),
+            ],
+        }),
 
-                                    (0, i.jsxs)("div", {
-                                        children: [
-                                            (0, i.jsxs)("div", {
-                                                className: "animated-layer fade-in-down-animation fadeInLeft wow",
-                                                children: [
-                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-guitar" }) }),
-                                                    (0, i.jsx)("h4", { children: "Violin and Oud" }),
-                                                ],
-                                            }),
+        (0, i.jsxs)("div", {
+            children: [
+                (0, i.jsxs)("div", {
+                    className: "animated-layer fade-in-down-animation fadeInLeft wow",
+                    onClick: () => sendTeamMessage("Violin and Oud"),
+                    style: { cursor: "pointer" },
+                    children: [
+                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-guitar" }) }),
+                        (0, i.jsx)("h4", { children: "Violin and Oud" }),
+                    ],
+                }),
 
-                                            (0, i.jsxs)("div", {
-                                                className: "animated-layer fade-in-up-animation fadeInRight wow",
-                                                children: [
-                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-ruler" }) }),
-                                                    (0, i.jsx)("h4", { children: "Melodica" }),
-                                                ],
-                                            }),
-                                        ],
-                                    }),
-                                ],
-                            }),
+                (0, i.jsxs)("div", {
+                    className: "animated-layer fade-in-up-animation fadeInRight wow",
+                    onClick: () => sendTeamMessage("Melodica"),
+                    style: { cursor: "pointer" },
+                    children: [
+                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-ruler" }) }),
+                        (0, i.jsx)("h4", { children: "Melodica" }),
+                    ],
+                }),
+            ],
+        }),
+    ],
+}),
                         ],
                     }),
 
@@ -1330,5 +1371,9 @@
     function (s) {
         s.O(0, [571, 574, 774, 888, 179], function () { return s(s.s = 5557); }), _N_E = s.O();
     },
+
+
+
 ]);
-// ...existing code...
+
+
