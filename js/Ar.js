@@ -900,227 +900,143 @@
                     }),
                 ],
             });
+// Make facts section draggable
+function initFactsDrag() {
+  const factsContainer = document.querySelector('.facts-container');
+  let isDown = false;
+  let startX;
+  let scrollLeft;
 
+  factsContainer.addEventListener('mousedown', (e) => {
+    isDown = true;
+    factsContainer.classList.add('active');
+    startX = e.pageX - factsContainer.offsetLeft;
+    scrollLeft = factsContainer.scrollLeft;
+  });
+
+  factsContainer.addEventListener('mouseleave', () => {
+    isDown = false;
+    factsContainer.classList.remove('active');
+  });
+
+  factsContainer.addEventListener('mouseup', () => {
+    isDown = false;
+    factsContainer.classList.remove('active');
+  });
+
+  factsContainer.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - factsContainer.offsetLeft;
+    const walk = (x - startX) * 2;
+    factsContainer.scrollLeft = scrollLeft - walk;
+  });
+
+  // Touch support for mobile
+  factsContainer.addEventListener('touchstart', (e) => {
+    isDown = true;
+    startX = e.touches[0].pageX - factsContainer.offsetLeft;
+    scrollLeft = factsContainer.scrollLeft;
+  });
+
+  factsContainer.addEventListener('touchend', () => {
+    isDown = false;
+  });
+
+  factsContainer.addEventListener('touchmove', (e) => {
+    if (!isDown) return;
+    const x = e.touches[0].pageX - factsContainer.offsetLeft;
+    const walk = (x - startX) * 2;
+    factsContainer.scrollLeft = scrollLeft - walk;
+  });
+}
+
+// Initialize when page loads
+document.addEventListener('DOMContentLoaded', initFactsDrag);
             let f = () => (0, i.jsxs)("section", {
-                className: "facts",
-                children: [
-                    (0, i.jsxs)("div", {
-                        className: "flex-column-mobile",
-                        children: [
-                            (0, i.jsx)("div", {
-                                className: "animated-layer fade-in-right-animation fadeInLeft wow",
-                                "data-wow-offset": 200,
-                                children: (0, i.jsx)("div", {
-                                    children: (0, i.jsxs)("div", {
-                                        children: [(0, i.jsx)("h3", { children: "23" }), (0, i.jsxs)("p", { children: ["سنوات من", (0, i.jsx)("span", { children: "الخبرة" })] })],
-                                    }),
-                                }),
-                            }),
-
-                            (0, i.jsx)("div", {
-                                className: "animated-layer fade-in-right-animation fadeInRight wow",
-                                "data-wow-offset": 200,
-                                children: (0, i.jsx)("div", {
-                                    children: (0, i.jsxs)("div", {
-                                        children: [(0, i.jsx)("h3", { children: "25" }), (0, i.jsxs)("p", { children: ["فريق", (0, i.jsx)("span", { children: "" })] })],
-                                    }),
-                                }),
-                            }),
-
-                            (0, i.jsx)("div", {
-                                className: "animated-layer fade-in-right-animation fadeInLeft wow",
-                                "data-wow-offset": 200,
-                                children: (0, i.jsx)("div", {
-                                    children: (0, i.jsxs)("div", {
-                                        children: [(0, i.jsx)("h3", { children: "1000 <" }), (0, i.jsxs)("p", { children: ["طالب", (0, i.jsx)("span", { children: "تم تدريسهم" })] })],
-                                    }),
-                                }),
-                            }),
-
-                            (0, i.jsx)("div", {
-                                className: "animated-layer fade-in-right-animation fadeInRight wow",
-                                "data-wow-offset": 200,
-                                children: (0, i.jsx)("div", {
-                                    children: (0, i.jsxs)("div", {
-                                        children: [(0, i.jsx)("h3", { children: "13 <" }), (0, i.jsxs)("p", { children: ["جائزة", (0, i.jsx)("span", { children: "تم الفوز بها" })] })],
-                                    }),
-                                }),
-                            }),
-
-                            (0, i.jsx)("div", {
-                                className: "animated-layer fade-in-right-animation fadeInLeft wow",
-                                "data-wow-offset": 200,
-                                children: (0, i.jsx)("div", {
-                                    children: (0, i.jsxs)("div", {
-                                        children: [(0, i.jsx)("h3", { children: "679 <" }), (0, i.jsxs)("p", { children: ["مهارة", (0, i.jsx)("span", { children: "تم تعلمها" })] })],
-                                    }),
-                                }),
-                            }),
-                        ],
-                    }),
-
-                    (0, i.jsx)("img", { alt: "", className: "z-1 hide-mobile opposite-separator", src: "assets/separator-opposite.png" }),
-                ],
-            });
-
-            let g = () => (0, i.jsxs)("section", {
-                className: "home image",
-                id: "home",
+    className: "facts",
+    children: [
+        (0, i.jsx)("div", {
+            className: "facts-container",
+            children: (0, i.jsx)("div", {
+                className: "facts-content",
                 children: [
                     (0, i.jsx)("div", {
-                        children: (0, i.jsx)("div", {
-                            className: "position-relative",
-                            children: (0, i.jsxs)("h1", {
-                                children: [
-                                    (0, i.jsx)("span", {
-                                        children: (0, i.jsxs)("span", {
-                                            className: "animated-layer",
-                                            children: ["زها", (0, i.jsx)("span", { children: "." })],
-                                        }),
-                                    }),
-                                    (0, i.jsxs)("span", {
-                                        className: "position-relative",
-                                        children: [
-                                            (0, i.jsx)("span", { className: "animated-layer", children: "الفرق" }),
-                                            (0, i.jsx)("span", { className: "intro animated-layer", children: "" }),
-                                        ],
-                                    }),
-                                    (0, i.jsx)("span", { children: (0, i.jsx)("span", { className: "animated-layer", children: "البرنامج" }) }),
-                                ],
-                            }),
-                        }),
-                    }),
-
-                    (0, i.jsx)("span", { className: "animated-layer animated-btn cta", id: "cta", children: (0, i.jsx)("span", {}) }),
-                ],
-            });
-
-            let u = () => (0, i.jsxs)("section", {
-                className: "portfolio main-section flex-column-mobile",
-                id: "portfolio",
-                children: [
-                    (0, i.jsx)("div", {
-                        className: "custom-title",
-                        children: (0, i.jsx)("h3", {
-                            children: (0, i.jsx)("span", {
-                                children: (0, i.jsx)("span", { className: "animated-layer fade-in-left-animation fadeInUp wow", children: "الأحداث الأخيرة" }),
-                            }),
-                        }),
-                    }),
-
-                    (0, i.jsxs)(m.tq, {
-                        ...h.portfolio,
-                        className: "swiper swiper-portfolio animated-layer fade-in-right-animation fadeInUp wow",
+                        className: "fact-item animated-layer fade-in-right-animation fadeInLeft wow",
                         "data-wow-offset": 200,
-                        children: [
-                            (0, i.jsxs)(m.o5, {
-                                className: "single-item swiper-slide",
+                        children: (0, i.jsx)("div", {
+                            className: "fact-box",
+                            children: (0, i.jsxs)("div", {
+                                className: "fact-content",
                                 children: [
-                                    (0, i.jsx)("div", { className: "main-content", children: (0, i.jsx)("div", { className: "videocontainer", children: (0, i.jsx)("iframe", { className: "youtube-video", src: "https://www.youtube.com/embed/LXNbwvKZAhs?enablejsapi=1&version=3&playerapiid=ytplayer", allowFullScreen: "" }) }) }),
-                                    (0, i.jsxs)("div", {
-                                        className: "details",
-                                        children: [
-                                            (0, i.jsx)("h4", { children: "فريق الزومبا" }),
-                                            (0, i.jsx)("div", {
-                                                children: (0, i.jsxs)("ul", {
-                                                    children: [
-                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-file-lines" }), " الحدث :"] }), (0, i.jsx)("span", { children: "مشاركة فريق الزومبا في مهرجان جرش الثقافي" })] }),
-                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-user" }), " الفريق :"] }), (0, i.jsx)("span", { children: "الزومبا" })] }),
-                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-hourglass" }), " الوقت :"] }), (0, i.jsx)("span", { children: "قبل شهرين" })] }),
-                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-solid fa-code-branch" }), " المكان :"] }), (0, i.jsx)("span", { children: "جرش" })] }),
-                                                    ],
-                                                }),
-                                            }),
-                                            (0, i.jsx)("a", { href: "#", target: "_blank", className: "custom-btn", children: (0, i.jsxs)("span", { children: ["معاينة ", (0, i.jsx)("i", { className: "fa-solid fa-arrow-up-right-from-square" })] }) }),
-                                        ],
-                                    }),
+                                    (0, i.jsx)("h3", { children: "23" }), 
+                                    (0, i.jsxs)("p", { children: ["years of", (0, i.jsx)("span", { children: "experience" })] })
                                 ],
                             }),
-
-                            (0, i.jsxs)(m.o5, {
-                                className: "single-item swiper-slide",
-                                children: [
-                                    (0, i.jsx)("div", { className: "main-content", children: (0, i.jsx)("div", { className: "videocontainer", children: (0, i.jsx)("iframe", { className: "youtube-video", src: "https://www.youtube.com/embed/OV6R4L2c4RI?enablejsapi=1&version=3&playerapiid=ytplayer", allowFullScreen: "" }) }) }),
-                                    (0, i.jsxs)("div", {
-                                        className: "details",
-                                        children: [
-                                            (0, i.jsx)("h4", { children: "فريق الدبكة" }),
-                                            (0, i.jsx)("div", {
-                                                children: (0, i.jsxs)("ul", {
-                                                    children: [
-                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-file-lines" }), " المشروع :"] }), (0, i.jsx)("span", { children: "مشاركة فريق الدبكة مركز زها الثقافي في مهرجان جرش" })] }),
-                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-user" }), " الفريق :"] }), (0, i.jsx)("span", { children: "الدبكة" })] }),
-                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-hourglass" }), " المدة :"] }), (0, i.jsx)("span", { children: "قبل شهرين" })] }),
-                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-solid fa-code-branch" }), " المكان :"] }), (0, i.jsx)("span", { children: "جرش" })] }),
-                                                    ],
-                                                }),
-                                            }),
-                                            (0, i.jsx)("a", { href: "#", target: "_blank", className: "custom-btn", children: (0, i.jsxs)("span", { children: ["معاينة ", (0, i.jsx)("i", { className: "fa-solid fa-arrow-up-right-from-square" })] }) }),
-                                        ],
-                                    }),
-                                ],
-                            }),
-
-                            (0, i.jsxs)(m.o5, {
-                                className: "single-item swiper-slide",
-                                children: [
-                                    (0, i.jsx)("div", { className: "main-content", children: (0, i.jsx)("div", { className: "videocontainer", children: (0, i.jsx)("iframe", { className: "youtube-video", src: "https://www.youtube.com/embed/NeJQ0dyYC5M?enablejsapi=1&version=3&playerapiid=ytplayer", allowFullScreen: "" }) }) }),
-                                    (0, i.jsxs)("div", {
-                                        className: "details",
-                                        children: [
-                                            (0, i.jsx)("h4", { children: "فريق الجيتار" }),
-                                            (0, i.jsx)("div", {
-                                                children: (0, i.jsxs)("ul", {
-                                                    children: [
-                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-file-lines" }), " المشروع :"] }), (0, i.jsx)("span", { children: "مشاركة فريق جيتار مركز زها الثقافي في مهرجان جرش للثقافة والفنون" })] }),
-                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-user" }), " الفريق :"] }), (0, i.jsx)("span", { children: "فريق الجيتار" })] }),
-                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-hourglass" }), " الوقت :"] }), (0, i.jsx)("span", { children: "قبل سنتين" })] }),
-                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-solid fa-code-branch" }), " المكان :"] }), (0, i.jsx)("span", { children: "جرش" })] }),
-                                                    ],
-                                                }),
-                                            }),
-                                            (0, i.jsx)("a", { href: "#", target: "_blank", className: "custom-btn", children: (0, i.jsxs)("span", { children: ["معاينة ", (0, i.jsx)("i", { className: "fa-solid fa-arrow-up-right-from-square" })] }) }),
-                                        ],
-                                    }),
-                                ],
-                            }),
-
-                            (0, i.jsxs)(m.o5, {
-                                className: "single-item swiper-slide",
-                                children: [
-                                    (0, i.jsx)("div", {
-                                        className: "main-content",
-                                        children: (0, i.jsx)("div", { className: "videocontainer", children: (0, i.jsx)("iframe", { className: "youtube-video", src: "https://www.youtube.com/embed/9fMMR3x-MNU?enablejsapi=1&version=3&playerapiid=ytplayer", allowFullScreen: "" }) }),
-                                    }),
-                                    
-                                    (0, i.jsxs)("div", {
-                                        className: "details",
-                                        children: [
-                                            (0, i.jsx)("h4", { children: "فريق الطبول" }),
-                                            (0, i.jsx)("div", {
-                                                children: (0, i.jsxs)("ul", {
-                                                    children: [
-                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-file-lines" }), " المشروع :"] }), (0, i.jsx)("span", { children: "مشاركة فريق زها درم جام في فعاليات مهرجان جرش" })] }),
-                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-user" }), " الفريق :"] }), (0, i.jsx)("span", { children: "فريق الطبول" })] }),
-                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-hourglass" }), " الوقت :"] }), (0, i.jsx)("span", { children: "قبل سنتين" })] }),
-                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-solid fa-code-branch" }), " المكان :"] }), (0, i.jsx)("span", { children: "جرش" })] }),
-                                                    ],
-                                                }),
-                                            }),
-                                            (0, i.jsx)("a", { href: "#", target: "_blank", className: "custom-btn", children: (0, i.jsxs)("span", { children: ["معاينة ", (0, i.jsx)("i", { className: "fa-solid fa-arrow-up-right-from-square" })] }) }),
-                                        ],
-                                    }),
-                                ],
-                            }),
-
-                            (0, i.jsx)("div", { className: "nav-item next-item animated-btn", children: (0, i.jsx)("span", {}) }),
-                            (0, i.jsx)("div", { className: "nav-item prev-item animated-btn", children: (0, i.jsx)("span", {}) }),
-                        ],
+                        }),
                     }),
-
-                    (0, i.jsx)("img", { alt: "", className: "separator hide-mobile", src: "assets/separator.png" }),
+                    (0, i.jsx)("div", {
+                        className: "fact-item animated-layer fade-in-right-animation fadeInRight wow",
+                        "data-wow-offset": 200,
+                        children: (0, i.jsx)("div", {
+                            className: "fact-box",
+                            children: (0, i.jsxs)("div", {
+                                className: "fact-content",
+                                children: [
+                                    (0, i.jsx)("h3", { children: "25" }), 
+                                    (0, i.jsxs)("p", { children: ["Teams", (0, i.jsx)("span", { children: "" })] })
+                                ],
+                            }),
+                        }),
+                    }),
+                    (0, i.jsx)("div", {
+                        className: "fact-item animated-layer fade-in-right-animation fadeInLeft wow",
+                        "data-wow-offset": 200,
+                        children: (0, i.jsx)("div", {
+                            className: "fact-box",
+                            children: (0, i.jsxs)("div", {
+                                className: "fact-content",
+                                children: [
+                                    (0, i.jsx)("h3", { children: "1000 <" }), 
+                                    (0, i.jsxs)("p", { children: ["Students", (0, i.jsx)("span", { children: "taught" })] })
+                                ],
+                            }),
+                        }),
+                    }),
+                    (0, i.jsx)("div", {
+                        className: "fact-item animated-layer fade-in-right-animation fadeInRight wow",
+                        "data-wow-offset": 200,
+                        children: (0, i.jsx)("div", {
+                            className: "fact-box",
+                            children: (0, i.jsxs)("div", {
+                                className: "fact-content",
+                                children: [
+                                    (0, i.jsx)("h3", { children: "13 <" }), 
+                                    (0, i.jsxs)("p", { children: ["awards", (0, i.jsx)("span", { children: "won" })] })
+                                ],
+                            }),
+                        }),
+                    }),
+                    (0, i.jsx)("div", {
+                        className: "fact-item animated-layer fade-in-right-animation fadeInLeft wow",
+                        "data-wow-offset": 200,
+                        children: (0, i.jsx)("div", {
+                            className: "fact-box",
+                            children: (0, i.jsxs)("div", {
+                                className: "fact-content",
+                                children: [
+                                    (0, i.jsx)("h3", { children: "679 <" }), 
+                                    (0, i.jsxs)("p", { children: ["learned", (0, i.jsx)("span", { children: "New Skills" })] })
+                                ],
+                            }),
+                        }),
+                    }),
                 ],
-            });
+            }),
+        }),
+        (0, i.jsx)("img", { alt: "", className: "z-1 hide-mobile opposite-separator", src: "assets/separator-opposite.png" }),
+    ],
+});
 
             let w = () => (0, i.jsxs)("section", {
                 className: "testimonials",
@@ -1315,5 +1231,6 @@
     function (s) {
         s.O(0, [571, 574, 774, 888, 179], function () { return s(s.s = 5557); }), _N_E = s.O();
     },
+    
 ]);
 // ...existing code...

@@ -1,4 +1,232 @@
 // js/chatbot.js
+
+class TeamTooltip {
+  constructor() {
+    this.tooltip = null;
+    this.isVisible = false;
+    this.init();
+  }
+
+  init() {
+    console.log('Initializing team tooltip...');
+    
+    // Create tooltip element
+    this.tooltip = document.createElement('div');
+    this.tooltip.className = 'team-tooltip';
+    this.tooltip.textContent = 'Ask Zaha\'s Assistant';
+    document.body.appendChild(this.tooltip);
+
+    // Wait a bit then bind events
+    setTimeout(() => this.bindTeamButtons(), 100);
+  }
+
+// In the bindTeamButtons function, add timeline binding
+bindTeamButtons() {
+  console.log('Looking for team buttons...');
+  
+  // Your existing button binding code...
+  const selectors = [
+    '.skills-content div > div', // Your main container
+    '.animated-layer', // Your animation class
+    '[class*="skill"]', // Anything with "skill" in class
+    '.about div > div > div' // Generic structure
+  ];
+
+  let buttons = [];
+  
+  for (let selector of selectors) {
+    const found = document.querySelectorAll(selector);
+    console.log(`Selector "${selector}" found: ${found.length} elements`);
+    
+    if (found.length > 0) {
+      buttons = found;
+      break;
+    }
+  }
+
+  console.log(`Total buttons to bind: ${buttons.length}`);
+
+  buttons.forEach((button, index) => {
+    console.log(`Binding button ${index + 1}:`, button);
+    
+    // Your existing button binding logic...
+    button.style.cursor = 'pointer';
+    
+    // Remove any existing listeners
+    button.removeEventListener('mouseenter', this.showTooltip);
+    button.removeEventListener('mousemove', this.moveTooltip);
+    button.removeEventListener('mouseleave', this.hideTooltip);
+    
+    // Add new listeners
+    button.addEventListener('mouseenter', (e) => {
+      console.log('Mouse entered button');
+      this.showTooltip(e);
+    });
+    
+    button.addEventListener('mousemove', (e) => {
+      this.moveTooltip(e);
+    });
+    
+    button.addEventListener('mouseleave', () => {
+      console.log('Mouse left button');
+      this.hideTooltip();
+    });
+  });
+
+  // ADD THIS: Bind timeline items
+  this.bindTimelineItems();
+
+  // Your existing fallback code...
+  if (buttons.length === 0) {
+    console.log('No buttons found with selectors, trying manual approach...');
+    this.tryManualBinding();
+  }
+}
+
+// ADD THIS NEW FUNCTION: Bind timeline items to tooltips
+bindTimelineItems() {
+  const timelineItems = document.querySelectorAll('.about .timeline ol li > div');
+  console.log(`Found ${timelineItems.length} timeline items for tooltips`);
+  
+  timelineItems.forEach((item, index) => {
+    if (item.querySelector('h4')) {
+      console.log(`Binding timeline item ${index + 1}:`, item);
+      
+      item.style.cursor = 'pointer';
+      
+      // Remove any existing listeners
+      item.removeEventListener('mouseenter', this.showTooltip);
+      item.removeEventListener('mousemove', this.moveTooltip);
+      item.removeEventListener('mouseleave', this.hideTooltip);
+      
+      // Add tooltip listeners
+      item.addEventListener('mouseenter', (e) => {
+        console.log('Mouse entered timeline item');
+        this.showTooltip(e);
+      });
+      
+      item.addEventListener('mousemove', (e) => {
+        this.moveTooltip(e);
+      });
+      
+      item.addEventListener('mouseleave', () => {
+        console.log('Mouse left timeline item');
+        this.hideTooltip();
+      });
+
+      // Add click handler for timeline items
+      if (!item.onclick) {
+        item.addEventListener('click', (e) => {
+          e.preventDefault();
+          const teamName = item.querySelector('h4')?.textContent || 'this team';
+          console.log(`Timeline item clicked: ${teamName}`);
+          window.sendTeamMessage(teamName);
+        });
+      }
+    }
+  });
+
+    // If still no buttons, try manual binding
+    if (buttons.length === 0) {
+      console.log('No buttons found with selectors, trying manual approach...');
+      this.tryManualBinding();
+    }
+  }
+
+  tryManualBinding() {
+    // Look for elements that might be team buttons
+    const allDivs = document.querySelectorAll('div');
+    let potentialButtons = [];
+    
+    allDivs.forEach(div => {
+      // Check if div contains an icon and text (like team buttons would)
+      const hasIcon = div.querySelector('i, span[class*="fa-"]');
+      const hasText = div.textContent && div.textContent.trim().length > 0;
+      const isClickable = div.style.cursor === 'pointer' || div.onclick;
+      
+      if ((hasIcon && hasText) || isClickable) {
+        potentialButtons.push(div);
+      }
+    });
+    
+    console.log(`Found ${potentialButtons.length} potential buttons manually`);
+    this.bindToElements(potentialButtons);
+  }
+
+  bindToElements(elements) {
+    elements.forEach(element => {
+      element.style.cursor = 'pointer';
+      
+      element.addEventListener('mouseenter', (e) => {
+        console.log('Mouse entered potential button');
+        this.showTooltip(e);
+      });
+      
+      element.addEventListener('mousemove', (e) => {
+        this.moveTooltip(e);
+      });
+      
+      element.addEventListener('mouseleave', () => {
+        this.hideTooltip();
+      });
+    });
+  }
+
+  showTooltip(event) {
+    if (!this.tooltip) return;
+    
+    console.log('Showing tooltip');
+    this.isVisible = true;
+    this.tooltip.style.display = 'block';
+    this.tooltip.classList.add('show');
+    
+    // Position it
+    this.moveTooltip(event);
+  }
+
+  moveTooltip(event) {
+    if (!this.isVisible || !this.tooltip) return;
+
+    const x = event.clientX + 15;
+    const y = event.clientY + 15;
+
+    // Basic boundary checking
+    const tooltipRect = this.tooltip.getBoundingClientRect();
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+
+    let finalX = x;
+    let finalY = y;
+
+    if (x + tooltipRect.width > viewportWidth - 10) {
+      finalX = event.clientX - tooltipRect.width - 15;
+    }
+
+    if (y + tooltipRect.height > viewportHeight - 10) {
+      finalY = event.clientY - tooltipRect.height - 15;
+    }
+
+    this.tooltip.style.left = finalX + 'px';
+    this.tooltip.style.top = finalY + 'px';
+  }
+
+  hideTooltip() {
+    if (!this.tooltip) return;
+    
+    console.log('Hiding tooltip');
+    this.isVisible = false;
+    this.tooltip.classList.remove('show');
+    
+    // Small delay before hiding completely
+    setTimeout(() => {
+      if (!this.isVisible) {
+        this.tooltip.style.display = 'none';
+      }
+    }, 150);
+  }
+}
+
+// Chatbot class (your existing one)
 class Chatbot {
   constructor() {
     this.isOpen = false;
@@ -127,13 +355,11 @@ class Chatbot {
     const message = this.input.value.trim();
     if (!message) return;
 
-    // Add user message
     this.addMessage(message, 'user');
     this.input.value = '';
     this.adjustTextareaHeight();
     this.sendBtn.disabled = true;
 
-    // Show typing indicator
     this.showTypingIndicator();
 
     try {
@@ -151,21 +377,12 @@ class Chatbot {
   }
 
   async callChatbaseAPI(message) {
-    console.log('Sending request to Chatbase...');
-
     const requestBody = {
-      messages: [
-        {
-          content: message,
-          role: "user"
-        }
-      ],
+      messages: [{ content: message, role: "user" }],
       chatbotId: this.chatId,
       stream: false,
       temperature: 0.7
     };
-
-    console.log('Request body:', JSON.stringify(requestBody));
 
     try {
       const response = await fetch(this.apiUrl, {
@@ -177,16 +394,11 @@ class Chatbot {
         body: JSON.stringify(requestBody)
       });
 
-      console.log('Response status:', response.status);
-
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error('API Error Response:', errorText);
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
-      console.log('API Success Response:', data);
       return data.text;
 
     } catch (error) {
@@ -195,16 +407,13 @@ class Chatbot {
     }
   }
 
-  // NEW METHOD: Handle team message clicks
   sendTeamMessage(teamName) {
     const message = `Tell me everything about ${teamName} Team`;
     
-    // Open the chat if it's closed
     if (!this.isOpen) {
       this.toggleChat();
     }
     
-    // Set a small timeout to ensure the chat is open before sending
     setTimeout(() => {
       this.input.value = message;
       this.adjustTextareaHeight();
@@ -213,13 +422,23 @@ class Chatbot {
   }
 }
 
-// Initialize chatbot when DOM is loaded
+// Initialize everything
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('Initializing chatbot...');
-  window.chatbot = new Chatbot();
+  console.log('=== INITIALIZING ZAHA ASSISTANT ===');
   
-  // Make sendTeamMessage globally accessible for the team buttons
+  // Initialize chatbot
+  window.chatbot = new Chatbot();
+  console.log('Chatbot initialized');
+  
+  // Initialize team tooltip
+  window.teamTooltip = new TeamTooltip();
+  console.log('Team tooltip initialized');
+  
+  // Global function for team buttons
   window.sendTeamMessage = (teamName) => {
+    console.log(`Team message triggered: ${teamName}`);
     window.chatbot.sendTeamMessage(teamName);
   };
+  
+  console.log('=== ZAHA ASSISTANT READY ===');
 });

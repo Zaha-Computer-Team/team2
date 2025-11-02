@@ -504,6 +504,12 @@
         }),
     ],
 }),
+
+
+
+
+
+
                         ],
                     }),
 
@@ -522,105 +528,115 @@
                                 }),
                             }),
 
-                            (0, i.jsx)("div", {
-                                className: "timeline",
-                                children: (0, i.jsxs)("ol", {
-                                    className: "animated-layer fade-in-animation",
-                                    children: [
-                                        (0, i.jsx)("li", {
-                                            children: (0, i.jsx)("div", {
-                                                className: "animated-layer fade-in-down-animation fadeInUp wow",
-                                                children: (0, i.jsxs)("div", {
-                                                    className: "",
-                                                    children: [
-                                                        (0, i.jsx)("h4", { children: "Programming Team" }),
-                                                        (0, i.jsxs)("p", {
-                                                            children: [(0, i.jsx)("i", { className: "fa-regular fa-clock" }), (0, i.jsx)("span", { children: "2021 - Now" })],
-                                                        }),
-                                                        (0, i.jsxs)("p", {
-                                                            children: [(0, i.jsx)("i", { className: "fa-solid fa-head-side-cough" }), (0, i.jsx)("span", { children: "Coach : Mays Alkhlil" })],
-                                                        }),
-                                                    ],
-                                                }),
-                                            }),
-                                        }),
-
-                                        (0, i.jsx)("li", {
-                                            children: (0, i.jsx)("div", {
-                                                className: "animated-layer fade-in-up-animation fadeInUp wow",
-                                                children: (0, i.jsxs)("div", {
-                                                    className: "",
-                                                    children: [
-                                                        (0, i.jsx)("h4", { children: "Ballet" }),
-                                                        (0, i.jsxs)("p", {
-                                                            children: [(0, i.jsx)("i", { className: "fa-regular fa-clock" }), (0, i.jsx)("span", { children: "2018 - Now" })],
-                                                        }),
-                                                        (0, i.jsxs)("p", {
-                                                            children: [(0, i.jsx)("i", { className: "fa-solid fa-head-side-cough" }), (0, i.jsx)("span", { children: "Coach : Nanse Atyeat" })],
-                                                        }),
-                                                    ],
-                                                }),
-                                            }),
-                                        }),
-
-                                        (0, i.jsx)("li", {
-                                            children: (0, i.jsx)("div", {
-                                                className: "animated-layer fade-in-down-animation fadeInUp wow",
-                                                children: (0, i.jsxs)("div", {
-                                                    className: "",
-                                                    children: [
-                                                        (0, i.jsx)("h4", { children: "Dabke" }),
-                                                        (0, i.jsxs)("p", {
-                                                            children: [(0, i.jsx)("i", { className: "fa-regular fa-clock" }), (0, i.jsx)("span", { children: "2009 - Now" })],
-                                                        }),
-                                                        (0, i.jsxs)("p", {
-                                                            children: [(0, i.jsx)("i", { className: "fa-solid fa-head-side-cough" }), (0, i.jsx)("span", { children: "Coach : Rsan Daees" })],
-                                                        }),
-                                                    ],
-                                                }),
-                                            }),
-                                        }),
-
-                                        (0, i.jsx)("li", {
-                                            children: (0, i.jsx)("div", {
-                                                className: "animated-layer fade-in-up-animation fadeInUp wow",
-                                                children: (0, i.jsxs)("div", {
-                                                    className: "",
-                                                    children: [
-                                                        (0, i.jsx)("h4", { children: "Drums" }),
-                                                        (0, i.jsxs)("p", {
-                                                            children: [(0, i.jsx)("i", { className: "fa-regular fa-clock" }), (0, i.jsx)("span", { children: "2014 - Now" })],
-                                                        }),
-                                                        (0, i.jsxs)("p", {
-                                                            children: [(0, i.jsx)("i", { className: "fa-solid fa-head-side-cough" }), (0, i.jsx)("span", { children: "Coach : Bshar khrees" })],
-                                                        }),
-                                                    ],
-                                                }),
-                                            }),
-                                        }),
-
-                                        (0, i.jsx)("li", {
-                                            children: (0, i.jsx)("div", {
-                                                className: "animated-layer fade-in-down-animation fadeInUp wow",
-                                                children: (0, i.jsxs)("div", {
-                                                    className: "",
-                                                    children: [
-                                                        (0, i.jsx)("h4", { children: "Taekwando" }),
-                                                        (0, i.jsxs)("p", {
-                                                            children: [(0, i.jsx)("i", { className: "fa-regular fa-clock" }), (0, i.jsx)("span", { children: "2014 - Now" })],
-                                                        }),
-                                                        (0, i.jsxs)("p", {
-                                                            children: [(0, i.jsx)("i", { className: "fa-solid fa-head-side-cough" }), (0, i.jsx)("span", { children: "Coach : -------" })],
-                                                        }),
-                                                    ],
-                                                }),
-                                            }),
-                                        }),
-
-                                        (0, i.jsx)("li", {}),
-                                    ],
-                                }),
+(0, i.jsx)("div", {
+    className: "timeline",
+    children: (0, i.jsxs)("ol", {
+        className: "animated-layer fade-in-animation",
+        children: [
+            (0, i.jsx)("li", {
+                children: (0, i.jsx)("div", {
+                    className: "animated-layer fade-in-down-animation fadeInUp wow",
+                    onClick: () => sendTeamMessage("Programming Team"),
+                    style: { cursor: "pointer" },
+                    children: (0, i.jsxs)("div", {
+                        className: "",
+                        children: [
+                            (0, i.jsx)("h4", { children: "Programming Team" }),
+                            (0, i.jsxs)("p", {
+                                children: [(0, i.jsx)("i", { className: "fa-regular fa-clock" }), (0, i.jsx)("span", { children: "2021 - Now" })],
                             }),
+                            (0, i.jsxs)("p", {
+                                children: [(0, i.jsx)("i", { className: "fa-solid fa-head-side-cough" }), (0, i.jsx)("span", { children: "Coach : Mays Alkhlil" })],
+                            }),
+                        ],
+                    }),
+                }),
+            }),
+
+            (0, i.jsx)("li", {
+                children: (0, i.jsx)("div", {
+                    className: "animated-layer fade-in-up-animation fadeInUp wow",
+                    onClick: () => sendTeamMessage("Ballet"),
+                    style: { cursor: "pointer" },
+                    children: (0, i.jsxs)("div", {
+                        className: "",
+                        children: [
+                            (0, i.jsx)("h4", { children: "Ballet" }),
+                            (0, i.jsxs)("p", {
+                                children: [(0, i.jsx)("i", { className: "fa-regular fa-clock" }), (0, i.jsx)("span", { children: "2018 - Now" })],
+                            }),
+                            (0, i.jsxs)("p", {
+                                children: [(0, i.jsx)("i", { className: "fa-solid fa-head-side-cough" }), (0, i.jsx)("span", { children: "Coach : Nanse Atyeat" })],
+                            }),
+                        ],
+                    }),
+                }),
+            }),
+
+            (0, i.jsx)("li", {
+                children: (0, i.jsx)("div", {
+                    className: "animated-layer fade-in-down-animation fadeInUp wow",
+                    onClick: () => sendTeamMessage("Dabke"),
+                    style: { cursor: "pointer" },
+                    children: (0, i.jsxs)("div", {
+                        className: "",
+                        children: [
+                            (0, i.jsx)("h4", { children: "Dabke" }),
+                            (0, i.jsxs)("p", {
+                                children: [(0, i.jsx)("i", { className: "fa-regular fa-clock" }), (0, i.jsx)("span", { children: "2009 - Now" })],
+                            }),
+                            (0, i.jsxs)("p", {
+                                children: [(0, i.jsx)("i", { className: "fa-solid fa-head-side-cough" }), (0, i.jsx)("span", { children: "Coach : Rsan Daees" })],
+                            }),
+                        ],
+                    }),
+                }),
+            }),
+
+            (0, i.jsx)("li", {
+                children: (0, i.jsx)("div", {
+                    className: "animated-layer fade-in-up-animation fadeInUp wow",
+                    onClick: () => sendTeamMessage("Drums"),
+                    style: { cursor: "pointer" },
+                    children: (0, i.jsxs)("div", {
+                        className: "",
+                        children: [
+                            (0, i.jsx)("h4", { children: "Drums" }),
+                            (0, i.jsxs)("p", {
+                                children: [(0, i.jsx)("i", { className: "fa-regular fa-clock" }), (0, i.jsx)("span", { children: "2014 - Now" })],
+                            }),
+                            (0, i.jsxs)("p", {
+                                children: [(0, i.jsx)("i", { className: "fa-solid fa-head-side-cough" }), (0, i.jsx)("span", { children: "Coach : Bshar khrees" })],
+                            }),
+                        ],
+                    }),
+                }),
+            }),
+
+            (0, i.jsx)("li", {
+                children: (0, i.jsx)("div", {
+                    className: "animated-layer fade-in-down-animation fadeInUp wow",
+                    onClick: () => sendTeamMessage("Taekwando"),
+                    style: { cursor: "pointer" },
+                    children: (0, i.jsxs)("div", {
+                        className: "",
+                        children: [
+                            (0, i.jsx)("h4", { children: "Taekwando" }),
+                            (0, i.jsxs)("p", {
+                                children: [(0, i.jsx)("i", { className: "fa-regular fa-clock" }), (0, i.jsx)("span", { children: "2014 - Now" })],
+                            }),
+                            (0, i.jsxs)("p", {
+                                children: [(0, i.jsx)("i", { className: "fa-solid fa-head-side-cough" }), (0, i.jsx)("span", { children: "Coach : -------" })],
+                            }),
+                        ],
+                    }),
+                }),
+            }),
+
+            (0, i.jsx)("li", {}),
+        ],
+    }),
+}),
                         ],
                     }),
 
@@ -955,67 +971,84 @@
                 ],
             });
 
-            let f = () => (0, i.jsxs)("section", {
-                className: "facts",
+ let f = () => (
+  (0, i.jsxs)("section", {
+    className: "facts",
+    children: [
+      (0, i.jsxs)("div", {
+        className: "facts-scroll",
+        children: [
+          (0, i.jsx)("div", {
+            className: "animated-layer fade-in-right-animation fadeInLeft wow",
+            "data-wow-offset": 200,
+            children: (0, i.jsx)("div", {
+              children: (0, i.jsxs)("div", {
                 children: [
-                    (0, i.jsxs)("div", {
-                        className: "flex-column-mobile",
-                        children: [
-                            (0, i.jsx)("div", {
-                                className: "animated-layer fade-in-right-animation fadeInLeft wow",
-                                "data-wow-offset": 200,
-                                children: (0, i.jsx)("div", {
-                                    children: (0, i.jsxs)("div", {
-                                        children: [(0, i.jsx)("h3", { children: "23" }), (0, i.jsxs)("p", { children: ["years of", (0, i.jsx)("span", { children: "experience" })] })],
-                                    }),
-                                }),
-                            }),
-
-                            (0, i.jsx)("div", {
-                                className: "animated-layer fade-in-right-animation fadeInRight wow",
-                                "data-wow-offset": 200,
-                                children: (0, i.jsx)("div", {
-                                    children: (0, i.jsxs)("div", {
-                                        children: [(0, i.jsx)("h3", { children: "25" }), (0, i.jsxs)("p", { children: ["Teams", (0, i.jsx)("span", { children: "" })] })],
-                                    }),
-                                }),
-                            }),
-
-                            (0, i.jsx)("div", {
-                                className: "animated-layer fade-in-right-animation fadeInLeft wow",
-                                "data-wow-offset": 200,
-                                children: (0, i.jsx)("div", {
-                                    children: (0, i.jsxs)("div", {
-                                        children: [(0, i.jsx)("h3", { children: "1000 <" }), (0, i.jsxs)("p", { children: ["Students", (0, i.jsx)("span", { children: "taught" })] })],
-                                    }),
-                                }),
-                            }),
-
-                            (0, i.jsx)("div", {
-                                className: "animated-layer fade-in-right-animation fadeInRight wow",
-                                "data-wow-offset": 200,
-                                children: (0, i.jsx)("div", {
-                                    children: (0, i.jsxs)("div", {
-                                        children: [(0, i.jsx)("h3", { children: "13 <" }), (0, i.jsxs)("p", { children: ["awards", (0, i.jsx)("span", { children: "won" })] })],
-                                    }),
-                                }),
-                            }),
-
-                            (0, i.jsx)("div", {
-                                className: "animated-layer fade-in-right-animation fadeInLeft wow",
-                                "data-wow-offset": 200,
-                                children: (0, i.jsx)("div", {
-                                    children: (0, i.jsxs)("div", {
-                                        children: [(0, i.jsx)("h3", { children: "679 <" }), (0, i.jsxs)("p", { children: ["learned", (0, i.jsx)("span", { children: "New Skills" })] })],
-                                    }),
-                                }),
-                            }),
-                        ],
-                    }),
-
-                    (0, i.jsx)("img", { alt: "", className: "z-1 hide-mobile opposite-separator", src: "assets/separator-opposite.png" }),
+                  (0, i.jsx)("h3", { children: "23" }),
+                  (0, i.jsxs)("p", { children: ["years of", (0, i.jsx)("span", { children: "experience" })] }),
                 ],
-            });
+              }),
+            }),
+          }),
+          (0, i.jsx)("div", {
+            className: "animated-layer fade-in-right-animation fadeInRight wow",
+            "data-wow-offset": 200,
+            children: (0, i.jsx)("div", {
+              children: (0, i.jsxs)("div", {
+                children: [
+                  (0, i.jsx)("h3", { children: "25" }),
+                  (0, i.jsxs)("p", { children: ["Teams", (0, i.jsx)("span", { children: "" })] }),
+                ],
+              }),
+            }),
+          }),
+          (0, i.jsx)("div", {
+            className: "animated-layer fade-in-right-animation fadeInLeft wow",
+            "data-wow-offset": 200,
+            children: (0, i.jsx)("div", {
+              children: (0, i.jsxs)("div", {
+                children: [
+                  (0, i.jsx)("h3", { children: "1000 <" }),
+                  (0, i.jsxs)("p", { children: ["Students", (0, i.jsx)("span", { children: "taught" })] }),
+                ],
+              }),
+            }),
+          }),
+          (0, i.jsx)("div", {
+            className: "animated-layer fade-in-right-animation fadeInRight wow",
+            "data-wow-offset": 200,
+            children: (0, i.jsx)("div", {
+              children: (0, i.jsxs)("div", {
+                children: [
+                  (0, i.jsx)("h3", { children: "13 <" }),
+                  (0, i.jsxs)("p", { children: ["awards", (0, i.jsx)("span", { children: "won" })] }),
+                ],
+              }),
+            }),
+          }),
+          (0, i.jsx)("div", {
+            className: "animated-layer fade-in-right-animation fadeInLeft wow",
+            "data-wow-offset": 200,
+            children: (0, i.jsx)("div", {
+              children: (0, i.jsxs)("div", {
+                children: [
+                  (0, i.jsx)("h3", { children: "679 <" }),
+                  (0, i.jsxs)("p", { children: ["learned", (0, i.jsx)("span", { children: "New Skills" })] }),
+                ],
+              }),
+            }),
+          }),
+        ],
+      }),
+      (0, i.jsx)("img", {
+        alt: "",
+        className: "z-1 hide-mobile opposite-separator",
+        src: "assets/separator-opposite.png",
+      }),
+    ],
+  })
+);
+
 
             let g = () => (0, i.jsxs)("section", {
                 className: "home image",
