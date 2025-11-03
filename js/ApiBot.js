@@ -13,7 +13,7 @@ class TeamTooltip {
     // Create tooltip element
     this.tooltip = document.createElement('div');
     this.tooltip.className = 'team-tooltip';
-    this.tooltip.textContent = 'Ask Zaha\'s Assistant';
+    this.tooltip.textContent = 'Ask Zaha\'s Assistant about this team';
     document.body.appendChild(this.tooltip);
 
     // Wait a bit then bind events

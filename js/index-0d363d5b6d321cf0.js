@@ -795,14 +795,7 @@
                         1025: { direction: "vertical" },
                     },
                 },
-                clients: {
-                    slidesPerView: 2,
-                    loop: !0,
-                    breakpoints: { 320: { slidesPerView: 1 }, 768: { slidesPerView: 2 }, 1025: { slidesPerView: 3 } },
-                    spaceBetween: 50,
-                    grabCursor: !0,
-                    pagination: { el: ".swiper-pagination", clickable: !0, type: "bullets" },
-                },
+
                 portfolioItems: {
                     slidesPerView: 1,
                     loop: !0,
@@ -822,69 +815,7 @@
 
             var m = a(2546);
 
-            let x = () => (0, i.jsxs)("section", {
-                className: "clients",
-                children: [
-                    (0, i.jsxs)("div", {
-                        className: "clients-container animated-layer fade-in-right-animation fadeInUp wow",
-                        children: [
-                            (0, i.jsx)("h3", { children: "My Clients" }),
-                            (0, i.jsxs)(m.tq, {
-                                ...h.clients,
-                                className: "swiper swiper-clients fadeInUp wow",
-                                children: [
-                                    (0, i.jsxs)(m.o5, {
-                                        className: "swiper-slide",
-                                        children: [
-                                            (0, i.jsx)("div", { children: (0, i.jsx)("img", { src: "assets/logos/themeforest-dark-background.png", alt: "client" }) }),
-                                            (0, i.jsx)("div", { children: (0, i.jsx)("img", { src: "assets/logos/photodune-dark-background.png", alt: "client" }) }),
-                                        ],
-                                    }),
-                                    (0, i.jsxs)(m.o5, {
-                                        className: "swiper-slide",
-                                        children: [
-                                            (0, i.jsx)("div", { children: (0, i.jsx)("img", { src: "assets/logos/graphicriver-dark-background.png", alt: "client" }) }),
-                                            (0, i.jsx)("div", { children: (0, i.jsx)("img", { src: "assets/logos/codecanyon-dark-background.png", alt: "client" }) }),
-                                        ],
-                                    }),
-                                    (0, i.jsxs)(m.o5, {
-                                        className: "swiper-slide",
-                                        children: [
-                                            (0, i.jsx)("div", { children: (0, i.jsx)("img", { src: "assets/logos/audiojungle-dark-background.png", alt: "client" }) }),
-                                            (0, i.jsx)("div", { children: (0, i.jsx)("img", { src: "assets/logos/activeden-dark-background.png", alt: "client" }) }),
-                                        ],
-                                    }),
-                                    (0, i.jsxs)(m.o5, {
-                                        className: "swiper-slide",
-                                        children: [
-                                            (0, i.jsx)("div", { children: (0, i.jsx)("img", { src: "assets/logos/3docean-dark-background.png", alt: "client" }) }),
-                                            (0, i.jsx)("div", { children: (0, i.jsx)("img", { src: "assets/logos/themeforest-dark-background.png", alt: "client" }) }),
-                                        ],
-                                    }),
-                                    (0, i.jsxs)(m.o5, {
-                                        className: "swiper-slide",
-                                        children: [
-                                            (0, i.jsx)("div", { children: (0, i.jsx)("img", { src: "assets/logos/activeden-dark-background.png", alt: "client" }) }),
-                                            (0, i.jsx)("div", { children: (0, i.jsx)("img", { src: "assets/logos/audiojungle-dark-background.png", alt: "client" }) }),
-                                        ],
-                                    }),
-                                    (0, i.jsxs)(m.o5, {
-                                        className: "swiper-slide",
-                                        children: [
-                                            (0, i.jsx)("div", { children: (0, i.jsx)("img", { src: "assets/logos/graphicriver-dark-background.png", alt: "client" }) }),
-                                            (0, i.jsx)("div", { children: (0, i.jsx)("img", { src: "assets/logos/codecanyon-dark-background.png", alt: "client" }) }),
-                                        ],
-                                    }),
-
-                                    (0, i.jsx)("div", { className: "swiper-pagination" }),
-                                ],
-                            }),
-                        ],
-                    }),
-
-                    (0, i.jsx)("img", { alt: "", className: "z-1 hide-mobile opposite-separator", src: "assets/separator-opposite.png" }),
-                ],
-            });
+            
 
             let j = () => (0, i.jsxs)("section", {
                 className: "contact main-section flex-column-mobile",
@@ -1096,6 +1027,10 @@
                     }),
 
                     (0, i.jsxs)(m.tq, {
+
+
+
+                        
                         ...h.portfolio,
                         className: "swiper swiper-portfolio animated-layer fade-in-right-animation fadeInUp wow",
                         "data-wow-offset": 200,
@@ -1205,9 +1140,11 @@
                             (0, i.jsx)("div", { className: "nav-item prev-item animated-btn", children: (0, i.jsx)("span", {}) }),
                         ],
                     }),
-
+                
                     (0, i.jsx)("img", { alt: "", className: "separator hide-mobile", src: "assets/separator.png" }),
                 ],
+
+                
             });
 
             let w = () => (0, i.jsxs)("section", {
@@ -1384,7 +1321,7 @@
                                     (0, i.jsx)(N, { type: "up" }),
                                     (0, i.jsx)(j, {}),
                                     (0, i.jsx)(N, { type: "down" }),
-                                    (0, i.jsx)(x, {}),
+
                                     (0, i.jsx)(N, { type: "up" }),
                                     (0, i.jsx)(t, {}),
                                     (0, i.jsx)(N, { type: "down" }),
