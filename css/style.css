@@ -5154,4 +5154,48 @@ header .header-inner .mail p {
   background: var(--glass-bg);
   backdrop-filter: var(--glass-blur);
 }
+/* Admin System Styles */
+#adminPanelToggle {
+    animation: pulse 2s infinite;
+}
 
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Registration Form Styles */
+#registrationForm {
+    transition: all 0.3s ease;
+}
+
+#registrationForm:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+/* Admin Panel Styles */
+#adminPanel {
+    font-family: 'Livvic', sans-serif;
+}
+
+#adminPanel input,
+#adminPanel textarea,
+#adminPanel select,
+#adminPanel button {
+    transition: all 0.3s ease;
+}
+
+#adminPanel input:focus,
+#adminPanel textarea:focus,
+#adminPanel select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0,123,255,0.3);
+    outline: none;
+}
+
+#adminPanel button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}

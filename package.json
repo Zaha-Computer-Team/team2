@@ -1,0 +1,39 @@
+{
+  "name": "zaha-culture-center",
+  "version": "1.0.0",
+  "description": "Zaha Culture Center Website with Admin Panel",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "google-spreadsheet": "^4.1.0",
+    "googleapis": "^164.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/linerighI/New-folder.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/linerighI/New-folder/issues"
+  },
+  "homepage": "https://github.com/linerighI/New-folder#readme"
+  
+
+  
+}

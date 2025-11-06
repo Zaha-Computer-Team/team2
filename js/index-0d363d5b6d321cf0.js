@@ -1,9 +1,4 @@
-
-
 (self.webpackChunk_N_E = self.webpackChunk_N_E || []).push([
-
-    
-
 
     [405],
     {
@@ -18,9 +13,64 @@
 
         7190: function (s, e, a) {
             "use strict";
-            a.r(e), a.d(e, { default: function () { return C; } });
+            a.r(e), a.d(e, { default: function () { return I; } });
 
             var i = a(5893);
+            var k = a(7294); // React imports, including hooks (useEffect, useState)
+
+            // Google Sheets integration
+            const SHEET_ID = '1_Y3ETDpkkBX_LOBSawAR5WYA3UHFxf8hOm_NQPZfghc';
+            const SHEET_GID = '1354526022';
+            
+            let sheetData = null;
+
+            const getDefaultData = () => ({
+                // Add your default key/value pairs here if the sheet fails
+            });
+
+            // --- IMPROVED DATA FETCHING FUNCTION ---
+            const fetchSheetData = async () => {
+                try {
+                    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${SHEET_GID}`;
+                    const response = await fetch(url);
+                    const text = await response.text();
+                    
+                    // Robust parsing: Safely check for the JSON boundaries
+                    const startIndex = text.indexOf('{');
+                    const endIndex = text.lastIndexOf('}');
+                    
+                    if (startIndex === -1 || endIndex === -1) {
+                        console.error('Error parsing Google Sheet data: Invalid JSONP response format.');
+                        return getDefaultData();
+                    }
+
+                    const jsonText = text.substring(startIndex, endIndex + 1);
+                    const json = JSON.parse(jsonText);
+                    
+                    // Extract key-value pairs (assuming column 1 is key, column 2 is value)
+                    const rows = json.table.rows.map(row => ({
+                        key: row.c[0]?.v,
+                        value: row.c[1]?.v
+                    }));
+                    
+                    const fetchedData = {};
+                    rows.forEach(row => {
+                        if (row.key && row.value !== undefined) {
+                            fetchedData[row.key] = row.value;
+                        }
+                    });
+                    
+                    return fetchedData;
+                } catch (error) {
+                    console.error('Error fetching Google Sheet data:', error);
+                    return getDefaultData();
+                }
+            };
+
+            const getText = (key) => {
+                const currentData = sheetData || getDefaultData();
+                return currentData[key] || getDefaultData()[key] || key;
+            };
 
             let n = () => (0, i.jsxs)("header", {
                 children: [
@@ -36,31 +86,31 @@
                                                 children: (0, i.jsx)("span", {
                                                     className: "active",
                                                     id: "home-link",
-                                                    children: "Home",
+                                                    children: getText('menu_home'),
                                                 }),
                                             }),
                                             (0, i.jsx)("li", {
                                                 children: (0, i.jsx)("span", {
                                                     id: "about-link",
-                                                    children: "About",
+                                                    children: getText('menu_about'),
                                                 }),
                                             }),
                                             (0, i.jsx)("li", {
                                                 children: (0, i.jsx)("span", {
                                                     id: "Teams-link",
-                                                    children: "Teams",
+                                                    children: getText('menu_teams'),
                                                 }),
                                             }),
                                             (0, i.jsx)("li", {
                                                 children: (0, i.jsx)("span", {
                                                     id: "contact-link",
-                                                    children: "Contact",
+                                                    children: getText('menu_contact'),
                                                 }),
                                             }),
                                             (0, i.jsx)("li", {
                                                 children: (0, i.jsx)("span", {
                                                     id: "blog-link",
-                                                    children: "Blog",
+                                                    children: getText('menu_blog'),
                                                 }),
                                             }),
                                         ],
@@ -72,7 +122,7 @@
                                 children: (0, i.jsxs)("p", {
                                     children: [
                                         "Email :",
-                                        (0, i.jsx)("span", { children: " info@zaha.gov.jo " }),
+                                        (0, i.jsx)("span", { children: ` ${getText('header_email')} ` }),
                                     ],
                                 }),
                             }),
@@ -93,19 +143,19 @@
                                     id: "menu",
                                     children: [
                                         (0, i.jsx)("li", {
-                                            children: (0, i.jsx)("a", { href: "#home", children: (0, i.jsx)("span", { children: "Home" }) }),
+                                            children: (0, i.jsx)("a", { href: "#home", children: (0, i.jsx)("span", { children: getText('menu_home') }) }),
                                         }),
                                         (0, i.jsx)("li", {
-                                            children: (0, i.jsx)("a", { href: "#my-photo", children: (0, i.jsx)("span", { children: "About" }) }),
+                                            children: (0, i.jsx)("a", { href: "#my-photo", children: (0, i.jsx)("span", { children: getText('menu_about') }) }),
                                         }),
                                         (0, i.jsx)("li", {
-                                            children: (0, i.jsx)("a", { href: "#Teams", children: (0, i.jsx)("span", { children: "Teams" }) }),
+                                            children: (0, i.jsx)("a", { href: "#Teams", children: (0, i.jsx)("span", { children: getText('menu_teams') }) }),
                                         }),
                                         (0, i.jsx)("li", {
-                                            children: (0, i.jsx)("a", { href: "#contact", children: (0, i.jsx)("span", { children: "Contact" }) }),
+                                            children: (0, i.jsx)("a", { href: "#contact", children: (0, i.jsx)("span", { children: getText('menu_contact') }) }),
                                         }),
                                         (0, i.jsx)("li", {
-                                            children: (0, i.jsx)("a", { href: "#blog", children: (0, i.jsx)("span", { children: "Blog" }) }),
+                                            children: (0, i.jsx)("a", { href: "#blog", children: (0, i.jsx)("span", { children: getText('menu_blog') }) }),
                                         }),
                                     ],
                                 }),
@@ -118,9 +168,7 @@
             let l = () => (0, i.jsxs)("div", {
                 className: "scroll-progress hide-mobile",
                 children: [
-                    // progress line + fill
                     (0, i.jsx)("div", { className: "progress-line", children: (0, i.jsx)("div", { className: "progress-fill", style: { width: "0%" } }) }),
-                    // markers container (JS will populate .progress-markers)
                     (0, i.jsx)("div", { className: "progress-markers" })
                 ],
             });
@@ -149,13 +197,13 @@
                                             (0, i.jsx)("span", {
                                                 children: (0, i.jsx)("span", {
                                                     className: "animated-layer fade-in-up-animation fadeInUp wow",
-                                                    children: "Zhaha's Culture",
+                                                    children: getText('about_title_1'),
                                                 }),
                                             }),
                                             (0, i.jsx)("span", {
                                                 children: (0, i.jsx)("span", {
                                                     className: "animated-layer fade-in-up-animation fadeInUp wow",
-                                                    children: "Center",
+                                                    children: getText('about_title_2'),
                                                 }),
                                             }),
                                         ],
@@ -172,7 +220,7 @@
                                                                 className: "animated-layer fade-in-up-animation fadeInUp wow",
                                                                 children: [
                                                                     (0, i.jsx)("span", { children: "Founded :" }),
-                                                                    (0, i.jsx)("span", { children: "27 Years Ago" }),
+                                                                    (0, i.jsx)("span", { children: getText('about_founded') }),
                                                                 ],
                                                             }),
                                                         }),
@@ -183,7 +231,7 @@
                                                                 className: "animated-layer fade-in-up-animation fadeInUp wow",
                                                                 children: [
                                                                     (0, i.jsx)("span", { children: "Nationality :" }),
-                                                                    (0, i.jsx)("span", { children: "Jordan" }),
+                                                                    (0, i.jsx)("span", { children: getText('about_nationality') }),
                                                                 ],
                                                             }),
                                                         }),
@@ -194,7 +242,7 @@
                                                                 className: "animated-layer fade-in-up-animation fadeInUp wow",
                                                                 children: [
                                                                     (0, i.jsx)("span", { children: "Open Hours :" }),
-                                                                    (0, i.jsx)("span", { children: "9 AM - 8 PM" }),
+                                                                    (0, i.jsx)("span", { children: getText('about_open_hours') }),
                                                                 ],
                                                             }),
                                                         }),
@@ -205,7 +253,7 @@
                                                                 className: "animated-layer fade-in-up-animation fadeInUp wow",
                                                                 children: [
                                                                     (0, i.jsx)("span", { children: "Founder :" }),
-                                                                    (0, i.jsx)("span", { children: "Zaha Jardaneh Mango" }),
+                                                                    (0, i.jsx)("span", { children: getText('about_founder') }),
                                                                 ],
                                                             }),
                                                         }),
@@ -221,7 +269,7 @@
                                                                 className: "animated-layer fade-in-up-animation fadeInUp wow",
                                                                 children: [
                                                                     (0, i.jsx)("span", { children: "Address :" }),
-                                                                    (0, i.jsx)("span", { children: "Amman" }),
+                                                                    (0, i.jsx)("span", { children: getText('about_address') }),
                                                                 ],
                                                             }),
                                                         }),
@@ -232,7 +280,7 @@
                                                                 className: "animated-layer fade-in-up-animation fadeInUp wow",
                                                                 children: [
                                                                     (0, i.jsx)("span", { children: "Phone :" }),
-                                                                    (0, i.jsx)("span", { children: "06 55 31 577" }),
+                                                                    (0, i.jsx)("span", { children: getText('about_phone') }),
                                                                 ],
                                                             }),
                                                         }),
@@ -243,7 +291,7 @@
                                                                 className: "animated-layer fade-in-up-animation fadeInUp wow",
                                                                 children: [
                                                                     (0, i.jsx)("span", { children: "Email :" }),
-                                                                    (0, i.jsx)("span", { children: "info@zaha.gov.jo " }),
+                                                                    (0, i.jsx)("span", { children: getText('about_email') }),
                                                                 ],
                                                             }),
                                                         }),
@@ -254,7 +302,7 @@
                                                                 className: "animated-layer fade-in-up-animation fadeInUp wow",
                                                                 children: [
                                                                     (0, i.jsx)("span", { children: "Name :" }),
-                                                                    (0, i.jsx)("span", { children: "مركز زها" }),
+                                                                    (0, i.jsx)("span", { children: getText('about_name') }),
                                                                 ],
                                                             }),
                                                         }),
@@ -278,232 +326,232 @@
                                     children: (0, i.jsx)("span", {
                                         children: (0, i.jsx)("span", {
                                             className: "animated-layer fade-in-left-animation fadeInUp wow",
-                                            children: "Teams",
+                                            children: getText('teams_title'),
                                         }),
                                     }),
                                 }),
                             }),
 
-                           (0, i.jsxs)("div", {
-    className: "skills-content",
-    children: [
-        (0, i.jsxs)("div", {
-            children: [
-                (0, i.jsxs)("div", {
-                    className: "animated-layer fade-in-down-animation fadeInLeft wow",
-                    onClick: () => sendTeamMessage("Programming"),
-                    style: { cursor: "pointer" },
-                    children: [
-                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-computer" }) }),
-                        (0, i.jsx)("h4", { children: "Programming Team" }),
-                    ],
-                }),
+                            (0, i.jsxs)("div", {
+                                className: "skills-content",
+                                children: [
+                                    (0, i.jsxs)("div", {
+                                        children: [
+                                            (0, i.jsxs)("div", {
+                                                className: "animated-layer fade-in-down-animation fadeInLeft wow",
+                                                onClick: () => sendTeamMessage("Programming"),
+                                                style: { cursor: "pointer" },
+                                                children: [
+                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-computer" }) }),
+                                                    (0, i.jsx)("h4", { children: getText('team_programming') }),
+                                                ],
+                                            }),
 
-                (0, i.jsxs)("div", {
-                    className: "animated-layer fade-in-up-animation fadeInRight wow",
-                    onClick: () => sendTeamMessage("Taekwondo"),
-                    style: { cursor: "pointer" },
-                    children: [
-                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fas fa-fist-raised" }) }),
-                        (0, i.jsx)("h4", { children: "Taekwondo" }),
-                    ],
-                }),
-            ],
-        }),
+                                            (0, i.jsxs)("div", {
+                                                className: "animated-layer fade-in-up-animation fadeInRight wow",
+                                                onClick: () => sendTeamMessage("Taekwondo"),
+                                                style: { cursor: "pointer" },
+                                                children: [
+                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fas fa-fist-raised" }) }),
+                                                    (0, i.jsx)("h4", { children: getText('team_taekwondo') }),
+                                                ],
+                                            }),
+                                        ],
+                                    }),
 
-        (0, i.jsxs)("div", {
-            children: [
-                (0, i.jsxs)("div", {
-                    className: "animated-layer fade-in-down-animation fadeInLeft wow",
-                    onClick: () => sendTeamMessage("Theater"),
-                    style: { cursor: "pointer" },
-                    children: [
-                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-masks-theater" }) }),
-                        (0, i.jsx)("h4", { children: "Theater" }),
-                    ],
-                }),
+                                    (0, i.jsxs)("div", {
+                                        children: [
+                                            (0, i.jsxs)("div", {
+                                                className: "animated-layer fade-in-down-animation fadeInLeft wow",
+                                                onClick: () => sendTeamMessage("Theater"),
+                                                style: { cursor: "pointer" },
+                                                children: [
+                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-masks-theater" }) }),
+                                                    (0, i.jsx)("h4", { children: getText('team_theater') }),
+                                                ],
+                                            }),
 
-                (0, i.jsxs)("div", {
-                    className: "animated-layer fade-in-up-animation fadeInRight wow",
-                    onClick: () => sendTeamMessage("Photography"),
-                    style: { cursor: "pointer" },
-                    children: [
-                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-record-vinyl" }) }),
-                        (0, i.jsx)("h4", { children: "Photography" }),
-                    ],
-                }),
-            ],
-        }),
+                                            (0, i.jsxs)("div", {
+                                                className: "animated-layer fade-in-up-animation fadeInRight wow",
+                                                onClick: () => sendTeamMessage("Photography"),
+                                                style: { cursor: "pointer" },
+                                                children: [
+                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-record-vinyl" }) }),
+                                                    (0, i.jsx)("h4", { children: getText('team_photography') }),
+                                                ],
+                                            }),
+                                        ],
+                                    }),
 
-        (0, i.jsxs)("div", {
-            children: [
-                (0, i.jsxs)("div", {
-                    className: "animated-layer fade-in-down-animation fadeInLeft wow",
-                    onClick: () => sendTeamMessage("Guitar"),
-                    style: { cursor: "pointer" },
-                    children: [
-                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-guitar" }) }),
-                        (0, i.jsx)("h4", { children: "Guitar" }),
-                    ],
-                }),
+                                    (0, i.jsxs)("div", {
+                                        children: [
+                                            (0, i.jsxs)("div", {
+                                                className: "animated-layer fade-in-down-animation fadeInLeft wow",
+                                                onClick: () => sendTeamMessage("Guitar"),
+                                                style: { cursor: "pointer" },
+                                                children: [
+                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-guitar" }) }),
+                                                    (0, i.jsx)("h4", { children: getText('team_guitar') }),
+                                                ],
+                                            }),
 
-                (0, i.jsxs)("div", {
-                    className: "animated-layer fade-in-up-animation fadeInRight wow",
-                    onClick: () => sendTeamMessage("Chess"),
-                    style: { cursor: "pointer" },
-                    children: [
-                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-chess" }) }),
-                        (0, i.jsx)("h4", { children: "Chess" }),
-                    ],
-                }),
-            ],
-        }),
+                                            (0, i.jsxs)("div", {
+                                                className: "animated-layer fade-in-up-animation fadeInRight wow",
+                                                onClick: () => sendTeamMessage("Chess"),
+                                                style: { cursor: "pointer" },
+                                                children: [
+                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-chess" }) }),
+                                                    (0, i.jsx)("h4", { children: getText('team_chess') }),
+                                                ],
+                                            }),
+                                        ],
+                                    }),
 
-        (0, i.jsxs)("div", {
-            children: [
-                (0, i.jsxs)("div", {
-                    className: "animated-layer fade-in-down-animation fadeInLeft wow",
-                    onClick: () => sendTeamMessage("Ballet"),
-                    style: { cursor: "pointer" },
-                    children: [
-                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-person-dress" }) }),
-                        (0, i.jsx)("h4", { children: "Ballet" }),
-                    ],
-                }),
+                                    (0, i.jsxs)("div", {
+                                        children: [
+                                            (0, i.jsxs)("div", {
+                                                className: "animated-layer fade-in-down-animation fadeInLeft wow",
+                                                onClick: () => sendTeamMessage("Ballet"),
+                                                style: { cursor: "pointer" },
+                                                children: [
+                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-person-dress" }) }),
+                                                    (0, i.jsx)("h4", { children: getText('team_ballet') }),
+                                                ],
+                                            }),
 
-                (0, i.jsxs)("div", {
-                    className: "animated-layer fade-in-up-animation fadeInRight wow",
-                    onClick: () => sendTeamMessage("Zumba"),
-                    style: { cursor: "pointer" },
-                    children: [
-                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-person-dress" }) }),
-                        (0, i.jsx)("h4", { children: "Zumba" }),
-                    ],
-                }),
-            ],
-        }),
+                                            (0, i.jsxs)("div", {
+                                                className: "animated-layer fade-in-up-animation fadeInRight wow",
+                                                onClick: () => sendTeamMessage("Zumba"),
+                                                style: { cursor: "pointer" },
+                                                children: [
+                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-person-dress" }) }),
+                                                    (0, i.jsx)("h4", { children: getText('team_zumba') }),
+                                                ],
+                                            }),
+                                        ],
+                                    }),
 
-        (0, i.jsxs)("div", {
-            children: [
-                (0, i.jsxs)("div", {
-                    className: "animated-layer fade-in-down-animation fadeInLeft wow",
-                    onClick: () => sendTeamMessage("Dabke"),
-                    style: { cursor: "pointer" },
-                    children: [
-                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-person" }) }),
-                        (0, i.jsx)("h4", { children: "Dabke" }),
-                    ],
-                }),
+                                    (0, i.jsxs)("div", {
+                                        children: [
+                                            (0, i.jsxs)("div", {
+                                                className: "animated-layer fade-in-down-animation fadeInLeft wow",
+                                                onClick: () => sendTeamMessage("Dabke"),
+                                                style: { cursor: "pointer" },
+                                                children: [
+                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-person" }) }),
+                                                    (0, i.jsx)("h4", { children: getText('team_dabke') }),
+                                                ],
+                                            }),
 
-                (0, i.jsxs)("div", {
-                    className: "animated-layer fade-in-up-animation fadeInRight wow",
-                    onClick: () => sendTeamMessage("Orchestra"),
-                    style: { cursor: "pointer" },
-                    children: [
-                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-microphone-lines" }) }),
-                        (0, i.jsx)("h4", { children: "Orchestra" }),
-                    ],
-                }),
-            ],
-        }),
+                                            (0, i.jsxs)("div", {
+                                                className: "animated-layer fade-in-up-animation fadeInRight wow",
+                                                onClick: () => sendTeamMessage("Orchestra"),
+                                                style: { cursor: "pointer" },
+                                                children: [
+                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-microphone-lines" }) }),
+                                                    (0, i.jsx)("h4", { children: getText('team_orchestra') }),
+                                                ],
+                                            }),
+                                        ],
+                                    }),
 
-        (0, i.jsxs)("div", {
-            children: [
-                (0, i.jsxs)("div", {
-                    className: "animated-layer fade-in-down-animation fadeInLeft wow",
-                    onClick: () => sendTeamMessage("Piano"),
-                    style: { cursor: "pointer" },
-                    children: [
-                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-music" }) }),
-                        (0, i.jsx)("h4", { children: "Piano" }),
-                    ],
-                }),
+                                    (0, i.jsxs)("div", {
+                                        children: [
+                                            (0, i.jsxs)("div", {
+                                                className: "animated-layer fade-in-down-animation fadeInLeft wow",
+                                                onClick: () => sendTeamMessage("Piano"),
+                                                style: { cursor: "pointer" },
+                                                children: [
+                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-music" }) }),
+                                                    (0, i.jsx)("h4", { children: getText('team_piano') }),
+                                                ],
+                                            }),
 
-                (0, i.jsxs)("div", {
-                    className: "animated-layer fade-in-up-animation fadeInRight wow",
-                    onClick: () => sendTeamMessage("Caricature Drawing"),
-                    style: { cursor: "pointer" },
-                    children: [
-                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-pencil" }) }),
-                        (0, i.jsx)("h4", { children: "Caricature Drawing" }),
-                    ],
-                }),
-            ],
-        }),
+                                            (0, i.jsxs)("div", {
+                                                className: "animated-layer fade-in-up-animation fadeInRight wow",
+                                                onClick: () => sendTeamMessage("Caricature Drawing"),
+                                                style: { cursor: "pointer" },
+                                                children: [
+                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-pencil" }) }),
+                                                    (0, i.jsx)("h4", { children: getText('team_caricature') }),
+                                                ],
+                                            }),
+                                        ],
+                                    }),
 
-        (0, i.jsxs)("div", {
-            children: [
-                (0, i.jsxs)("div", {
-                    className: "animated-layer fade-in-down-animation fadeInLeft wow",
-                    onClick: () => sendTeamMessage("Booking"),
-                    style: { cursor: "pointer" },
-                    children: [
-                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-book" }) }),
-                        (0, i.jsx)("h4", { children: "Booking" }),
-                    ],
-                }),
+                                    (0, i.jsxs)("div", {
+                                        children: [
+                                            (0, i.jsxs)("div", {
+                                                className: "animated-layer fade-in-down-animation fadeInLeft wow",
+                                                onClick: () => sendTeamMessage("Booking"),
+                                                style: { cursor: "pointer" },
+                                                children: [
+                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-book" }) }),
+                                                    (0, i.jsx)("h4", { children: getText('team_booking') }),
+                                                ],
+                                            }),
 
-                (0, i.jsxs)("div", {
-                    className: "animated-layer fade-in-up-animation fadeInRight wow",
-                    onClick: () => sendTeamMessage("Animation"),
-                    style: { cursor: "pointer" },
-                    children: [
-                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-dragon" }) }),
-                        (0, i.jsx)("h4", { children: "Animation" }),
-                    ],
-                }),
-            ],
-        }),
+                                            (0, i.jsxs)("div", {
+                                                className: "animated-layer fade-in-up-animation fadeInRight wow",
+                                                onClick: () => sendTeamMessage("Animation"),
+                                                style: { cursor: "pointer" },
+                                                children: [
+                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-dragon" }) }),
+                                                    (0, i.jsx)("h4", { children: getText('team_animation') }),
+                                                ],
+                                            }),
+                                        ],
+                                    }),
 
-        (0, i.jsxs)("div", {
-            children: [
-                (0, i.jsxs)("div", {
-                    className: "animated-layer fade-in-down-animation fadeInLeft wow",
-                    onClick: () => sendTeamMessage("Flags"),
-                    style: { cursor: "pointer" },
-                    children: [
-                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-flag" }) }),
-                        (0, i.jsx)("h4", { children: "Flags" }),
-                    ],
-                }),
+                                    (0, i.jsxs)("div", {
+                                        children: [
+                                            (0, i.jsxs)("div", {
+                                                className: "animated-layer fade-in-down-animation fadeInLeft wow",
+                                                onClick: () => sendTeamMessage("Flags"),
+                                                style: { cursor: "pointer" },
+                                                children: [
+                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-flag" }) }),
+                                                    (0, i.jsx)("h4", { children: getText('team_flags') }),
+                                                ],
+                                            }),
 
-                (0, i.jsxs)("div", {
-                    className: "animated-layer fade-in-up-animation fadeInRight wow",
-                    onClick: () => sendTeamMessage("Drums"),
-                    style: { cursor: "pointer" },
-                    children: [
-                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-drum" }) }),
-                        (0, i.jsx)("h4", { children: "Drums" }),
-                    ],
-                }),
-            ],
-        }),
+                                            (0, i.jsxs)("div", {
+                                                className: "animated-layer fade-in-up-animation fadeInRight wow",
+                                                onClick: () => sendTeamMessage("Drums"),
+                                                style: { cursor: "pointer" },
+                                                children: [
+                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-drum" }) }),
+                                                    (0, i.jsx)("h4", { children: getText('team_drums') }),
+                                                ],
+                                            }),
+                                        ],
+                                    }),
 
-        (0, i.jsxs)("div", {
-            children: [
-                (0, i.jsxs)("div", {
-                    className: "animated-layer fade-in-down-animation fadeInLeft wow",
-                    onClick: () => sendTeamMessage("Violin and Oud"),
-                    style: { cursor: "pointer" },
-                    children: [
-                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-guitar" }) }),
-                        (0, i.jsx)("h4", { children: "Violin and Oud" }),
-                    ],
-                }),
+                                    (0, i.jsxs)("div", {
+                                        children: [
+                                            (0, i.jsxs)("div", {
+                                                className: "animated-layer fade-in-down-animation fadeInLeft wow",
+                                                onClick: () => sendTeamMessage("Violin and Oud"),
+                                                style: { cursor: "pointer" },
+                                                children: [
+                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-guitar" }) }),
+                                                    (0, i.jsx)("h4", { children: getText('team_violin_oud') }),
+                                                ],
+                                            }),
 
-                (0, i.jsxs)("div", {
-                    className: "animated-layer fade-in-up-animation fadeInRight wow",
-                    onClick: () => sendTeamMessage("Melodica"),
-                    style: { cursor: "pointer" },
-                    children: [
-                        (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-ruler" }) }),
-                        (0, i.jsx)("h4", { children: "Melodica" }),
-                    ],
-                }),
-            ],
-        }),
-    ],
-}),
+                                            (0, i.jsxs)("div", {
+                                                className: "animated-layer fade-in-up-animation fadeInRight wow",
+                                                onClick: () => sendTeamMessage("Melodica"),
+                                                style: { cursor: "pointer" },
+                                                children: [
+                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-ruler" }) }),
+                                                    (0, i.jsx)("h4", { children: getText('team_melodica') }),
+                                                ],
+                                            }),
+                                        ],
+                                    }),
+                                ],
+                            }),
 
 
 
@@ -522,121 +570,121 @@
                                     children: (0, i.jsx)("span", {
                                         children: (0, i.jsx)("span", {
                                             className: "animated-layer fade-in-left-animation",
-                                            children: "Our Poping Teams",
+                                            children: getText('poping_teams_title'),
                                         }),
                                     }),
                                 }),
                             }),
 
-(0, i.jsx)("div", {
-    className: "timeline",
-    children: (0, i.jsxs)("ol", {
-        className: "animated-layer fade-in-animation",
-        children: [
-            (0, i.jsx)("li", {
-                children: (0, i.jsx)("div", {
-                    className: "animated-layer fade-in-down-animation fadeInUp wow",
-                    onClick: () => sendTeamMessage("Programming Team"),
-                    style: { cursor: "pointer" },
-                    children: (0, i.jsxs)("div", {
-                        className: "",
-                        children: [
-                            (0, i.jsx)("h4", { children: "Programming Team" }),
-                            (0, i.jsxs)("p", {
-                                children: [(0, i.jsx)("i", { className: "fa-regular fa-clock" }), (0, i.jsx)("span", { children: "2021 - Now" })],
-                            }),
-                            (0, i.jsxs)("p", {
-                                children: [(0, i.jsx)("i", { className: "fa-solid fa-head-side-cough" }), (0, i.jsx)("span", { children: "Coach : Mays Alkhlil" })],
-                            }),
-                        ],
-                    }),
-                }),
-            }),
+                            (0, i.jsx)("div", {
+                                className: "timeline",
+                                children: (0, i.jsxs)("ol", {
+                                    className: "animated-layer fade-in-animation",
+                                    children: [
+                                        (0, i.jsx)("li", {
+                                            children: (0, i.jsx)("div", {
+                                                className: "animated-layer fade-in-down-animation fadeInUp wow",
+                                                onClick: () => sendTeamMessage("Programming Team"),
+                                                style: { cursor: "pointer" },
+                                                children: (0, i.jsxs)("div", {
+                                                    className: "",
+                                                    children: [
+                                                        (0, i.jsx)("h4", { children: getText('poping_team_programming') }),
+                                                        (0, i.jsxs)("p", {
+                                                            children: [(0, i.jsx)("i", { className: "fa-regular fa-clock" }), (0, i.jsx)("span", { children: getText('programming_duration') })],
+                                                        }),
+                                                        (0, i.jsxs)("p", {
+                                                            children: [(0, i.jsx)("i", { className: "fa-solid fa-head-side-cough" }), (0, i.jsx)("span", { children: getText('programming_coach') })],
+                                                        }),
+                                                    ],
+                                                }),
+                                            }),
+                                        }),
 
-            (0, i.jsx)("li", {
-                children: (0, i.jsx)("div", {
-                    className: "animated-layer fade-in-up-animation fadeInUp wow",
-                    onClick: () => sendTeamMessage("Ballet"),
-                    style: { cursor: "pointer" },
-                    children: (0, i.jsxs)("div", {
-                        className: "",
-                        children: [
-                            (0, i.jsx)("h4", { children: "Ballet" }),
-                            (0, i.jsxs)("p", {
-                                children: [(0, i.jsx)("i", { className: "fa-regular fa-clock" }), (0, i.jsx)("span", { children: "2018 - Now" })],
-                            }),
-                            (0, i.jsxs)("p", {
-                                children: [(0, i.jsx)("i", { className: "fa-solid fa-head-side-cough" }), (0, i.jsx)("span", { children: "Coach : Nanse Atyeat" })],
-                            }),
-                        ],
-                    }),
-                }),
-            }),
+                                        (0, i.jsx)("li", {
+                                            children: (0, i.jsx)("div", {
+                                                className: "animated-layer fade-in-up-animation fadeInUp wow",
+                                                onClick: () => sendTeamMessage("Ballet"),
+                                                style: { cursor: "pointer" },
+                                                children: (0, i.jsxs)("div", {
+                                                    className: "",
+                                                    children: [
+                                                        (0, i.jsx)("h4", { children: getText('poping_team_ballet') }),
+                                                        (0, i.jsxs)("p", {
+                                                            children: [(0, i.jsx)("i", { className: "fa-regular fa-clock" }), (0, i.jsx)("span", { children: getText('ballet_duration') })],
+                                                        }),
+                                                        (0, i.jsxs)("p", {
+                                                            children: [(0, i.jsx)("i", { className: "fa-solid fa-head-side-cough" }), (0, i.jsx)("span", { children: getText('ballet_coach') })],
+                                                        }),
+                                                    ],
+                                                }),
+                                            }),
+                                        }),
 
-            (0, i.jsx)("li", {
-                children: (0, i.jsx)("div", {
-                    className: "animated-layer fade-in-down-animation fadeInUp wow",
-                    onClick: () => sendTeamMessage("Dabke"),
-                    style: { cursor: "pointer" },
-                    children: (0, i.jsxs)("div", {
-                        className: "",
-                        children: [
-                            (0, i.jsx)("h4", { children: "Dabke" }),
-                            (0, i.jsxs)("p", {
-                                children: [(0, i.jsx)("i", { className: "fa-regular fa-clock" }), (0, i.jsx)("span", { children: "2009 - Now" })],
-                            }),
-                            (0, i.jsxs)("p", {
-                                children: [(0, i.jsx)("i", { className: "fa-solid fa-head-side-cough" }), (0, i.jsx)("span", { children: "Coach : Rsan Daees" })],
-                            }),
-                        ],
-                    }),
-                }),
-            }),
+                                        (0, i.jsx)("li", {
+                                            children: (0, i.jsx)("div", {
+                                                className: "animated-layer fade-in-down-animation fadeInUp wow",
+                                                onClick: () => sendTeamMessage("Dabke"),
+                                                style: { cursor: "pointer" },
+                                                children: (0, i.jsxs)("div", {
+                                                    className: "",
+                                                    children: [
+                                                        (0, i.jsx)("h4", { children: getText('poping_team_dabke') }),
+                                                        (0, i.jsxs)("p", {
+                                                            children: [(0, i.jsx)("i", { className: "fa-regular fa-clock" }), (0, i.jsx)("span", { children: getText('dabke_duration') })],
+                                                        }),
+                                                        (0, i.jsxs)("p", {
+                                                            children: [(0, i.jsx)("i", { className: "fa-solid fa-head-side-cough" }), (0, i.jsx)("span", { children: getText('dabke_coach') })],
+                                                        }),
+                                                    ],
+                                                }),
+                                            }),
+                                        }),
 
-            (0, i.jsx)("li", {
-                children: (0, i.jsx)("div", {
-                    className: "animated-layer fade-in-up-animation fadeInUp wow",
-                    onClick: () => sendTeamMessage("Drums"),
-                    style: { cursor: "pointer" },
-                    children: (0, i.jsxs)("div", {
-                        className: "",
-                        children: [
-                            (0, i.jsx)("h4", { children: "Drums" }),
-                            (0, i.jsxs)("p", {
-                                children: [(0, i.jsx)("i", { className: "fa-regular fa-clock" }), (0, i.jsx)("span", { children: "2014 - Now" })],
-                            }),
-                            (0, i.jsxs)("p", {
-                                children: [(0, i.jsx)("i", { className: "fa-solid fa-head-side-cough" }), (0, i.jsx)("span", { children: "Coach : Bshar khrees" })],
-                            }),
-                        ],
-                    }),
-                }),
-            }),
+                                        (0, i.jsx)("li", {
+                                            children: (0, i.jsx)("div", {
+                                                className: "animated-layer fade-in-up-animation fadeInUp wow",
+                                                onClick: () => sendTeamMessage("Drums"),
+                                                style: { cursor: "pointer" },
+                                                children: (0, i.jsxs)("div", {
+                                                    className: "",
+                                                    children: [
+                                                        (0, i.jsx)("h4", { children: getText('poping_team_drums') }),
+                                                        (0, i.jsxs)("p", {
+                                                            children: [(0, i.jsx)("i", { className: "fa-regular fa-clock" }), (0, i.jsx)("span", { children: getText('drums_duration') })],
+                                                        }),
+                                                        (0, i.jsxs)("p", {
+                                                            children: [(0, i.jsx)("i", { className: "fa-solid fa-head-side-cough" }), (0, i.jsx)("span", { children: getText('drums_coach') })],
+                                                        }),
+                                                    ],
+                                                }),
+                                            }),
+                                        }),
 
-            (0, i.jsx)("li", {
-                children: (0, i.jsx)("div", {
-                    className: "animated-layer fade-in-down-animation fadeInUp wow",
-                    onClick: () => sendTeamMessage("Taekwando"),
-                    style: { cursor: "pointer" },
-                    children: (0, i.jsxs)("div", {
-                        className: "",
-                        children: [
-                            (0, i.jsx)("h4", { children: "Taekwando" }),
-                            (0, i.jsxs)("p", {
-                                children: [(0, i.jsx)("i", { className: "fa-regular fa-clock" }), (0, i.jsx)("span", { children: "2014 - Now" })],
-                            }),
-                            (0, i.jsxs)("p", {
-                                children: [(0, i.jsx)("i", { className: "fa-solid fa-head-side-cough" }), (0, i.jsx)("span", { children: "Coach : -------" })],
-                            }),
-                        ],
-                    }),
-                }),
-            }),
+                                        (0, i.jsx)("li", {
+                                            children: (0, i.jsx)("div", {
+                                                className: "animated-layer fade-in-down-animation fadeInUp wow",
+                                                onClick: () => sendTeamMessage("Taekwando"),
+                                                style: { cursor: "pointer" },
+                                                children: (0, i.jsxs)("div", {
+                                                    className: "",
+                                                    children: [
+                                                        (0, i.jsx)("h4", { children: getText('poping_team_taekwondo') }),
+                                                        (0, i.jsxs)("p", {
+                                                            children: [(0, i.jsx)("i", { className: "fa-regular fa-clock" }), (0, i.jsx)("span", { children: getText('taekwondo_duration') })],
+                                                        }),
+                                                        (0, i.jsxs)("p", {
+                                                            children: [(0, i.jsx)("i", { className: "fa-solid fa-head-side-cough" }), (0, i.jsx)("span", { children: getText('taekwondo_coach') })],
+                                                        }),
+                                                    ],
+                                                }),
+                                            }),
+                                        }),
 
-            (0, i.jsx)("li", {}),
-        ],
-    }),
-}),
+                                        (0, i.jsx)("li", {}),
+                                    ],
+                                }),
+                            }),
                         ],
                     }),
 
@@ -657,7 +705,7 @@
                             children: (0, i.jsx)("span", {
                                 children: (0, i.jsx)("span", {
                                     className: "animated-layer fade-in-left-animation fadeInUp wow",
-                                    children: "Latest Posts",
+                                    children: getText('blog_title'),
                                 }),
                             }),
                         }),
@@ -681,18 +729,18 @@
                                                 className: "content",
                                                 children: [
                                                     (0, i.jsx)("span", { className: "category", children: "" }),
-                                                    (0, i.jsx)("span", { className: "title", children: "The Executive Director of the Zaha Cultural Center, Raneh Sabih, received the General Manager of the King Abdullah II Development Fund" }),
+                                                    (0, i.jsx)("span", { className: "title", children: getText('post1_title') }),
                                                     (0, i.jsx)("p", { children: "" }),
                                                     (0, i.jsxs)("div", {
                                                         className: "meta d-flex align-items-center",
                                                         children: [
                                                             (0, i.jsxs)("div", {
                                                                 className: "d-flex align-items-center",
-                                                                children: [(0, i.jsx)("i", { className: "fa-regular fa-calendar" }), (0, i.jsx)("span", { children: "27 October 2025" })],
+                                                                children: [(0, i.jsx)("i", { className: "fa-regular fa-calendar" }), (0, i.jsx)("span", { children: getText('post1_date') })],
                                                             }),
                                                             (0, i.jsxs)("div", {
                                                                 className: "d-flex align-items-center",
-                                                                children: [(0, i.jsx)("i", { className: "fa-regular fa-comments" }), (0, i.jsx)("span", { children: "124 comments" })],
+                                                                children: [(0, i.jsx)("i", { className: "fa-regular fa-comments" }), (0, i.jsx)("span", { children: getText('post1_comments') })],
                                                             }),
                                                         ],
                                                     }),
@@ -718,18 +766,18 @@
                                                 className: "content",
                                                 children: [
                                                     (0, i.jsx)("span", { className: "category", children: "" }),
-                                                    (0, i.jsx)("span", { className: "title", children: "A remarkable achievement achieved by our students from the team of the Zaha Cultural Center, Deir Olaa, by obtaining the first place in the Jerusalem and Palestine Football Championship" }),
+                                                    (0, i.jsx)("span", { className: "title", children: getText('post2_title') }),
                                                     (0, i.jsx)("p", { children: "" }),
                                                     (0, i.jsxs)("div", {
                                                         className: "meta d-flex align-items-center",
                                                         children: [
                                                             (0, i.jsxs)("div", {
                                                                 className: "d-flex align-items-center",
-                                                                children: [(0, i.jsx)("i", { className: "fa-regular fa-calendar" }), (0, i.jsx)("span", { children: "22 October 2025" })],
+                                                                children: [(0, i.jsx)("i", { className: "fa-regular fa-calendar" }), (0, i.jsx)("span", { children: getText('post2_date') })],
                                                             }),
                                                             (0, i.jsxs)("div", {
                                                                 className: "d-flex align-items-center",
-                                                                children: [(0, i.jsx)("i", { className: "fa-regular fa-comments" }), (0, i.jsx)("span", { children: "34 comments" })],
+                                                                children: [(0, i.jsx)("i", { className: "fa-regular fa-comments" }), (0, i.jsx)("span", { children: getText('post2_comments') })],
                                                             }),
                                                         ],
                                                     }),
@@ -740,7 +788,7 @@
                                 }),
                             }),
 
-                                                
+
                             (0, i.jsx)("div", {
                                 className: "animated-layer fade-in-right-animation fadeInUp wow",
                                 children: (0, i.jsx)(c(), {
@@ -756,18 +804,18 @@
                                                 className: "content",
                                                 children: [
                                                     (0, i.jsx)("span", { className: "category", children: "essentials" }),
-                                                    (0, i.jsx)("span", { className: "title", children: "Zaha Cultural Centers launch Zaha Knights teams from the youth As part of its ongoing quest to empower young people and develop their leadership and social skills" }),
+                                                    (0, i.jsx)("span", { className: "title", children: getText('post3_title') }),
                                                     (0, i.jsx)("p", { children: "" }),
                                                     (0, i.jsxs)("div", {
                                                         className: "meta d-flex align-items-center",
                                                         children: [
                                                             (0, i.jsxs)("div", {
                                                                 className: "d-flex align-items-center",
-                                                                children: [(0, i.jsx)("i", { className: "fa-regular fa-calendar" }), (0, i.jsx)("span", { children: "19 October 2025" })],
+                                                                children: [(0, i.jsx)("i", { className: "fa-regular fa-calendar" }), (0, i.jsx)("span", { children: getText('post3_date') })],
                                                             }),
                                                             (0, i.jsxs)("div", {
                                                                 className: "d-flex align-items-center",
-                                                                children: [(0, i.jsx)("i", { className: "fa-regular fa-comments" }), (0, i.jsx)("span", { children: "45 comments" })],
+                                                                children: [(0, i.jsx)("i", { className: "fa-regular fa-comments" }), (0, i.jsx)("span", { children: getText('post3_comments') })],
                                                             }),
                                                         ],
                                                     }),
@@ -802,10 +850,8 @@
                     pagination: { el: ".swiper-pagination", clickable: !0, type: "bullets" },
                 },
 
-                // ensure spreading ...h.Teams won't throw
                 Teams: {},
 
-                // keep TeamsItem for portfolio nested swiper
                 TeamsItem: {
                     slidesPerView: 1,
                     loop: !0,
@@ -815,7 +861,7 @@
 
             var m = a(2546);
 
-            
+
 
             let j = () => (0, i.jsxs)("section", {
                 className: "contact main-section flex-column-mobile",
@@ -827,7 +873,7 @@
                             children: (0, i.jsx)("span", {
                                 children: (0, i.jsx)("span", {
                                     className: "animated-layer fade-in-left-animation fadeInUp wow",
-                                    children: "Get in touch",
+                                    children: getText('contact_title'),
                                 }),
                             }),
                         }),
@@ -840,11 +886,11 @@
                                 children: [
                                     (0, i.jsxs)("div", {
                                         className: "animated-layer fade-in-down-animation fadeInUp wow",
-                                        children: [(0, i.jsx)("i", { className: "fa fa-phone" }), (0, i.jsxs)("p", { children: [(0, i.jsx)("span", { className: "small-text", children: "phone" }), "065 53 15 77"] })],
+                                        children: [(0, i.jsx)("i", { className: "fa fa-phone" }), (0, i.jsxs)("p", { children: [(0, i.jsx)("span", { className: "small-text", children: "phone" }), getText('contact_phone')] })],
                                     }),
                                     (0, i.jsxs)("div", {
                                         className: "animated-layer fade-in-up-animation fadeInUp wow",
-                                        children: [(0, i.jsx)("i", { className: "fa fa-location-dot" }), (0, i.jsxs)("p", { children: [(0, i.jsx)("span", { className: "small-text", children: "address" }), "Amman, Jordan"] })],
+                                        children: [(0, i.jsx)("i", { className: "fa fa-location-dot" }), (0, i.jsxs)("p", { children: [(0, i.jsx)("span", { className: "small-text", children: "address" }), getText('contact_address')] })],
                                     }),
                                 ],
                             }),
@@ -853,14 +899,14 @@
                                 children: [
                                     (0, i.jsxs)("div", {
                                         className: "animated-layer fade-in-down-animation fadeInUp wow",
-                                        children: [(0, i.jsx)("i", { className: "fa fa-envelope" }), (0, i.jsxs)("p", { children: [(0, i.jsx)("span", { className: "small-text", children: "email" }), "info@zaha.gov.jo "] })],
+                                        children: [(0, i.jsx)("i", { className: "fa fa-envelope" }), (0, i.jsxs)("p", { children: [(0, i.jsx)("span", { className: "small-text", children: "email" }), getText('contact_email')] })],
                                     }),
 
                                     (0, i.jsxs)("div", {
                                         className: "animated-layer fade-in-up-animation fadeInUp wow",
                                         children: [
                                             (0, i.jsx)("i", { className: "fa fa-share-nodes" }),
-                                            (0, i.jsx)("span", { className: "small-text", children: "follow Us" }),
+                                            (0, i.jsx)("span", { className: "small-text", children: getText('contact_follow') }),
                                             (0, i.jsxs)("ul", {
                                                 className: "social",
                                                 children: [
@@ -887,8 +933,8 @@
                     (0, i.jsx)("img", { alt: "", className: "z-1 hide-mobile", src: "assets/separator-copyright.png" }),
                     (0, i.jsxs)("div", {
                         children: [
-                            (0, i.jsxs)("span", { children: ["\xa9 ", new Date().getFullYear(), "مركز زها"] }),
-                            (0, i.jsxs)("span", { children: ["Designed By", " ", (0, i.jsx)("a", { target: "_blank", href: "", children: "Team Programming" })] }),
+                            (0, i.jsxs)("span", { children: ["\xa9 ", new Date().getFullYear(), getText('copyright_text')] }),
+                            (0, i.jsxs)("span", { children: [getText('copyright_designed'), " ", (0, i.jsx)("a", { target: "_blank", href: "", children: getText('copyright_designer') })] }),
                             (0, i.jsxs)("ul", {
                                 children: [
                                     (0, i.jsx)("li", { children: (0, i.jsx)("a", { href: "https://www.instagram.com/zahaculturalcenter/", children: (0, i.jsx)("i", { className: "fa-brands fa-instagram" }) }) }),
@@ -902,83 +948,83 @@
                 ],
             });
 
- let f = () => (
-  (0, i.jsxs)("section", {
-    className: "facts",
-    children: [
-      (0, i.jsxs)("div", {
-        className: "facts-scroll",
-        children: [
-          (0, i.jsx)("div", {
-            className: "animated-layer fade-in-right-animation fadeInLeft wow",
-            "data-wow-offset": 200,
-            children: (0, i.jsx)("div", {
-              children: (0, i.jsxs)("div", {
-                children: [
-                  (0, i.jsx)("h3", { children: "23" }),
-                  (0, i.jsxs)("p", { children: ["years of", (0, i.jsx)("span", { children: "experience" })] }),
-                ],
-              }),
-            }),
-          }),
-          (0, i.jsx)("div", {
-            className: "animated-layer fade-in-right-animation fadeInRight wow",
-            "data-wow-offset": 200,
-            children: (0, i.jsx)("div", {
-              children: (0, i.jsxs)("div", {
-                children: [
-                  (0, i.jsx)("h3", { children: "25" }),
-                  (0, i.jsxs)("p", { children: ["Teams", (0, i.jsx)("span", { children: "" })] }),
-                ],
-              }),
-            }),
-          }),
-          (0, i.jsx)("div", {
-            className: "animated-layer fade-in-right-animation fadeInLeft wow",
-            "data-wow-offset": 200,
-            children: (0, i.jsx)("div", {
-              children: (0, i.jsxs)("div", {
-                children: [
-                  (0, i.jsx)("h3", { children: "1000 <" }),
-                  (0, i.jsxs)("p", { children: ["Students", (0, i.jsx)("span", { children: "taught" })] }),
-                ],
-              }),
-            }),
-          }),
-          (0, i.jsx)("div", {
-            className: "animated-layer fade-in-right-animation fadeInRight wow",
-            "data-wow-offset": 200,
-            children: (0, i.jsx)("div", {
-              children: (0, i.jsxs)("div", {
-                children: [
-                  (0, i.jsx)("h3", { children: "13 <" }),
-                  (0, i.jsxs)("p", { children: ["awards", (0, i.jsx)("span", { children: "won" })] }),
-                ],
-              }),
-            }),
-          }),
-          (0, i.jsx)("div", {
-            className: "animated-layer fade-in-right-animation fadeInLeft wow",
-            "data-wow-offset": 200,
-            children: (0, i.jsx)("div", {
-              children: (0, i.jsxs)("div", {
-                children: [
-                  (0, i.jsx)("h3", { children: "679 <" }),
-                  (0, i.jsxs)("p", { children: ["learned", (0, i.jsx)("span", { children: "New Skills" })] }),
-                ],
-              }),
-            }),
-          }),
-        ],
-      }),
-      (0, i.jsx)("img", {
-        alt: "",
-        className: "z-1 hide-mobile opposite-separator",
-        src: "assets/separator-opposite.png",
-      }),
-    ],
-  })
-);
+            let f = () => (
+                (0, i.jsxs)("section", {
+                    className: "facts",
+                    children: [
+                        (0, i.jsxs)("div", {
+                            className: "facts-scroll",
+                            children: [
+                                (0, i.jsx)("div", {
+                                    className: "animated-layer fade-in-right-animation fadeInLeft wow",
+                                    "data-wow-offset": 200,
+                                    children: (0, i.jsx)("div", {
+                                        children: (0, i.jsxs)("div", {
+                                            children: [
+                                                (0, i.jsx)("h3", { children: getText('facts_experience') }),
+                                                (0, i.jsxs)("p", { children: [getText('facts_experience_text'), (0, i.jsx)("span", { children: getText('facts_experience_span') })] }),
+                                            ],
+                                        }),
+                                    }),
+                                }),
+                                (0, i.jsx)("div", {
+                                    className: "animated-layer fade-in-right-animation fadeInRight wow",
+                                    "data-wow-offset": 200,
+                                    children: (0, i.jsx)("div", {
+                                        children: (0, i.jsxs)("div", {
+                                            children: [
+                                                (0, i.jsx)("h3", { children: getText('facts_teams') }),
+                                                (0, i.jsxs)("p", { children: [getText('facts_teams_text'), (0, i.jsx)("span", { children: "" })] }),
+                                            ],
+                                        }),
+                                    }),
+                                }),
+                                (0, i.jsx)("div", {
+                                    className: "animated-layer fade-in-right-animation fadeInLeft wow",
+                                    "data-wow-offset": 200,
+                                    children: (0, i.jsx)("div", {
+                                        children: (0, i.jsxs)("div", {
+                                            children: [
+                                                (0, i.jsx)("h3", { children: getText('facts_students') }),
+                                                (0, i.jsxs)("p", { children: [getText('facts_students_text'), (0, i.jsx)("span", { children: getText('facts_students_span') })] }),
+                                            ],
+                                        }),
+                                    }),
+                                }),
+                                (0, i.jsx)("div", {
+                                    className: "animated-layer fade-in-right-animation fadeInRight wow",
+                                    "data-wow-offset": 200,
+                                    children: (0, i.jsx)("div", {
+                                        children: (0, i.jsxs)("div", {
+                                            children: [
+                                                (0, i.jsx)("h3", { children: getText('facts_awards') }),
+                                                (0, i.jsxs)("p", { children: [getText('facts_awards_text'), (0, i.jsx)("span", { children: getText('facts_awards_span') })] }),
+                                            ],
+                                        }),
+                                    }),
+                                }),
+                                (0, i.jsx)("div", {
+                                    className: "animated-layer fade-in-right-animation fadeInLeft wow",
+                                    "data-wow-offset": 200,
+                                    children: (0, i.jsx)("div", {
+                                        children: (0, i.jsxs)("div", {
+                                            children: [
+                                                (0, i.jsx)("h3", { children: getText('facts_skills') }),
+                                                (0, i.jsxs)("p", { children: [getText('facts_skills_text'), (0, i.jsx)("span", { children: getText('facts_skills_span') })] }),
+                                            ],
+                                        }),
+                                    }),
+                                }),
+                            ],
+                        }),
+                        (0, i.jsx)("img", {
+                            alt: "",
+                            className: "z-1 hide-mobile opposite-separator",
+                            src: "assets/separator-opposite.png",
+                        }),
+                    ],
+                })
+            );
 
 
             let g = () => (0, i.jsxs)("section", {
@@ -993,17 +1039,17 @@
                                     (0, i.jsx)("span", {
                                         children: (0, i.jsxs)("span", {
                                             className: "animated-layer",
-                                            children: ["Zaha's", (0, i.jsx)("span", { children: "." })],
+                                            children: [getText('home_title_1'), (0, i.jsx)("span", { children: "." })],
                                         }),
                                     }),
                                     (0, i.jsxs)("span", {
                                         className: "position-relative",
                                         children: [
-                                            (0, i.jsx)("span", { className: "animated-layer", children: "Teams" }),
+                                            (0, i.jsx)("span", { className: "animated-layer", children: getText('home_title_2') }),
                                             (0, i.jsx)("span", { className: "intro animated-layer", children: "" }),
                                         ],
                                     }),
-                                    (0, i.jsx)("span", { children: (0, i.jsx)("span", { className: "animated-layer", children: "Program" }) }),
+                                    (0, i.jsx)("span", { children: (0, i.jsx)("span", { className: "animated-layer", children: getText('home_title_3') }) }),
                                 ],
                             }),
                         }),
@@ -1021,16 +1067,12 @@
                         className: "custom-title",
                         children: (0, i.jsx)("h3", {
                             children: (0, i.jsx)("span", {
-                                children: (0, i.jsx)("span", { className: "animated-layer fade-in-left-animation fadeInUp wow", children: "Recent Events" }),
+                                children: (0, i.jsx)("span", { className: "animated-layer fade-in-left-animation fadeInUp wow", children: getText('portfolio_title') }),
                             }),
                         }),
                     }),
 
                     (0, i.jsxs)(m.tq, {
-
-
-
-                        
                         ...h.portfolio,
                         className: "swiper swiper-portfolio animated-layer fade-in-right-animation fadeInUp wow",
                         "data-wow-offset": 200,
@@ -1042,18 +1084,18 @@
                                     (0, i.jsxs)("div", {
                                         className: "details",
                                         children: [
-                                            (0, i.jsx)("h4", { children: "فريق الزومبا" }),
+                                            (0, i.jsx)("h4", { children: getText('portfolio_zumba_title') }),
                                             (0, i.jsx)("div", {
                                                 children: (0, i.jsxs)("ul", {
                                                     children: [
-                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-file-lines" }), " Event :"] }), (0, i.jsx)("span", { children: "مشاركة فريق الزومبا في مهرجان جرش الثقافي" })] }),
-                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-user" }), " Team :"] }), (0, i.jsx)("span", { children: "Zumba" })] }),
-                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-hourglass" }), " Time :"] }), (0, i.jsx)("span", { children: "2 months Ago" })] }),
-                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-solid fa-code-branch" }), " Preformed In :"] }), (0, i.jsx)("span", { children: "Jarash" })] }),
+                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-file-lines" }), " Event :"] }), (0, i.jsx)("span", { children: getText('portfolio_zumba_event') })] }),
+                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-user" }), " Team :"] }), (0, i.jsx)("span", { children: getText('portfolio_zumba_team') })] }),
+                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-hourglass" }), " Time :"] }), (0, i.jsx)("span", { children: getText('portfolio_zumba_time') })] }),
+                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-solid fa-code-branch" }), " Preformed In :"] }), (0, i.jsx)("span", { children: getText('portfolio_zumba_location') })] }),
                                                     ],
                                                 }),
                                             }),
-                                            (0, i.jsx)("a", { href: "#", target: "_blank", className: "custom-btn", children: (0, i.jsxs)("span", { children: ["preview ", (0, i.jsx)("i", { className: "fa-solid fa-arrow-up-right-from-square" })] }) }),
+                                            (0, i.jsx)("a", { href: "#", target: "_blank", className: "custom-btn", children: (0, i.jsxs)("span", { children: [getText('portfolio_preview'), " ", (0, i.jsx)("i", { className: "fa-solid fa-arrow-up-right-from-square" })] }) }),
                                         ],
                                     }),
                                 ],
@@ -1066,24 +1108,23 @@
                                     (0, i.jsxs)("div", {
                                         className: "details",
                                         children: [
-                                            (0, i.jsx)("h4", { children: "فريق الدبكة" }),
+                                            (0, i.jsx)("h4", { children: getText('portfolio_dabke_title') }),
                                             (0, i.jsx)("div", {
                                                 children: (0, i.jsxs)("ul", {
                                                     children: [
-                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-file-lines" }), " Project :"] }), (0, i.jsx)("span", { children: "مشاركة فريق الدبكة مركز زها الثقافي في مهرجان جرش" })] }),
-                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-user" }), " Team :"] }), (0, i.jsx)("span", { children: "Dabkeh" })] }),
-                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-hourglass" }), " Duration :"] }), (0, i.jsx)("span", { children: "2 months Ago" })] }),
-                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-solid fa-code-branch" }), " Preformed In :"] }), (0, i.jsx)("span", { children: "Jarash" })] }),
+                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-file-lines" }), " Project :"] }), (0, i.jsx)("span", { children: getText('portfolio_dabke_event') })] }),
+                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-user" }), " Team :"] }), (0, i.jsx)("span", { children: getText('portfolio_dabke_team') })] }),
+                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-hourglass" }), " Duration :"] }), (0, i.jsx)("span", { children: getText('portfolio_dabke_time') })] }),
+                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-solid fa-code-branch" }), " Preformed In :"] }), (0, i.jsx)("span", { children: getText('portfolio_dabke_location') })] }),
                                                     ],
                                                 }),
                                             }),
-                                            (0, i.jsx)("a", { href: "#", target: "_blank", className: "custom-btn", children: (0, i.jsxs)("span", { children: ["preview ", (0, i.jsx)("i", { className: "fa-solid fa-arrow-up-right-from-square" })] }) }),
+                                            (0, i.jsx)("a", { href: "#", target: "_blank", className: "custom-btn", children: (0, i.jsxs)("span", { children: [getText('portfolio_preview'), " ", (0, i.jsx)("i", { className: "fa-solid fa-arrow-up-right-from-square" })] }) }),
                                         ],
                                     }),
                                 ],
                             }),
 
-                            // fixed Mobile App slide (previously malformed)
                             (0, i.jsxs)(m.o5, {
                                 className: "single-item swiper-slide",
                                 children: [
@@ -1091,18 +1132,18 @@
                                     (0, i.jsxs)("div", {
                                         className: "details",
                                         children: [
-                                            (0, i.jsx)("h4", { children: "فريق جيتار" }),
+                                            (0, i.jsx)("h4", { children: getText('portfolio_guitar_title') }),
                                             (0, i.jsx)("div", {
                                                 children: (0, i.jsxs)("ul", {
                                                     children: [
-                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-file-lines" }), " Project :"] }), (0, i.jsx)("span", { children: "مشاركة فريق جيتار مركز زها الثقافي في مهرجان جرش للثقافة والفنون" })] }),
-                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-user" }), " Team :"] }), (0, i.jsx)("span", { children: "فريق جيتار" })] }),
-                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-hourglass" }), " Time :"] }), (0, i.jsx)("span", { children: "2 Years Ago" })] }),
-                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-solid fa-code-branch" }), " Preformed In :"] }), (0, i.jsx)("span", { children: "Jarash" })] }),
+                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-file-lines" }), " Project :"] }), (0, i.jsx)("span", { children: getText('portfolio_guitar_event') })] }),
+                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-user" }), " Team :"] }), (0, i.jsx)("span", { children: getText('portfolio_guitar_team') })] }),
+                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-hourglass" }), " Time :"] }), (0, i.jsx)("span", { children: getText('portfolio_guitar_time') })] }),
+                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-solid fa-code-branch" }), " Preformed In :"] }), (0, i.jsx)("span", { children: getText('portfolio_guitar_location') })] }),
                                                     ],
                                                 }),
                                             }),
-                                            (0, i.jsx)("a", { href: "#", target: "_blank", className: "custom-btn", children: (0, i.jsxs)("span", { children: ["preview ", (0, i.jsx)("i", { className: "fa-solid fa-arrow-up-right-from-square" })] }) }),
+                                            (0, i.jsx)("a", { href: "#", target: "_blank", className: "custom-btn", children: (0, i.jsxs)("span", { children: [getText('portfolio_preview'), " ", (0, i.jsx)("i", { className: "fa-solid fa-arrow-up-right-from-square" })] }) }),
                                         ],
                                     }),
                                 ],
@@ -1115,22 +1156,22 @@
                                         className: "main-content",
                                         children: (0, i.jsx)("div", { className: "videocontainer", children: (0, i.jsx)("iframe", { className: "youtube-video", src: "https://www.youtube.com/embed/9fMMR3x-MNU?enablejsapi=1&version=3&playerapiid=ytplayer", allowFullScreen: "" }) }),
                                     }),
-                                    
+
                                     (0, i.jsxs)("div", {
                                         className: "details",
                                         children: [
-                                            (0, i.jsx)("h4", { children: " فريق درم" }),
+                                            (0, i.jsx)("h4", { children: getText('portfolio_drums_title') }),
                                             (0, i.jsx)("div", {
                                                 children: (0, i.jsxs)("ul", {
                                                     children: [
-                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-file-lines" }), " Project :"] }), (0, i.jsx)("span", { children: "مشاركة فريق زها درم جام في فعاليات مهرجان جرش" })] }),
-                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-user" }), " Team :"] }), (0, i.jsx)("span", { children: "فريق درم" })] }),
-                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-hourglass" }), " Time :"] }), (0, i.jsx)("span", { children: "2 Years Ago" })] }),
-                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-solid fa-code-branch" }), " Preformed In :"] }), (0, i.jsx)("span", { children: "Jarash" })] }),
+                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-file-lines" }), " Project :"] }), (0, i.jsx)("span", { children: getText('portfolio_drums_event') })] }),
+                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-user" }), " Team :"] }), (0, i.jsx)("span", { children: getText('portfolio_drums_team') })] }),
+                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-regular fa-hourglass" }), " Time :"] }), (0, i.jsx)("span", { children: getText('portfolio_drums_time') })] }),
+                                                        (0, i.jsxs)("li", { children: [(0, i.jsxs)("span", { children: [(0, i.jsx)("i", { className: "fa-solid fa-code-branch" }), " Preformed In :"] }), (0, i.jsx)("span", { children: getText('portfolio_drums_location') })] }),
                                                     ],
                                                 }),
                                             }),
-                                            (0, i.jsx)("a", { href: "#", target: "_blank", className: "custom-btn", children: (0, i.jsxs)("span", { children: ["preview ", (0, i.jsx)("i", { className: "fa-solid fa-arrow-up-right-from-square" })] }) }),
+                                            (0, i.jsx)("a", { href: "#", target: "_blank", className: "custom-btn", children: (0, i.jsxs)("span", { children: [getText('portfolio_preview'), " ", (0, i.jsx)("i", { className: "fa-solid fa-arrow-up-right-from-square" })] }) }),
                                         ],
                                     }),
                                 ],
@@ -1140,11 +1181,11 @@
                             (0, i.jsx)("div", { className: "nav-item prev-item animated-btn", children: (0, i.jsx)("span", {}) }),
                         ],
                     }),
-                
+
                     (0, i.jsx)("img", { alt: "", className: "separator hide-mobile", src: "assets/separator.png" }),
                 ],
 
-                
+
             });
 
             let w = () => (0, i.jsxs)("section", {
@@ -1161,10 +1202,10 @@
                                             children: [
                                                 (0, i.jsx)("span", {
                                                     className: "quote",
-                                                    children: '"Being part of the programming team at Zaha Culture Center has been an amazing experience! I’ve learned how to think logically, solve problems creatively, and work with others to build real projects. The mentors here are super supportive, and every session feels like a step forward in my journey as a future developer."',
+                                                    children: getText('testimonial1_quote'),
                                                 }),
-                                                (0, i.jsx)("span", { className: "person", children: "Khalid Alnemat" }),
-                                                (0, i.jsx)("span", { className: "Team", children: "Programming Team" }),
+                                                (0, i.jsx)("span", { className: "person", children: getText('testimonial1_person') }),
+                                                (0, i.jsx)("span", { className: "Team", children: getText('testimonial1_team') }),
                                             ],
                                         }),
                                         (0, i.jsx)("img", { src: "images/Arabic.jpeg", alt: "" }),
@@ -1180,10 +1221,10 @@
                                             children: [
                                                 (0, i.jsx)("span", {
                                                     className: "quote",
-                                                    children: '"Joining the piano team at Zaha Culture Center has really helped me grow as a musician. I’ve learned not only how to play better but also how to express myself through music. The teachers are so patient and inspiring, and practicing with other students motivates me to keep improving every week!"',
+                                                    children: getText('testimonial2_quote'),
                                                 }),
-                                                (0, i.jsx)("span", { className: "person", children: "Asl Alkhalel" }),
-                                                (0, i.jsx)("span", { className: "Team", children: "Piano Team" }),
+                                                (0, i.jsx)("span", { className: "person", children: getText('testimonial2_person') }),
+                                                (0, i.jsx)("span", { className: "Team", children: getText('testimonial2_team') }),
                                             ],
                                         }),
                                         (0, i.jsx)("img", { src: "images/Asl.jpg", alt: "" }),
@@ -1214,13 +1255,12 @@
 
                     b()(window).width() > 1024
                         ? (setTimeout(function () { b()(".header-inner").addClass("animated fadeInDown"); }, 1500),
-                          setTimeout(function () { b()(".home>div>div h1 span span").addClass("animated fadeInUp"), b()(".home>div>div .intro").addClass("animated fadeInUp"), b()(".home .cta").addClass("animated fadeInUp"); }, 2200))
+                            setTimeout(function () { b()(".home>div>div h1 span span").addClass("animated fadeInUp"), b()(".home>div>div .intro").addClass("animated fadeInUp"), b()(".home .cta").addClass("animated fadeInUp"); }, 2200))
                         : (setTimeout(function () { b()(".header-inner").addClass("animated fadeInDown"); }, 1100),
-                           setTimeout(function () { b()(".home>div>div h1 span span").addClass("animated fadeInUp"), b()(".home>div>div .intro").addClass("animated fadeInUp"), b()(".home .cta").addClass("animated fadeInUp"); }, 1800));
+                            setTimeout(function () { b()(".home>div>div h1 span span").addClass("animated fadeInUp"), b()(".home>div>div .intro").addClass("animated fadeInUp"), b()(".home .cta").addClass("animated fadeInUp"); }, 1800));
 
                     var e = b()(".home").width() - 10,
                         i = e + b()(".about").width() + b()(".facts").width() - 10,
-                        // restore portfolio width calculation instead of the Teams-specific selector
                         n = i + b()(".portfolio").width() + b()(".clients").width() - 10,
                         l = n + b()(".contact").width() + b()(".testimonials").width() - 10,
                         r = l + b()(".blog").width() + b()(".copyright").width() - 10;
@@ -1300,39 +1340,67 @@
 
             var k = a(7294);
 
-            let I = () => ((0, k.useEffect)(() => { y(); }), (0, i.jsx)(k.Fragment, {
-                children: (0, i.jsxs)("div", {
-                    className: "page-content",
-                    children: [
-                        (0, i.jsx)(n, {}),
-                        (0, i.jsx)("div", {
-                            id: "wrapper",
-                            children: (0, i.jsxs)("main", {
-                                className: "flex-column-mobile",
-                                children: [
-                                    (0, i.jsx)(g, {}),
-                                    (0, i.jsx)(r, {}),
-                                    (0, i.jsx)(N, { type: "down" }),
-                                    (0, i.jsx)(f, {}),
-                                    (0, i.jsx)(N, { type: "up" }),
-                                    (0, i.jsx)(u, {}),
-                                    (0, i.jsx)(N, { type: "down" }),
-                                    (0, i.jsx)(w, {}),
-                                    (0, i.jsx)(N, { type: "up" }),
-                                    (0, i.jsx)(j, {}),
-                                    (0, i.jsx)(N, { type: "down" }),
+            let I = () => {
+                // 1. Add a state variable. We'll update it to force a re-render.
+                const [dataVersion, setDataVersion] = (0, k.useState)(0);
 
-                                    (0, i.jsx)(N, { type: "up" }),
-                                    (0, i.jsx)(t, {}),
-                                    (0, i.jsx)(N, { type: "down" }),
-                                    (0, i.jsx)(p, {}),
-                                ],
+                (0, k.useEffect)(() => {
+                    y();
+
+                    // Fetch sheet data on component mount
+                    fetchSheetData().then(fetchedData => {
+                        // 2. This part is the same: mutate the global 'sheetData'
+                        //    variable, as the external components rely on it.
+                        sheetData = fetchedData;
+
+                        // 3. Instead of dispatchEvent, trigger a clean React state update.
+                        //    This will cause a re-render.
+                        if (Object.keys(fetchedData).length > 0) {
+                            setDataVersion(v => v + 1); // This is the new, correct way
+                        }
+                    });
+                }, []);
+
+                // Update getText to be reactive
+                const getText = (key) => {
+                    // This will re-run on every render
+                    const currentData = sheetData || getDefaultData();
+                    return currentData[key] || getDefaultData()[key] || key;
+                };
+
+                return (0, i.jsx)(k.Fragment, {
+                    children: (0, i.jsxs)("div", {
+                        className: "page-content",
+                        children: [
+                            (0, i.jsx)(n, {}),
+                            (0, i.jsx)("div", {
+                                id: "wrapper",
+                                children: (0, i.jsxs)("main", {
+                                    className: "flex-column-mobile",
+                                    children: [
+                                        (0, i.jsx)(g, {}),
+                                        (0, i.jsx)(r, {}),
+                                        (0, i.jsx)(N, { type: "down" }),
+                                        (0, i.jsx)(f, {}),
+                                        (0, i.jsx)(N, { type: "up" }),
+                                        (0, i.jsx)(u, {}),
+                                        (0, i.jsx)(N, { type: "down" }),
+                                        (0, i.jsx)(w, {}),
+                                        (0, i.jsx)(N, { type: "up" }),
+                                        (0, i.jsx)(j, {}),
+                                        (0, i.jsx)(N, { type: "down" }),
+                                        (0, i.jsx)(N, { type: "up" }),
+                                        (0, i.jsx)(t, {}),
+                                        (0, i.jsx)(N, { type: "down" }),
+                                        (0, i.jsx)(p, {}),
+                                    ],
+                                }),
                             }),
-                        }),
-                        (0, i.jsx)(l, {}),
-                    ],
-                }),
-            }));
+                            (0, i.jsx)(l, {}),
+                        ],
+                    }),
+                });
+            };
 
             var C = I;
         },
@@ -1341,9 +1409,4 @@
     function (s) {
         s.O(0, [571, 574, 774, 888, 179], function () { return s(s.s = 5557); }), _N_E = s.O();
     },
-
-
-
 ]);
-
-
