@@ -1,191 +1,94 @@
-import { useEffect, useState, Fragment } from 'react';
+// server.js - Node.js Backend
+const express = require('express');
+const { google } = require('googleapis');
+const fs = require('fs');
 
-// --- CONFIGURATION (Based on your original file) ---
-// **IMPORTANT:** Replace these placeholder values with your actual ID and GID
-// if they differ from the original file's values.
-const SHEET_ID = '1_Y3ETDpkkBX_LOBSawAR5WYA3UHFxf8hOm_NQPZfghc';
-const SHEET_GID = '1354526022';
+const app = express();
+const port = 3000;
 
-// Global variables (Kept for compatibility with all existing non-React components)
-// All components in the original file rely on this global variable being updated.
-let sheetData = null; 
+// === CONFIGURATION ===
+// Sheet ID from your URL: 1_Y3ETDpkkBX_LOBSawAR5WYA3UHFxf8hOm_NQPZfghc
+const SHEET_ID = '1_Y3ETDpkkBX_LOBSawAR5WYA3UHFxf8hOm_NQPZfghc'; 
+// Path to your downloaded service account key file
+const KEY_FILE_PATH = './service-account-key.json'; 
+// Sheet Name (e.g., 'Sheet1' or 'Sheet2')
+const SHEET_NAME = 'Sheet2'; 
 
-const getDefaultData = () => ({ 
-    // Provide some robust defaults here if needed, in case the sheet fails to load
-    header_title: "Default Website Title",
-    section_a_title: "Data Loading...",
-    section_a_content: "Content is being loaded from Google Sheets. Please wait.",
-    section_b_title: "Loading Status",
-    section_b_content: "Initializing system components.",
-    footer_text: "Default Footer Content"
+let sheetData = {};
+
+// Use the service account credentials for authentication
+const auth = new google.auth.GoogleAuth({
+    keyFile: KEY_FILE_PATH,
+    scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
 });
 
-// Global function used by all original components (g, r, N, f, u, w, j, t, p, n, l)
-const getText = (key) => {
-    // This function will fetch from the global 'sheetData'
-    const currentData = sheetData || getDefaultData();
-    return currentData[key] || getDefaultData()[key] || key;
-};
-
-// --- CORE DATA FETCHING FUNCTION (Improved for robustness) ---
-// This function fetches data using the gviz endpoint but safely parses the response.
-const fetchSheetData = async () => {
+/**
+ * Fetches and processes data from the Google Sheet.
+ */
+async function fetchSheetData() {
     try {
-        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${SHEET_GID}`;
-        const response = await fetch(url);
-        
-        // Use a 5-second timeout for the text response
-        const textPromise = response.text();
-        const text = await Promise.race([
-            textPromise,
-            new Promise((_, reject) => setTimeout(() => reject(new Error('Sheet response timeout')), 5000))
-        ]);
+        console.log('Authenticating with Google Sheets API...');
+        const authClient = await auth.getClient();
+        const sheets = google.sheets({ version: 'v4', auth: authClient });
 
-        // Robust parsing: Safely check for the JSON boundaries
-        const startIndex = text.indexOf('{');
-        const endIndex = text.lastIndexOf('}');
-        
-        if (startIndex === -1 || endIndex === -1) {
-            console.error('Error parsing Google Sheet data: Invalid JSONP response format.');
-            return getDefaultData();
+        // Fetch data from Columns A and B of the specified sheet
+        const response = await sheets.spreadsheets.values.get({
+            spreadsheetId: SHEET_ID,
+            range: `${SHEET_NAME}!A:B`, // Fetch all data from A and B
+        });
+
+        const rows = response.data.values;
+        if (!rows || rows.length === 0) {
+            console.warn('No data found in the sheet.');
+            return;
         }
 
-        const jsonText = text.substring(startIndex, endIndex + 1);
-        const json = JSON.parse(jsonText);
+        const newSheetData = {};
         
-        // Extract key-value pairs (assuming column 1 is key, column 2 is value)
-        const rows = json.table.rows.map(row => ({
-            key: row.c[0]?.v,
-            value: row.c[1]?.v
-        }));
-        
-        const fetchedData = {};
-        rows.forEach(row => {
-            if (row.key && row.value !== undefined) {
-                fetchedData[row.key] = row.value;
+        rows.forEach((row, index) => {
+            const rawKey = row[0]; // Column A
+            const rawValue = row[1] !== undefined ? row[1] : ''; // Column B, default to empty string
+
+            if (rawKey) {
+                // Normalize key: trim and uppercase
+                const key = String(rawKey).trim().toUpperCase();
+                const value = String(rawValue);
+                
+                newSheetData[key] = value;
             }
         });
         
-        return fetchedData;
+        sheetData = newSheetData; // Update the global data store
+        console.log(`Successfully fetched and processed ${Object.keys(sheetData).length} key/value pairs.`);
+
     } catch (error) {
-        console.error('Error fetching Google Sheet data:', error);
-        return getDefaultData();
+        console.error('ERROR during Google Sheets API fetch:', error.message);
     }
-};
+}
 
-// --- NEW REACT COMPONENT TO MANAGE DATA STATE ---
-// This component manages the fetching lifecycle and state update, replacing the 
-// window.dispatchEvent(new Event('resize')) hack.
-const SheetDataProvider = ({ children }) => {
-    // State to track if loading is complete. Updating this state triggers a clean re-render.
-    const [isLoading, setIsLoading] = useState(true);
+// Set up CORS and JSON parsing
+app.use(express.json());
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*'); // Allow access from your local development environment
+    res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+});
 
-    useEffect(() => {
-        // Mock function for any initial window-level setup, if needed (like 'y()' in original)
-        if (typeof window.y === 'function') {
-            window.y(); 
-        }
-
-        fetchSheetData().then(fetchedData => {
-            // 1. Update the global variable that all old components rely on
-            sheetData = fetchedData; 
-            
-            // 2. Mark loading as complete (triggers a clean re-render of App)
-            setIsLoading(false);
-            console.log('Sheet data loaded and application state updated.');
-        }).catch(err => {
-            console.error('Fatal error during fetch and update:', err);
-            setIsLoading(false); // Still render, but using defaults
-        });
-    }, []); 
-
-    // Optional: Render a loading state while waiting for the sheet data
-    if (isLoading) {
-        return (
-            <div className="flex items-center justify-center min-h-screen bg-gray-100">
-                <div className="p-8 bg-white rounded-xl shadow-2xl flex items-center">
-                    <svg className="animate-spin -ml-1 mr-3 h-6 w-6 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    <span className="text-gray-700 font-semibold text-lg">Loading Website Content...</span>
-                </div>
-            </div>
-        );
+// Endpoint to serve the data
+app.get('/api/translations', (req, res) => {
+    if (Object.keys(sheetData).length === 0) {
+        // If data is empty, try to fetch it again or send an error
+        return res.status(503).json({ error: 'Data not loaded yet. Check server logs.' });
     }
-    
-    // Once loaded (or timed out), render the rest of the application
-    return <Fragment>{children}</Fragment>;
-};
+    // Serve the clean, pre-processed data
+    res.json(sheetData);
+});
 
-// --- MOCK COMPONENTS (Based on your original component names) ---
-// These mock components simulate your actual application structure 
-// (n, g, r, N, f, u, w, j, t, p, l) using the global getText() function.
-const MockN = () => <header className="p-4 bg-indigo-700 text-white font-extrabold text-3xl shadow-lg rounded-t-xl">
-    {getText('header_title') || 'Default Header Title'}
-</header>;
-const MockG = () => <section className="p-6 bg-white shadow-md rounded-lg mb-4 transform hover:scale-[1.01] transition duration-200">
-    <h2 className="text-xl font-bold text-indigo-800 mb-2">Component G: {getText('section_a_title')}</h2>
-    <p className="text-gray-600">{getText('section_a_content')}</p>
-</section>;
-const MockR = () => <section className="p-6 bg-white shadow-md rounded-lg mb-4 transform hover:scale-[1.01] transition duration-200">
-    <h2 className="text-xl font-bold text-indigo-800 mb-2">Component R: {getText('section_b_title')}</h2>
-    <p className="text-gray-600">{getText('section_b_content')}</p>
-</section>;
-const MockN_Divider = ({ type }) => <div className={`h-1 my-4 rounded-full ${type === 'down' ? 'bg-indigo-200' : 'bg-indigo-300'}`}></div>;
-// Mocks for f, u, w, j, t, p are consolidated to show the repeating layout pattern
-const MockContentBlock = ({ id }) => <section className="p-6 bg-white shadow-md rounded-lg mb-4 transform hover:scale-[1.01] transition duration-200">
-    <h2 className="text-xl font-bold text-gray-800 mb-2">Content Block {id}</h2>
-    <p className="text-gray-600">This block uses dynamic text: **{getText(`block_${id}_text`) || `Fallback for block ${id}`}**</p>
-</section>;
-const MockL = () => <footer className="p-4 mt-8 bg-indigo-900 text-white text-center text-sm rounded-b-xl shadow-inner">
-    {getText('footer_text') || '© 2024 Enhanced Website'}
-</footer>;
-
-
-// --- ROOT COMPONENT (I) ---
-// This is the main application component, now simplified because fetching is elsewhere.
-const App = () => {
-    return (
-        <div className="min-h-screen bg-gray-50 p-4 md:p-8 font-sans">
-            <MockN /> {/* n */}
-            <div id="wrapper" className="max-w-5xl mx-auto py-8">
-                <main className="flex flex-col gap-4 p-8 bg-white border border-gray-200 rounded-xl shadow-2xl">
-                    {/* The original order of your components is preserved here */}
-                    <MockG /> {/* g */}
-                    <MockR /> {/* r */}
-                    <MockN_Divider type="down" /> {/* N */}
-                    <MockContentBlock id="f" /> {/* f */}
-                    <MockN_Divider type="up" /> {/* N */}
-                    <MockContentBlock id="u" /> {/* u */}
-                    <MockN_Divider type="down" /> {/* N */}
-                    <MockContentBlock id="w" /> {/* w */}
-                    <MockN_Divider type="up" /> {/* N */}
-                    <MockContentBlock id="j" /> {/* j */}
-                    <MockN_Divider type="down" /> {/* N */}
-                    <MockN_Divider type="up" /> {/* N */}
-                    <MockContentBlock id="t" /> {/* t */}
-                    <MockN_Divider type="down" /> {/* N */}
-                    <MockContentBlock id="p" /> {/* p */}
-                </main>
-            </div>
-            <MockL /> {/* l */}
-
-            <div className="mt-8 p-4 bg-green-50 border-l-4 border-green-500 text-green-700 rounded-lg max-w-5xl mx-auto shadow">
-                <p className="font-bold">System Improvement Status</p>
-                <p className="text-sm">
-                    The data fetching system is now managed by a top-level React component, which guarantees a clean and reliable re-render upon successful data load, eliminating the need for `window.dispatchEvent('resize')`. The global `getText()` function remains compatible with all your existing application logic.
-                </p>
-            </div>
-        </div>
-    );
-};
-
-// Export the final application structure wrapped by the new provider
-const FinalApp = () => (
-    <SheetDataProvider>
-        <App />
-    </SheetDataProvider>
-);
-
-export default FinalApp;
+// Start the server and initiate the first data fetch
+app.listen(port, async () => {
+    console.log(`Node.js server running at http://localhost:${port}`);
+    await fetchSheetData();
+    // Schedule periodic updates (e.g., every 5 minutes)
+    setInterval(fetchSheetData, 5 * 60 * 1000); 
+});

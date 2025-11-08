@@ -5199,3 +5199,15 @@ header .header-inner .mail p {
     transform: translateY(-1px);
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
+.settings {
+    transform: translateZ(0); /* Hardware acceleration */
+    will-change: transform;
+}
+
+.settings-panel {
+    transition: transform 0.2s ease-in-out;
+}
+
+.dark-mode {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}

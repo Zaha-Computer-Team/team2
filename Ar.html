@@ -1,23 +1,22 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 
 <head>
-    <title>برنامج فرق زها</title>
+    
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-    
-    <!-- Dubai Font from Google Fonts --->
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Lateef:wght@400;700&family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="css/devicon.min.css">
     <link rel="stylesheet" href="css/all.min.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="js/ApiBot.js"></script>
+    <script src="js/Admin.js"></script>
     <link rel="stylesheet" href="css/swiper-bundle.min.css">
     <link rel="stylesheet" href="css/animate.min.css">
     <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
-    <link rel="stylesheet" href="css/Ar.css">
+    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/styleswitcher.css">
     <link rel="stylesheet" href="css/yellow.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -30,139 +29,21 @@
     <script src="js/framework-cda2f1305c3d9424.js" defer=""></script>
     <script src="js/main-627138c22ebf06ea.js" defer=""></script>
     <script src="js/_app-939fc81c9b33b38b.js" defer=""></script>
+    <script src="js/ScrollRect.jsx" defer=""></script>
+    <script src="https://apis.google.com/js/api.js"></script>
     <script src="js/b637e9a5-72306854ad8c548c.js" defer=""></script>
     <script src="js/574-3e6def5898b0fc8d.js" defer=""></script>
     <script src="js/Ar.js" defer=""></script>
+    <script src="js/React.jsx/Admins.jsx" defer=""></script>
     <script src="js/_buildManifest.js" defer=""></script>
     <script src="js/_ssgManifest.js" defer=""></script>
-    <title>برنامج فرق زها</title>
+    <script src="https://unpkg.com/@google/generative-ai/dist/generative-ai.js"></script>
+    <title>Zaha's Teams</title>
     <link rel="icon" href="images/logo.png" type="image/png">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- Updated Arabic Font Styles with Dubai Font -->
-    <style>
-        /* Dubai Font Stack */
-        @font-face {
-            font-family: 'Dubai';
-            src: url('fonts/Dubai-Regular.eot');
-            src: url('fonts/Dubai-Regular.eot?#iefix') format('embedded-opentype'),
-                 url('fonts/Dubai-Regular.woff2') format('woff2'),
-                 url('fonts/Dubai-Regular.woff') format('woff'),
-                 url('fonts/Dubai-Regular.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
-        }
-        
-        @font-face {
-            font-family: 'Dubai';
-            src: url('fonts/Dubai-Medium.eot');
-            src: url('fonts/Dubai-Medium.eot?#iefix') format('embedded-opentype'),
-                 url('fonts/Dubai-Medium.woff2') format('woff2'),
-                 url('fonts/Dubai-Medium.woff') format('woff'),
-                 url('fonts/Dubai-Medium.ttf') format('truetype');
-            font-weight: 500;
-            font-style: normal;
-            font-display: swap;
-        }
-        
-        @font-face {
-            font-family: 'Dubai';
-            src: url('fonts/Dubai-Bold.eot');
-            src: url('fonts/Dubai-Bold.eot?#iefix') format('embedded-opentype'),
-                 url('fonts/Dubai-Bold.woff2') format('woff2'),
-                 url('fonts/Dubai-Bold.woff') format('woff'),
-                 url('fonts/Dubai-Bold.ttf') format('truetype');
-            font-weight: bold;
-            font-style: normal;
-            font-display: swap;
-        }
-        
-        @font-face {
-            font-family: 'Dubai';
-            src: url('fonts/Dubai-Light.eot');
-            src: url('fonts/Dubai-Light.eot?#iefix') format('embedded-opentype'),
-                 url('fonts/Dubai-Light.woff2') format('woff2'),
-                 url('fonts/Dubai-Light.woff') format('woff'),
-                 url('fonts/Dubai-Light.ttf') format('truetype');
-            font-weight: 300;
-            font-style: normal;
-            font-display: swap;
-        }
-
-        /* Updated Arabic Font Stack with Dubai as primary */
-        body {
-            font-family: 'Dubai', 'Almarai', 'Noto Naskh Arabic', 'Amiri', 'Lateef', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.8;
-            font-weight: 400;
-        }
-        
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Dubai', 'Almarai', 'Amiri', 'Noto Naskh Arabic', serif;
-            font-weight: 700;
-        }
-        
-        .menu ul li span,
-        .custom-btn,
-        .setting-item span,
-        .setting-item button {
-            font-family: 'Dubai', 'Almarai', 'Noto Naskh Arabic', 'Amiri', sans-serif;
-            font-weight: 500;
-        }
-        
-        .about .infos ul li,
-        .testimonials .quote-container > div p,
-        .blog .latestposts a .content p {
-            font-family: 'Dubai', 'Almarai', 'Lateef', 'Noto Naskh Arabic', serif;
-            font-size: 1.2em;
-            font-weight: 400;
-        }
-        
-        /* RTL Direction */
-        html, body {
-            direction: rtl;
-            text-align: right;
-        }
-        
-        /* Improve Arabic Text Rendering */
-        * {
-            text-rendering: optimizeLegibility;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-        
-        /* Specific styling for Dubai font */
-        .home h1 {
-            font-family: 'Dubai', 'Almarai', sans-serif;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-        }
-        
-        .custom-title h3 {
-            font-family: 'Dubai', 'Almarai', sans-serif;
-            font-weight: 700;
-        }
-        
-        .skills-content h4 {
-            font-family: 'Dubai', 'Almarai', sans-serif;
-            font-weight: 600;
-        }
-        
-        .timeline h4 {
-            font-family: 'Dubai', 'Almarai', sans-serif;
-            font-weight: 600;
-        }
-        
-        .timeline p {
-            font-family: 'Dubai', 'Almarai', sans-serif;
-            font-weight: 400;
-        }
-    </style>
-
     <style
         data-href="https://fonts.googleapis.com/css2?family=Livvic:wght@100;200;300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap">
-        /* Original font faces remain for fallback */
         @font-face {
             font-family: 'Livvic';
             font-style: normal;
@@ -251,15 +132,392 @@
             src: url(fonts/TK3_WkUHHAIjg75cFRf3bXL8LICs1xZogUI.woff) format('woff')
         }
 
-        /* ... rest of the original font faces remain unchanged ... */
+        @font-face {
+            font-family: 'Livvic';
+            font-style: normal;
+            font-weight: 100;
+            font-display: swap;
+            src: url(fonts/rnCr-x1S2hzjrlffC9M2knjsS_ulYHs.woff2) format('woff2');
+            unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB
+        }
+
+        @font-face {
+            font-family: 'Livvic';
+            font-style: normal;
+            font-weight: 100;
+            font-display: swap;
+            src: url(fonts/rnCr-x1S2hzjrlffC9M3knjsS_ulYHs.woff2) format('woff2');
+            unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF
+        }
+
+        @font-face {
+            font-family: 'Livvic';
+            font-style: normal;
+            font-weight: 100;
+            font-display: swap;
+            src: url(fonts/rnCr-x1S2hzjrlffC9M5knjsS_ul.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD
+        }
+
+        @font-face {
+            font-family: 'Livvic';
+            font-style: normal;
+            font-weight: 200;
+            font-display: swap;
+            src: url(fonts/rnCq-x1S2hzjrlffp8Iuul3DY_GtWEIJ.woff2) format('woff2');
+            unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB
+        }
+
+        @font-face {
+            font-family: 'Livvic';
+            font-style: normal;
+            font-weight: 200;
+            font-display: swap;
+            src: url(fonts/rnCq-x1S2hzjrlffp8Iuu13DY_GtWEIJ.woff2) format('woff2');
+            unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF
+        }
+
+        @font-face {
+            font-family: 'Livvic';
+            font-style: normal;
+            font-weight: 200;
+            font-display: swap;
+            src: url(fonts/rnCq-x1S2hzjrlffp8IutV3DY_GtWA.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD
+        }
+
+        @font-face {
+            font-family: 'Livvic';
+            font-style: normal;
+            font-weight: 300;
+            font-display: swap;
+            src: url(fonts/rnCq-x1S2hzjrlffw8Euul3DY_GtWEIJ.woff2) format('woff2');
+            unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB
+        }
+
+        @font-face {
+            font-family: 'Livvic';
+            font-style: normal;
+            font-weight: 300;
+            font-display: swap;
+            src: url(fonts/rnCq-x1S2hzjrlffw8Euu13DY_GtWEIJ.woff2) format('woff2');
+            unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF
+        }
+
+        @font-face {
+            font-family: 'Livvic';
+            font-style: normal;
+            font-weight: 300;
+            font-display: swap;
+            src: url(fonts/rnCq-x1S2hzjrlffw8EutV3DY_GtWA.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD
+        }
+
+        @font-face {
+            font-family: 'Livvic';
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: url(fonts/rnCp-x1S2hzjrlfXZ-M7mH_OScuk.woff2) format('woff2');
+            unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB
+        }
+
+        @font-face {
+            font-family: 'Livvic';
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: url(fonts/rnCp-x1S2hzjrlfXZuM7mH_OScuk.woff2) format('woff2');
+            unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF
+        }
+
+        @font-face {
+            font-family: 'Livvic';
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: url(fonts/rnCp-x1S2hzjrlfXaOM7mH_OSQ.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD
+        }
+
+        @font-face {
+            font-family: 'Livvic';
+            font-style: normal;
+            font-weight: 500;
+            font-display: swap;
+            src: url(fonts/rnCq-x1S2hzjrlffm8Auul3DY_GtWEIJ.woff2) format('woff2');
+            unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB
+        }
+
+        @font-face {
+            font-family: 'Livvic';
+            font-style: normal;
+            font-weight: 500;
+            font-display: swap;
+            src: url(fonts/rnCq-x1S2hzjrlffm8Auu13DY_GtWEIJ.woff2) format('woff2');
+            unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF
+        }
+
+        @font-face {
+            font-family: 'Livvic';
+            font-style: normal;
+            font-weight: 500;
+            font-display: swap;
+            src: url(fonts/rnCq-x1S2hzjrlffm8AutV3DY_GtWA.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD
+        }
+
+        @font-face {
+            font-family: 'Livvic';
+            font-style: normal;
+            font-weight: 600;
+            font-display: swap;
+            src: url(fonts/rnCq-x1S2hzjrlfft8cuul3DY_GtWEIJ.woff2) format('woff2');
+            unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB
+        }
+
+        @font-face {
+            font-family: 'Livvic';
+            font-style: normal;
+            font-weight: 600;
+            font-display: swap;
+            src: url(fonts/rnCq-x1S2hzjrlfft8cuu13DY_GtWEIJ.woff2) format('woff2');
+            unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF
+        }
+
+        @font-face {
+            font-family: 'Livvic';
+            font-style: normal;
+            font-weight: 600;
+            font-display: swap;
+            src: url(fonts/rnCq-x1S2hzjrlfft8cutV3DY_GtWA.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD
+        }
+
+        @font-face {
+            font-family: 'Livvic';
+            font-style: normal;
+            font-weight: 700;
+            font-display: swap;
+            src: url(fonts/rnCq-x1S2hzjrlff08Yuul3DY_GtWEIJ.woff2) format('woff2');
+            unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB
+        }
+
+        @font-face {
+            font-family: 'Livvic';
+            font-style: normal;
+            font-weight: 700;
+            font-display: swap;
+            src: url(fonts/rnCq-x1S2hzjrlff08Yuu13DY_GtWEIJ.woff2) format('woff2');
+            unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF
+        }
+
+        @font-face {
+            font-family: 'Livvic';
+            font-style: normal;
+            font-weight: 700;
+            font-display: swap;
+            src: url(fonts/rnCq-x1S2hzjrlff08YutV3DY_GtWA.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD
+        }
+
+        @font-face {
+            font-family: 'Oswald';
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: url(fonts/TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlbHYjMdZwlou4.woff2) format('woff2');
+            unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F
+        }
+
+        @font-face {
+            font-family: 'Oswald';
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: url(fonts/TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlSHYjMdZwlou4.woff2) format('woff2');
+            unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116
+        }
+
+        @font-face {
+            font-family: 'Oswald';
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: url(fonts/TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlZHYjMdZwlou4.woff2) format('woff2');
+            unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB
+        }
+
+        @font-face {
+            font-family: 'Oswald';
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: url(fonts/TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlYHYjMdZwlou4.woff2) format('woff2');
+            unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF
+        }
+
+        @font-face {
+            font-family: 'Oswald';
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: url(fonts/TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlWHYjMdZwl.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD
+        }
+
+        @font-face {
+            font-family: 'Oswald';
+            font-style: normal;
+            font-weight: 500;
+            font-display: swap;
+            src: url(fonts/TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlbHYjMdZwlou4.woff2) format('woff2');
+            unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F
+        }
+
+        @font-face {
+            font-family: 'Oswald';
+            font-style: normal;
+            font-weight: 500;
+            font-display: swap;
+            src: url(fonts/TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlSHYjMdZwlou4.woff2) format('woff2');
+            unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116
+        }
+
+        @font-face {
+            font-family: 'Oswald';
+            font-style: normal;
+            font-weight: 500;
+            font-display: swap;
+            src: url(fonts/TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlZHYjMdZwlou4.woff2) format('woff2');
+            unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB
+        }
+
+        @font-face {
+            font-family: 'Oswald';
+            font-style: normal;
+            font-weight: 500;
+            font-display: swap;
+            src: url(fonts/TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlYHYjMdZwlou4.woff2) format('woff2');
+            unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF
+        }
+
+        @font-face {
+            font-family: 'Oswald';
+            font-style: normal;
+            font-weight: 500;
+            font-display: swap;
+            src: url(fonts/TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlWHYjMdZwl.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD
+        }
+
+        @font-face {
+            font-family: 'Oswald';
+            font-style: normal;
+            font-weight: 600;
+            font-display: swap;
+            src: url(fonts/TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlbHYjMdZwlou4.woff2) format('woff2');
+            unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F
+        }
+
+        @font-face {
+            font-family: 'Oswald';
+            font-style: normal;
+            font-weight: 600;
+            font-display: swap;
+            src: url(fonts/TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlSHYjMdZwlou4.woff2) format('woff2');
+            unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116
+        }
+
+        @font-face {
+            font-family: 'Oswald';
+            font-style: normal;
+            font-weight: 600;
+            font-display: swap;
+            src: url(fonts/TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlZHYjMdZwlou4.woff2) format('woff2');
+            unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB
+        }
+
+        @font-face {
+            font-family: 'Oswald';
+            font-style: normal;
+            font-weight: 600;
+            font-display: swap;
+            src: url(fonts/TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlYHYjMdZwlou4.woff2) format('woff2');
+            unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF
+        }
+
+        @font-face {
+            font-family: 'Oswald';
+            font-style: normal;
+            font-weight: 600;
+            font-display: swap;
+            src: url(fonts/TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlWHYjMdZwl.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD
+        }
+
+        @font-face {
+            font-family: 'Oswald';
+            font-style: normal;
+            font-weight: 700;
+            font-display: swap;
+            src: url(fonts/TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlbHYjMdZwlou4.woff2) format('woff2');
+            unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F
+        }
+
+        @font-face {
+            font-family: 'Oswald';
+            font-style: normal;
+            font-weight: 700;
+            font-display: swap;
+            src: url(fonts/TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlSHYjMdZwlou4.woff2) format('woff2');
+            unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116
+        }
+
+        @font-face {
+            font-family: 'Oswald';
+            font-style: normal;
+            font-weight: 700;
+            font-display: swap;
+            src: url(fonts/TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlZHYjMdZwlou4.woff2) format('woff2');
+            unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB
+        }
+
+        @font-face {
+            font-family: 'Oswald';
+            font-style: normal;
+            font-weight: 700;
+            font-display: swap;
+            src: url(fonts/TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlYHYjMdZwlou4.woff2) format('woff2');
+            unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF
+        }
+
+        @font-face {
+            font-family: 'Oswald';
+            font-style: normal;
+            font-weight: 700;
+            font-display: swap;
+            src: url(fonts/TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlWHYjMdZwl.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD
+        }
     </style>
+
+    
 </head>
 
 <body>
+
+
+
+
+
+
+
+    
     <div id="__next">
         <div id="switcher" class="close" style="display:block">
             <div class="content-switcher">
-                <h4>الإعدادات</h4>
+                <h4>dfd</h4>
                 <ul>
                    
                 </ul>
@@ -276,27 +534,27 @@
                     <div class="menu">
                         <nav>
                             <ul>
-                                <li><span class="active" id="home-link">الرئيسية</span></li>
-                                <li><span id="about-link">من نحن</span></li>
-                                <li><span id="portfolio-link">الفعاليات</span></li>
-                                <li><span id="contact-link">اتصل بنا</span></li>
-                                <li><span id="blog-link">المدونة</span></li>
+                                <li><span class="active" id="home-link">Home</span></li>
+                                <li><span id="about-link">About</span></li>
+                                <li><span id="portfolio-link">Portfolio</span></li>
+                                <li><span id="contact-link">Contact</span></li>
+                                <li><span id="blog-link">Blog</span></li>
                             </ul>
                         </nav>
                     </div>
                     <div class="mail">
-                        <p>البريد الإلكتروني :<span> info@zaha.gov.jo</span></p>
+                        <p>Email :<span> contact@steven.net</span></p>
                     </div>
                 </div>
                 <nav class="mobile-menu">
                     <div id="menuToggle"><input type="checkbox"
                             id="checkboxmenu"><span></span><span></span><span></span>
                         <ul class="list-unstyled" id="menu">
-                            <li><a href="#home"><span>الرئيسية</span></a></li>
-                            <li><a href="#my-photo"><span>من نحن</span></a></li>
-                            <li><a href="#portfolio"><span>الفعاليات</span></a></li>
-                            <li><a href="#contact"><span>اتصل بنا</span></a></li>
-                            <li><a href="#blog"><span>المدونة</span></a></li>
+                            <li><a href="#home"><span>Home</span></a></li>
+                            <li><a href="#my-photo"><span>About</span></a></li>
+                            <li><a href="#portfolio"><span>Portfolio</span></a></li>
+                            <li><a href="#contact"><span>Contact</span></a></li>
+                            <li><a href="#blog"><span>Blog</span></a></li>
                         </ul>
                     </div>
                 </nav>
@@ -306,10 +564,10 @@
                     <section class="home image" id="home">
                         <div>
                             <div class="position-relative">
-                                <h1><span><span class="animated-layer">زها<span>.</span></span></span><span
-                                        class="position-relative"><span class="animated-layer">الفرق</span><span
+                                <h1><span><span class="animated-layer">Zaha's<span>.</span></span></span><span
+                                        class="position-relative"><span class="animated-layer">Teams</span><span
                                             class="intro animated-layer"></span></span><span><span
-                                            class="animated-layer">البرنامج</span></span></h1>
+                                            class="animated-layer">Program</span></span></h1>
                             </div>
                         </div><span class="animated-layer animated-btn cta" id="cta"><span></span></span>
                     </section>
@@ -318,98 +576,99 @@
                             <div class="img-container animated-layer image-animation my-photo-container fadeInUp wow"
                                 data-wow-offset="200" id="my-photo">
                                 <div>
-                                    <div><img class="my-photo" src="images/logo.png" alt="مركز زها"></div>
+                                    <div><img class="my-photo" src="images/about.jpg" alt=""></div>
                                 </div>
                             </div>
                             <div>
                                 <h2><span><span
-                                            class="animated-layer fade-in-up-animation fadeInUp wow">مركز زها</span></span><span><span
-                                            class="animated-layer fade-in-up-animation fadeInUp wow">الثقافي</span></span>
+                                            class="animated-layer fade-in-up-animation fadeInUp wow">Steven</span></span><span><span
+                                            class="animated-layer fade-in-up-animation fadeInUp wow">Walker</span></span>
                                 </h2>
                                 <div class="infos">
                                     <ul>
-                                        <li><span><span class="animated-layer fade-in-up-animation fadeInUp wow"><span>تأسس
-                                                        :</span><span>منذ 27 سنة</span></span></span></li>
-                                        <li><span><span class="animated-layer fade-in-up-animation fadeInUp wow"><span>الجنسية
-                                                        :</span><span>الأردن</span></span></span></li>
-                                        <li><span><span class="animated-layer fade-in-up-animation fadeInUp wow"><span>ساعات العمل
-                                                        :</span><span>9 صباحاً - 8 مساءً</span></span></span></li>
-                                        <li><span><span class="animated-layer fade-in-up-animation fadeInUp wow"><span>المؤسس
-                                                        :</span><span>زها جردانه مانجو</span></span></span></li>
+                                        <li><span><span class="animated-layer fade-in-up-animation fadeInUp wow"><span>Age
+                                                        :</span><span>27 Years</span></span></span></li>
+                                        <li><span><span class="animated-layer fade-in-up-animation fadeInUp wow"><span>Nationality
+                                                        :</span><span>German</span></span></span></li>
+                                        <li><span><span class="animated-layer fade-in-up-animation fadeInUp wow"><span>Freelance
+                                                        :</span><span>Available</span></span></span></li>
+                                        <li><span><span class="animated-layer fade-in-up-animation fadeInUp wow"><span>Langages
+                                                        :</span><span>English</span></span></span></li>
                                     </ul>
                                     <ul>
-                                        <li><span><span class="animated-layer fade-in-up-animation fadeInUp wow"><span>العنوان
-                                                        :</span><span>عمان</span></span></span></li>
-                                        <li><span><span class="animated-layer fade-in-up-animation fadeInUp wow"><span>الهاتف
-                                                        :</span><span>06 55 31 577</span></span></span></li>
-                                        <li><span><span class="animated-layer fade-in-up-animation fadeInUp wow"><span>البريد الإلكتروني
-                                                        :</span><span>info@zaha.gov.jo</span></span></span></li>
-                                        <li><span><span class="animated-layer fade-in-up-animation fadeInUp wow"><span>الاسم
-                                                        :</span><span>مركز زها</span></span></span></li>
+                                        <li><span><span class="animated-layer fade-in-up-animation fadeInUp wow"><span>Address
+                                                        :</span><span>London</span></span></span></li>
+                                        <li><span><span class="animated-layer fade-in-up-animation fadeInUp wow"><span>Phone
+                                                        :</span><span>21 184 010</span></span></span></li>
+                                        <li><span><span class="animated-layer fade-in-up-animation fadeInUp wow"><span>Email
+                                                        :</span><span>contact@steven.net</span></span></span></li>
+                                        <li><span><span class="animated-layer fade-in-up-animation fadeInUp wow"><span>Skype
+                                                        :</span><span>steven.walker</span></span></span></li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                         <div class="skills flex-column-mobile">
                             <div class="custom-title">
-                                <h3><span><span class="animated-layer fade-in-left-animation fadeInUp wow">الفرق</span></span></h3>
+                                <h3><span><span class="animated-layer fade-in-left-animation fadeInUp wow">My
+                                            Skills</span></span></h3>
                             </div>
                             <div class="skills-content">
                                 <div>
                                     <div class="animated-layer fade-in-down-animation fadeInLeft wow"><span><i
-                                                class="fa-solid fa-computer"></i></span>
-                                        <h4>فريق البرمجة</h4>
+                                                class="devicon-wordpress-plain"></i></span>
+                                        <h4>WordPress</h4>
                                     </div>
                                     <div class="animated-layer fade-in-up-animation fadeInRight wow"><span><i
-                                                class="fas fa-fist-raised"></i></span>
-                                        <h4>التايكواندو</h4>
+                                                class="devicon-jquery-plain"></i></span>
+                                        <h4>jQuery</h4>
                                     </div>
                                 </div>
                                 <div>
                                     <div class="animated-layer fade-in-down-animation fadeInLeft wow"><span><i
-                                                class="fa-solid fa-masks-theater"></i></span>
-                                        <h4>المسرح</h4>
+                                                class="devicon-wordpress-plain"></i></span>
+                                        <h4>GGGGG</h4>
                                     </div>
                                     <div class="animated-layer fade-in-up-animation fadeInRight wow"><span><i
-                                                class="fa-solid fa-record-vinyl"></i></span>
-                                        <h4>التصوير</h4>
+                                                class="devicon-jquery-plain"></i></span>
+                                        <h4>SSSSS</h4>
                                     </div>
                                 </div>
                                 <div>
                                     <div class="animated-layer fade-in-down-animation fadeInLeft wow"><span><i
-                                                class="fa-solid fa-guitar"></i></span>
-                                        <h4>الجيتار</h4>
+                                                class="devicon-angularjs-plain"></i></span>
+                                        <h4>Angular JS</h4>
                                     </div>
                                     <div class="animated-layer fade-in-up-animation fadeInRight wow"><span><i
-                                                class="fa-solid fa-chess"></i></span>
-                                        <h4>الشطرنج</h4>
+                                                class="devicon-drupal-plain"></i></span>
+                                        <h4>Drupal</h4>
                                     </div>
                                 </div>
                                 <div>
                                     <div class="animated-layer fade-in-down-animation fadeInLeft wow"><span><i
-                                                class="fa-solid fa-person-dress"></i></span>
-                                        <h4>الباليه</h4>
+                                                class="devicon-react-plain"></i></span>
+                                        <h4>React JS</h4>
                                     </div>
                                     <div class="animated-layer fade-in-up-animation fadeInRight wow"><span><i
-                                                class="fa-solid fa-person-dress"></i></span>
-                                        <h4>الزومبا</h4>
+                                                class="devicon-docker-plain"></i></span>
+                                        <h4>Docker</h4>
                                     </div>
                                 </div>
                                 <div>
                                     <div class="animated-layer fade-in-down-animation fadeInLeft wow"><span><i
-                                                class="fa-solid fa-person"></i></span>
-                                        <h4>الدبكة</h4>
+                                                class="devicon-nodejs-plain"></i></span>
+                                        <h4>Node JS</h4>
                                     </div>
                                     <div class="animated-layer fade-in-up-animation fadeInRight wow"><span><i
-                                                class="fa-solid fa-microphone-lines"></i></span>
-                                        <h4>الأوركسترا</h4>
+                                                class="devicon-sass-plain"></i></span>
+                                        <h4>Sass</h4>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="resume flex-column-mobile">
                             <div class="custom-title fadeInUp wow">
-                                <h3><span><span class="animated-layer fade-in-left-animation">فرقنا الشهيرة</span></span>
+                                <h3><span><span class="animated-layer fade-in-left-animation">My Resume</span></span>
                                 </h3>
                             </div>
                             <div class="timeline">
@@ -417,45 +676,47 @@
                                     <li>
                                         <div class="animated-layer fade-in-down-animation fadeInUp wow">
                                             <div class="Teams">
-                                                <h4>فريق البرمجة</h4>
-                                                <p><i class="fa-regular fa-clock"></i><span>2021 - الآن</span></p>
-                                                <p><i class="fa-solid fa-head-side-cough"></i><span>المدرب: ميس الخليل</span></p>
+                                                <h4>Project Manager</h4>
+                                                <p><i class="fa-regular fa-clock"></i><span>2019 - Now</span></p>
+                                                <p><i class="fa-regular fa-building"></i><span>Adobe Company</span></p>
                                             </div>
                                         </div>
                                     </li>
                                     <li>
                                         <div class="animated-layer fade-in-up-animation fadeInUp wow">
                                             <div class="experience">
-                                                <h4>الباليه</h4>
-                                                <p><i class="fa-regular fa-clock"></i><span>2018 - الآن</span></p>
-                                                <p><i class="fa-solid fa-head-side-cough"></i><span>المدرب: نانس عطيات</span></p>
+                                                <h4>Team Leader</h4>
+                                                <p><i class="fa-regular fa-clock"></i><span>2015 - 2019</span></p>
+                                                <p><i class="fa-regular fa-building"></i><span>Twitter Inc</span></p>
                                             </div>
                                         </div>
                                     </li>
                                     <li>
                                         <div class="animated-layer fade-in-down-animation fadeInUp wow">
                                             <div class="experience">
-                                                <h4>الدبكة</h4>
-                                                <p><i class="fa-regular fa-clock"></i><span>2009 - الآن</span></p>
-                                                <p><i class="fa-solid fa-head-side-cough"></i><span>المدرب: رسان دعيس</span></p>
+                                                <h4>Web Developer</h4>
+                                                <p><i class="fa-regular fa-clock"></i><span>2010 - 2015</span></p>
+                                                <p><i class="fa-regular fa-building"></i><span>Facebook</span></p>
                                             </div>
                                         </div>
                                     </li>
                                     <li>
                                         <div class="animated-layer fade-in-up-animation fadeInUp wow">
                                             <div class="education">
-                                                <h4>الطبول</h4>
-                                                <p><i class="fa-regular fa-clock"></i><span>2014 - الآن</span></p>
-                                                <p><i class="fa-solid fa-head-side-cough"></i><span>المدرب: بشار خريس</span></p>
+                                                <h4>Master Degree</h4>
+                                                <p><i class="fa-regular fa-clock"></i><span>2003</span></p>
+                                                <p><i class="fa-solid fa-building-columns"></i><span>London
+                                                        University</span></p>
                                             </div>
                                         </div>
                                     </li>
                                     <li>
                                         <div class="animated-layer fade-in-down-animation fadeInUp wow">
                                             <div class="education">
-                                                <h4>التايكواندو</h4>
-                                                <p><i class="fa-regular fa-clock"></i><span>2014 - الآن</span></p>
-                                                <p><i class="fa-solid fa-head-side-cough"></i><span>المدرب: -------</span></p>
+                                                <h4>Bachelor Degree</h4>
+                                                <p><i class="fa-regular fa-clock"></i><span>1999</span></p>
+                                                <p><i class="fa-solid fa-building-columns"></i><span>Berlin High
+                                                        School</span></p>
                                             </div>
                                         </div>
                                     </li>
@@ -463,8 +724,317 @@
                                 </ol>
                             </div>
                         </div><img alt="" class="separator hide-mobile" src="images/separator.png">
+                    </section><img alt="" class="separator-mobile-up hide-desktop z-1"
+                        src="images/separator-mobile-up.png">
+                    <section class="facts">
+                        <div class="flex-column-mobile">
+                            <div class="animated-layer fade-in-right-animation fadeInLeft wow" data-wow-offset="200">
+                                <div>
+                                    <div>
+                                        <h3>23</h3>
+                                        <p>years of<span>experience</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="animated-layer fade-in-right-animation fadeInRight wow" data-wow-offset="200">
+                                <div>
+                                    <div>
+                                        <h3>25</h3>
+                                        <p>Teams<span></span></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="animated-layer fade-in-right-animation fadeInLeft wow" data-wow-offset="200">
+                                <div>
+                                    <div>
+                                        <h3>More Than 1000</h3>
+                                        <p>Students<span>taught</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="animated-layer fade-in-right-animation fadeInRight wow" data-wow-offset="200">
+                                <div>
+                                    <div>
+                                        <h3>13</h3>
+                                        <p>awards<span>won</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="animated-layer fade-in-right-animation fadeInLeft wow" data-wow-offset="200">
+                                <div>
+                                    <div>
+                                        <h3>32</h3>
+                                        <p>learned<span>frameworks</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><img alt="" class="z-1 hide-mobile opposite-separator"
+                            src="images/separator-opposite.png">
+                    </section><img alt="" class="separator-mobile-up hide-desktop z-1"
+                        src="images/separator-mobile-up.png">
+                    <section class="portfolio main-section flex-column-mobile" id="portfolio">
+                        <div class="custom-title">
+                            <h3><span><span class="animated-layer fade-in-left-animation fadeInUp wow">My
+                                        Portfolio</span></span></h3>
+                        </div>
+                        <div class="swiper swiper-portfolio animated-layer fade-in-right-animation fadeInUp wow"
+                            data-wow-offset="200">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide single-item">
+                                    <div class="main-content"><img class="img-fluid" src="images/project-1.jpg"
+                                            alt="Image Project"></div>
+                                    <div class="details">
+                                        <h4>Image Project</h4>
+                                        <div>
+                                            <ul>
+                                                <li><span><i class="fa-regular fa-file-lines"></i> Project
+                                                        :</span><span>Website</span></li>
+                                                <li><span><i class="fa-regular fa-user"></i> Client
+                                                        :</span><span>Envato</span></li>
+                                                <li><span><i class="fa-regular fa-hourglass"></i> Duration
+                                                        :</span><span>3 months</span></li>
+                                                <li><span><i class="fa-solid fa-code-branch"></i> Frameworks
+                                                        :</span><span>WordPress</span></li>
+                                            </ul>
+                                        </div><a href="#" target="_blank" class="custom-btn"><span>preview <i
+                                                    class="fa-solid fa-arrow-up-right-from-square"></i></span></a>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide single-item">
+                                    <div class="main-content">
+                                        <div class="videocontainer"><iframe class="youtube-video"
+                                                src="https://www.youtube.com/embed/AqcjdkPMPJA?enablejsapi=1&version=3&playerapiid=ytplayer"></iframe>
+                                        </div>
+                                    </div>
+                                    <div class="details">
+                                        <h4>Youtube Project</h4>
+                                        <div>
+                                            <ul>
+                                                <li><span><i class="fa-regular fa-file-lines"></i> Project
+                                                        :</span><span>Short Film</span></li>
+                                                <li><span><i class="fa-regular fa-user"></i> Client
+                                                        :</span><span>Videohive</span></li>
+                                                <li><span><i class="fa-regular fa-hourglass"></i> Duration
+                                                        :</span><span>8 months</span></li>
+                                                <li><span><i class="fa-solid fa-code-branch"></i> Frameworks
+                                                        :</span><span>After Effects</span></li>
+                                            </ul>
+                                        </div><a href="#" target="_blank" class="custom-btn"><span>preview <i
+                                                    class="fa-solid fa-arrow-up-right-from-square"></i></span></a>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide single-item">
+                                    <div class="main-content">
+                                        <div class="swiper swiper-portfolio-item">
+                                            <div class="swiper-wrapper">
+                                                <div class="swiper-slide"><img src="images/project-2.jpg" title="img">
+                                                </div>
+                                                <div class="swiper-slide"><img src="images/project-3.jpg" title="img">
+                                                </div>
+                                                <div class="swiper-slide"><img src="images/project-1.jpg" title="img">
+                                                </div>
+                                            </div>
+                                            <div class="swiper-pagination"></div>
+                                        </div>
+                                    </div>
+                                    <div class="details">
+                                        <h4>Slider Project</h4>
+                                        <div>
+                                            <ul>
+                                                <li><span><i class="fa-regular fa-file-lines"></i> Project
+                                                        :</span><span>Mobile App</span></li>
+                                                <li><span><i class="fa-regular fa-user"></i> Client
+                                                        :</span><span>Codecanyon</span></li>
+                                                <li><span><i class="fa-regular fa-hourglass"></i> Duration
+                                                        :</span><span>3 months</span></li>
+                                                <li><span><i class="fa-solid fa-code-branch"></i> Frameworks
+                                                        :</span><span>React JS</span></li>
+                                            </ul>
+                                        </div><a href="#" target="_blank" class="custom-btn"><span>preview <i
+                                                    class="fa-solid fa-arrow-up-right-from-square"></i></span></a>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide single-item">
+                                    <div class="main-content"><a href="https://themeforest.net" target="_blank"
+                                            class="external"><img class="img-fluid" src="images/project-3.jpg"
+                                                alt="External Project"></a></div>
+                                    <div class="details">
+                                        <h4>External Link</h4>
+                                        <div>
+                                            <ul>
+                                                <li><span><i class="fa-regular fa-file-lines"></i> Project
+                                                        :</span><span>Advertising</span></li>
+                                                <li><span><i class="fa-regular fa-user"></i> Client
+                                                        :</span><span>Envato</span></li>
+                                                <li><span><i class="fa-regular fa-hourglass"></i> Duration
+                                                        :</span><span>1 month</span></li>
+                                                <li><span><i class="fa-solid fa-code-branch"></i> Frameworks
+                                                        :</span><span>Adobe Premiere</span></li>
+                                            </ul>
+                                        </div><a href="#" target="_blank" class="custom-btn"><span>preview <i
+                                                    class="fa-solid fa-arrow-up-right-from-square"></i></span></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="nav-item next-item animated-btn"><span></span></div>
+                            <div class="nav-item prev-item animated-btn"><span></span></div>
+                        </div><img alt="" class="separator hide-mobile" src="images/separator.png">
+                    </section><img alt="" class="separator-mobile-up hide-desktop z-1"
+                        src="images/separator-mobile-up.png">
+                    <section class="testimonials">
+                        <div class="testimonials-container flex-column-mobile">
+                            <div class="quote-container animated-layer fade-in-right-animation fadeInUp wow">
+                                <div>
+                                    <p><span class="quote">" I worked with Steven, he was very helpful and fast to
+                                            respond to my inquiry to help with Wordpress website issues and all
+                                            technical problems. "</span><span class="person">Jasmin Aniston</span><span
+                                            class="job">Director - Adobe</span></p><img src="images/testimonial-1.jpg"
+                                        alt="">
+                                </div>
+                            </div>
+                            <div class="quote-container animated-layer fade-in-right-animation fadeInUp wow">
+                                <div>
+                                    <p><span class="quote">" Steven is a great help managing a very out of date website.
+                                            Everything we ask him to do is done quickly and efficiently, we would be
+                                            lost without him. "</span><span class="person">Mark Eliott</span><span
+                                            class="job">Manager - Envato</span></p><img src="images/testimonial-2.jpg"
+                                        alt="">
+                                </div>
+                            </div>
+                        </div><img alt="" class="z-1 hide-mobile opposite-separator"
+                            src="images/separator-opposite.png">
+                    </section><img alt="" class="separator-mobile-up hide-desktop z-1"
+                        src="images/separator-mobile-up.png">
+                    <section class="contact main-section flex-column-mobile" id="contact">
+                        <div class="custom-title">
+                            <h3><span><span class="animated-layer fade-in-left-animation fadeInUp wow">Get in
+                                        touch</span></span></h3>
+                        </div>
+                        <div class="boxes">
+                            <div>
+                                <div class="animated-layer fade-in-down-animation fadeInUp wow"><i
+                                        class="fa fa-phone"></i>
+                                    <p><span class="small-text">phone</span>+216 21 184 010</p>
+                                </div>
+                                <div class="animated-layer fade-in-up-animation fadeInUp wow"><i
+                                        class="fa fa-location-dot"></i>
+                                    <p><span class="small-text">address</span>London, England</p>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="animated-layer fade-in-down-animation fadeInUp wow"><i
+                                        class="fa fa-envelope"></i>
+                                    <p><span class="small-text">email</span>info@zaha.gov.jo</p>
+                                </div>
+                                <div class="animated-layer fade-in-up-animation fadeInUp wow"><i
+                                        class="fa fa-share-nodes"></i><span class="small-text">follow me</span>
+                                    <ul class="social">
+                                        <li><a href="#"><i class="fa-brands fa-github"></i></a></li>
+                                        <li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
+                                        <li><a href="#"><i class="fa-brands fa-dribbble"></i></a></li>
+                                        <li><a href="#"><i class="fa-brands fa-facebook"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div><img alt="" class="separator hide-mobile" src="images/separator.png">
+                    </section><img alt="" class="separator-mobile-up hide-desktop z-1"
+                        src="images/separator-mobile-up.png">
+                    <section class="clients">
+                        <div class="clients-container animated-layer fade-in-right-animation fadeInUp wow">
+                            <h3>My Clients</h3>
+                            <div class="swiper swiper-clients fadeInUp wow">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide">
+                                        <div><img src="images/themeforest-dark-background.png" alt="client"></div>
+                                        <div><img src="images/photodune-dark-background.png" alt="client"></div>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <div><img src="images/graphicriver-dark-background.png" alt="client"></div>
+                                        <div><img src="images/codecanyon-dark-background.png" alt="client"></div>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <div><img src="images/audiojungle-dark-background.png" alt="client"></div>
+                                        <div><img src="images/activeden-dark-background.png" alt="client"></div>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <div><img src="images/3docean-dark-background.png" alt="client"></div>
+                                        <div><img src="images/themeforest-dark-background.png" alt="client"></div>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <div><img src="images/activeden-dark-background.png" alt="client"></div>
+                                        <div><img src="images/audiojungle-dark-background.png" alt="client"></div>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <div><img src="images/graphicriver-dark-background.png" alt="client"></div>
+                                        <div><img src="images/codecanyon-dark-background.png" alt="client"></div>
+                                    </div>
+                                </div>
+                                <div class="swiper-pagination"></div>
+                            </div>
+                        </div><img alt="" class="z-1 hide-mobile opposite-separator"
+                            src="images/separator-opposite.png">
+                    </section><img alt="" class="separator-mobile-up hide-desktop z-1"
+                        src="images/separator-mobile-up.png">
+                    <section class="blog main-section flex-column-mobile" id="blog">
+                        <div class="custom-title">
+                            <h3><span><span class="animated-layer fade-in-left-animation fadeInUp wow">Latest
+                                        Posts</span></span></h3>
+                        </div>
+                        <div class="latestposts flex-column-mobile">
+                            <div class="animated-layer fade-in-right-animation fadeInUp wow"><a href="/blog-post"><span
+                                        class="img-holder"><img src="images/blog-post-1.jpg" alt=""></span>
+                                    <div class="content"><span class="category">design</span><span class="title">How To
+                                            Publish Content That Ranks On Google</span>
+                                        <p>ncididunt ut labore et dolore magna aliqua. Ut enim aminim veniam...</p>
+                                        <div class="meta d-flex align-items-center">
+                                            <div class="d-flex align-items-center"><i
+                                                    class="fa-regular fa-calendar"></i><span>9 Apr 2022</span></div>
+                                            <div class="d-flex align-items-center"><i
+                                                    class="fa-regular fa-comments"></i><span>17 comments</span></div>
+                                        </div>
+                                    </div>
+                                </a></div>
+                            <div class="animated-layer fade-in-right-animation fadeInUp wow"><a href="/blog-post"><span
+                                        class="img-holder"><img src="images/blog-post-2.jpg" alt=""></span>
+                                    <div class="content"><span class="category">development</span><span
+                                            class="title">How Efficient Site Structure Can Boost SEO</span>
+                                        <p>ncididunt ut labore et dolore magna aliqua. Ut enim aminim veniam...</p>
+                                        <div class="meta d-flex align-items-center">
+                                            <div class="d-flex align-items-center"><i
+                                                    class="fa-regular fa-calendar"></i><span>21 Feb 2022</span></div>
+                                            <div class="d-flex align-items-center"><i
+                                                    class="fa-regular fa-comments"></i><span>34 comments</span></div>
+                                        </div>
+                                    </div>
+                                </a></div>
+                            <div class="animated-layer fade-in-right-animation fadeInUp wow"><a href="/blog-post"><span
+                                        class="img-holder"><img src="images/blog-post-3.jpg" alt=""></span>
+                                    <div class="content"><span class="category">essentials</span><span
+                                            class="title">Change Management for Customer Success</span>
+                                        <p>ncididunt ut labore et dolore magna aliqua. Ut enim aminim veniam...</p>
+                                        <div class="meta d-flex align-items-center">
+                                            <div class="d-flex align-items-center"><i
+                                                    class="fa-regular fa-calendar"></i><span>1 Jan 2022</span></div>
+                                            <div class="d-flex align-items-center"><i
+                                                    class="fa-regular fa-comments"></i><span>10 comments</span></div>
+                                        </div>
+                                    </div>
+                                </a></div>
+                        </div>
+                    </section><img alt="" class="separator-mobile-up hide-desktop z-1"
+                        src="images/separator-mobile-up.png">
+                    <section class="copyright"><img alt="" class="z-1 hide-mobile" src="images/separator-copyright.png">
+                        <div><span>©<!-- --> <a
+                                    target="_blank"
+                                    href="https://themeforest.net/user/Codeefly/portfolio">Codeefly</a></span>
+                            <ul>
+                                <li><a href="#"><i class="fa-brands fa-github"></i></a></li>
+                                <li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fa-brands fa-dribbble"></i></a></li>
+                                <li><a href="#"><i class="fa-brands fa-facebook"></i></a></li>
+                            </ul>
+                        </div>
                     </section>
-                    <!-- ... rest of the sections with Arabic content ... -->
                 </main>
             </div>
             <div class="scroll-progress hide-mobile">
@@ -476,6 +1046,73 @@
     </div>
     <script id="__NEXT_DATA__"
         type="application/json">{"props":{"pageProps":{}},"page":"/","query":{},"buildId":"RG84QNVIK3BfReEx2Rz2-","nextExport":true,"autoExport":true,"isFallback":false,"scriptLoader":[]}</script>
+
+
+         <script>
+        // Update CONFIG with your actual values
+
+        const CONFIG = {
+            API_KEY: 'd5fa2b812decac4f8cbab7761e0a9f90fb22d498',
+            SPREADSHEET_ID: '1_Y3ETDpkkBX_LOBSawAR5WYA3UHFxf8hOm_NQPZfghc',
+            CLIENT_ID: '112008672078982679121',
+            SCOPES: 'https://www.googleapis.com/auth/spreadsheets'
+        };
+    </script>
+
+
+<!-- Chatbot Widget -->
+<div id="chatbot-container">
+  <!-- Toggle Button -->
+  <button id="chatbot-toggle" class="chatbot-toggle">
+    <i class="fa-regular fa-comments"></i>
+    <span class="notification-dot"></span>
+  </button>
+
+  <!-- Chat Window -->
+  <div id="chatbot-window" class="chatbot-window">
+    <!-- Header -->
+    <div class="chatbot-header">
+      <div class="chatbot-avatar">
+        <img src="images/logo.png" alt="Zaha Chatbot" />
+      </div>
+      <div class="chatbot-info">
+        <h4>مساعد زها</h4>
+        <span class="status">متصل الآن</span>
+      </div>
+      <button id="close-chatbot" class="close-chatbot">
+        <i class="fa-solid fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Messages Container -->
+    <div id="chatbot-messages" class="chatbot-messages">
+      <div class="message assistant-message">
+        <div class="message-content">
+          مرحباً! أنا مساعد مركز زها الثقافي. كيف يمكنني مساعدتك اليوم؟
+        </div>
+        <div class="message-time" id="current-time"></div>
+      </div>
+    </div>
+
+    <!-- Input Area -->
+    <div class="chatbot-input">
+      <div class="input-container">
+        <textarea 
+          id="chatbot-input" 
+          placeholder="اكتب رسالتك هنا..." 
+          rows="1"
+        ></textarea>
+        <button id="send-button" class="send-button">
+          <i class="fa-solid fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
 </body>
 
 </html>

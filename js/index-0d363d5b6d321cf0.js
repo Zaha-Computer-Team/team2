@@ -1,5 +1,4 @@
 (self.webpackChunk_N_E = self.webpackChunk_N_E || []).push([
-
     [405],
     {
         5557: function (s, e, a) {
@@ -16,53 +15,43 @@
             a.r(e), a.d(e, { default: function () { return I; } });
 
             var i = a(5893);
-            var k = a(7294); // React imports, including hooks (useEffect, useState)
+            var k = a(7294);
 
-            // Google Sheets integration
-            const SHEET_ID = '1_Y3ETDpkkBX_LOBSawAR5WYA3UHFxf8hOm_NQPZfghc';
-            const SHEET_GID = '1354526022';
-            
+            // Google Apps Script URL - REPLACE WITH YOUR DEPLOYED APP SCRIPT URL
+            const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxuxbnNS_hne0Ws7m3oFgLwlODu_EKC0MH9jLCu2xLqOgxVh2dqtxmHIhSver9EiOJM7Q/exec';
+
             let sheetData = null;
 
             const getDefaultData = () => ({
-                // Add your default key/value pairs here if the sheet fails
+                
             });
 
-            // --- IMPROVED DATA FETCHING FUNCTION ---
+            // Fetch data from Google Apps Script
             const fetchSheetData = async () => {
                 try {
-                    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${SHEET_GID}`;
-                    const response = await fetch(url);
-                    const text = await response.text();
-                    
-                    // Robust parsing: Safely check for the JSON boundaries
-                    const startIndex = text.indexOf('{');
-                    const endIndex = text.lastIndexOf('}');
-                    
-                    if (startIndex === -1 || endIndex === -1) {
-                        console.error('Error parsing Google Sheet data: Invalid JSONP response format.');
-                        return getDefaultData();
+                    const response = await fetch(APP_SCRIPT_URL);
+                    const data = await response.json();
+
+                    const fetchedData = {};
+
+                    if (data.values && Array.isArray(data.values)) {
+                        data.values.forEach((row, index) => {
+                            if (row.length >= 2) {
+                                const key = row[0] ? row[0].toString().trim() : '';
+                                const value = row[1] ? row[1].toString() : '';
+
+                                if (key && !key.includes('ADMIN')) {
+                                    fetchedData[key] = value;
+                                }
+                            }
+                        });
                     }
 
-                    const jsonText = text.substring(startIndex, endIndex + 1);
-                    const json = JSON.parse(jsonText);
-                    
-                    // Extract key-value pairs (assuming column 1 is key, column 2 is value)
-                    const rows = json.table.rows.map(row => ({
-                        key: row.c[0]?.v,
-                        value: row.c[1]?.v
-                    }));
-                    
-                    const fetchedData = {};
-                    rows.forEach(row => {
-                        if (row.key && row.value !== undefined) {
-                            fetchedData[row.key] = row.value;
-                        }
-                    });
-                    
+                    console.log('Data fetched from Apps Script:', fetchedData);
                     return fetchedData;
+
                 } catch (error) {
-                    console.error('Error fetching Google Sheet data:', error);
+                    console.error('Error fetching data from Apps Script:', error);
                     return getDefaultData();
                 }
             };
@@ -72,6 +61,7 @@
                 return currentData[key] || getDefaultData()[key] || key;
             };
 
+            // ALL YOUR EXISTING COMPONENTS GO HERE
             let n = () => (0, i.jsxs)("header", {
                 children: [
                     (0, i.jsxs)("div", {
@@ -82,37 +72,11 @@
                                 children: (0, i.jsx)("nav", {
                                     children: (0, i.jsxs)("ul", {
                                         children: [
-                                            (0, i.jsx)("li", {
-                                                children: (0, i.jsx)("span", {
-                                                    className: "active",
-                                                    id: "home-link",
-                                                    children: getText('menu_home'),
-                                                }),
-                                            }),
-                                            (0, i.jsx)("li", {
-                                                children: (0, i.jsx)("span", {
-                                                    id: "about-link",
-                                                    children: getText('menu_about'),
-                                                }),
-                                            }),
-                                            (0, i.jsx)("li", {
-                                                children: (0, i.jsx)("span", {
-                                                    id: "Teams-link",
-                                                    children: getText('menu_teams'),
-                                                }),
-                                            }),
-                                            (0, i.jsx)("li", {
-                                                children: (0, i.jsx)("span", {
-                                                    id: "contact-link",
-                                                    children: getText('menu_contact'),
-                                                }),
-                                            }),
-                                            (0, i.jsx)("li", {
-                                                children: (0, i.jsx)("span", {
-                                                    id: "blog-link",
-                                                    children: getText('menu_blog'),
-                                                }),
-                                            }),
+                                            (0, i.jsx)("li", { children: (0, i.jsx)("span", { className: "active", id: "home-link", children: getText('menu_home') }) }),
+                                            (0, i.jsx)("li", { children: (0, i.jsx)("span", { id: "about-link", children: getText('menu_about') }) }),
+                                            (0, i.jsx)("li", { children: (0, i.jsx)("span", { id: "Teams-link", children: getText('menu_teams') }) }),
+                                            (0, i.jsx)("li", { children: (0, i.jsx)("span", { id: "contact-link", children: getText('menu_contact') }) }),
+                                            (0, i.jsx)("li", { children: (0, i.jsx)("span", { id: "blog-link", children: getText('menu_blog') }) }),
                                         ],
                                     }),
                                 }),
@@ -128,7 +92,6 @@
                             }),
                         ],
                     }),
-
                     (0, i.jsx)("nav", {
                         className: "mobile-menu",
                         children: (0, i.jsxs)("div", {
@@ -142,21 +105,11 @@
                                     className: "list-unstyled",
                                     id: "menu",
                                     children: [
-                                        (0, i.jsx)("li", {
-                                            children: (0, i.jsx)("a", { href: "#home", children: (0, i.jsx)("span", { children: getText('menu_home') }) }),
-                                        }),
-                                        (0, i.jsx)("li", {
-                                            children: (0, i.jsx)("a", { href: "#my-photo", children: (0, i.jsx)("span", { children: getText('menu_about') }) }),
-                                        }),
-                                        (0, i.jsx)("li", {
-                                            children: (0, i.jsx)("a", { href: "#Teams", children: (0, i.jsx)("span", { children: getText('menu_teams') }) }),
-                                        }),
-                                        (0, i.jsx)("li", {
-                                            children: (0, i.jsx)("a", { href: "#contact", children: (0, i.jsx)("span", { children: getText('menu_contact') }) }),
-                                        }),
-                                        (0, i.jsx)("li", {
-                                            children: (0, i.jsx)("a", { href: "#blog", children: (0, i.jsx)("span", { children: getText('menu_blog') }) }),
-                                        }),
+                                        (0, i.jsx)("li", { children: (0, i.jsx)("a", { href: "#home", children: (0, i.jsx)("span", { children: getText('menu_home') }) }) }),
+                                        (0, i.jsx)("li", { children: (0, i.jsx)("a", { href: "#my-photo", children: (0, i.jsx)("span", { children: getText('menu_about') }) }) }),
+                                        (0, i.jsx)("li", { children: (0, i.jsx)("a", { href: "#Teams", children: (0, i.jsx)("span", { children: getText('menu_teams') }) }) }),
+                                        (0, i.jsx)("li", { children: (0, i.jsx)("a", { href: "#contact", children: (0, i.jsx)("span", { children: getText('menu_contact') }) }) }),
+                                        (0, i.jsx)("li", { children: (0, i.jsx)("a", { href: "#blog", children: (0, i.jsx)("span", { children: getText('menu_blog') }) }) }),
                                     ],
                                 }),
                             ],
@@ -164,6 +117,7 @@
                     }),
                 ],
             });
+
 
             let l = () => (0, i.jsxs)("div", {
                 className: "scroll-progress hide-mobile",
@@ -1339,34 +1293,21 @@
             };
 
             var k = a(7294);
-
             let I = () => {
-                // 1. Add a state variable. We'll update it to force a re-render.
                 const [dataVersion, setDataVersion] = (0, k.useState)(0);
 
                 (0, k.useEffect)(() => {
-                    y();
+                    // Your existing initialization code
+                    if (typeof y !== 'undefined') y();
 
-                    // Fetch sheet data on component mount
+                    // Fetch data from Apps Script
                     fetchSheetData().then(fetchedData => {
-                        // 2. This part is the same: mutate the global 'sheetData'
-                        //    variable, as the external components rely on it.
                         sheetData = fetchedData;
-
-                        // 3. Instead of dispatchEvent, trigger a clean React state update.
-                        //    This will cause a re-render.
                         if (Object.keys(fetchedData).length > 0) {
-                            setDataVersion(v => v + 1); // This is the new, correct way
+                            setDataVersion(v => v + 1);
                         }
                     });
                 }, []);
-
-                // Update getText to be reactive
-                const getText = (key) => {
-                    // This will re-run on every render
-                    const currentData = sheetData || getDefaultData();
-                    return currentData[key] || getDefaultData()[key] || key;
-                };
 
                 return (0, i.jsx)(k.Fragment, {
                     children: (0, i.jsxs)("div", {
@@ -1405,7 +1346,6 @@
             var C = I;
         },
     },
-
     function (s) {
         s.O(0, [571, 574, 774, 888, 179], function () { return s(s.s = 5557); }), _N_E = s.O();
     },

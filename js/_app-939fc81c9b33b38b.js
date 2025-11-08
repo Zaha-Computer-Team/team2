@@ -44,7 +44,7 @@ let Settings = () => {
     (0, r.useEffect)(() => {
         document.body.classList.toggle("dark-mode", isDarkMode);
         document.documentElement.lang = language;
-        document.body.dir = language === "ar" ? "rtl" : "ltr";
+       
 
         localStorage.setItem("darkMode", isDarkMode);
         localStorage.setItem("language", language);

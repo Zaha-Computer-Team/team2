@@ -1,4 +1,4 @@
-class AdminSystem {
+ class AdminSystem {
     constructor() {
         this.isAdmin = localStorage.getItem('isAdmin') === 'true';
         this.currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
@@ -33,33 +33,60 @@ class AdminSystem {
                 --danger: #ef4444;
             }
 
-            #adminPanelToggle {
-                position: fixed;
-                top: 20px;
-                right: 80px;
-                z-index: 10000;
-                padding: 12px 20px;
-                background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
-                color: var(--text-light);
-                border: none;
-                border-radius: 12px;
-                cursor: pointer;
-                font-size: 14px;
-                font-weight: 600;
-                font-family: 'Livvic', sans-serif;
-                backdrop-filter: blur(20px);
-                border: 1px solid var(--glass-border);
-                box-shadow: 0 8px 32px var(--glass-shadow);
-                transition: all 0.3s ease;
-                display: flex;
-                align-items: center;
-                gap: 8px;
+#adminPanelToggle {
+        position: fixed;
+        bottom: 20px;
+        right: 900px;
+        z-index: 10000;
+        padding: 8px 12px;
+        background: rgba(30, 64, 175, 0.1);
+        color: #6b7280;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 500;
+        font-family: 'Livvic', sans-serif;
+        backdrop-filter: blur(20px);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        opacity: 0.3;
+    }
+
+    #adminPanelToggle:hover {
+        opacity: 1;
+        background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+        color: var(--text-light);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+    }
+
+            #adminPanelToggle.admin-visible {
+                opacity: 0.7;
+                background: rgba(30, 64, 175, 0.2);
+                color: var(--primary-blue);
             }
 
-            #adminPanelToggle:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 12px 40px rgba(59, 130, 246, 0.4);
-                background: linear-gradient(135deg, var(--secondary-blue), var(--primary-blue));
+            #adminPanelToggle.admin-logged-in {
+                opacity: 0.9;
+                background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+                color: var(--text-light);
+                animation: pulse 2s infinite;
+            }
+
+            /* Secret activation area */
+            .secret-admin-activator {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 20px;
+                height: 20px;
+                z-index: 10001;
+                cursor: pointer;
+                background: transparent;
             }
 
             .admin-overlay {
@@ -82,7 +109,7 @@ class AdminSystem {
                 left: 50%;
                 transform: translate(-50%, -50%);
                 width: 90%;
-                max-width: 1200px;
+                max-width: 1000px;
                 max-height: 90vh;
                 background: var(--glass-bg);
                 backdrop-filter: blur(20px);
@@ -188,17 +215,17 @@ class AdminSystem {
             }
 
             .btn {
-                padding: 12px 24px;
+                padding: 14px 28px;
                 border: none;
                 border-radius: 10px;
-                font-size: 14px;
+                font-size: 15px;
                 font-weight: 600;
                 cursor: pointer;
                 transition: all 0.3s ease;
                 font-family: 'Livvic', sans-serif;
                 display: inline-flex;
                 align-items: center;
-                gap: 8px;
+                gap: 10px;
                 backdrop-filter: blur(10px);
                 border: 1px solid var(--glass-border);
             }
@@ -210,7 +237,7 @@ class AdminSystem {
             }
 
             .btn-primary:hover {
-                transform: translateY(-2px);
+                transform: translateY(-3px);
                 box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
             }
 
@@ -241,11 +268,6 @@ class AdminSystem {
             .btn-secondary:hover {
                 background: rgba(255, 255, 255, 0.2);
                 transform: translateY(-2px);
-            }
-
-            .btn-small {
-                padding: 8px 16px;
-                font-size: 12px;
             }
 
             /* Admin Content */
@@ -331,68 +353,6 @@ class AdminSystem {
                 font-weight: 500;
             }
 
-            /* Google Sheet Content Editor */
-            .sheet-content-list {
-                max-height: 500px;
-                overflow-y: auto;
-                margin-bottom: 20px;
-            }
-
-            .sheet-content-item {
-                background: rgba(255, 255, 255, 0.9);
-                border: 1px solid var(--glass-border);
-                border-radius: 12px;
-                padding: 20px;
-                margin-bottom: 15px;
-                transition: all 0.3s ease;
-                border-left: 4px solid var(--secondary-blue);
-            }
-
-            .sheet-content-item:hover {
-                transform: translateX(5px);
-                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-            }
-
-            .content-key {
-                font-weight: 600;
-                color: var(--primary-blue);
-                margin-bottom: 10px;
-                font-size: 0.9rem;
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-            }
-
-            .content-value {
-                color: #555;
-                line-height: 1.5;
-                margin-bottom: 15px;
-                background: #f8f9fa;
-                padding: 12px;
-                border-radius: 6px;
-                border-left: 3px solid var(--accent-blue);
-            }
-
-            .content-actions {
-                display: flex;
-                gap: 10px;
-                justify-content: flex-end;
-            }
-
-            .edit-form {
-                background: rgba(255, 255, 255, 0.95);
-                border: 2px solid var(--accent-blue);
-                border-radius: 10px;
-                padding: 15px;
-                margin-top: 10px;
-            }
-
-            .edit-form textarea {
-                width: 100%;
-                min-height: 100px;
-                resize: vertical;
-                margin-bottom: 10px;
-            }
-
             /* Registrations List */
             .registrations-list {
                 max-height: 400px;
@@ -440,6 +400,38 @@ class AdminSystem {
             .registration-details span {
                 display: block;
                 margin-bottom: 6px;
+            }
+
+            /* Content Editor */
+            .content-editor {
+                display: grid;
+                gap: 20px;
+            }
+
+            .editor-group {
+                background: rgba(255, 255, 255, 0.9);
+                border: 1px solid var(--glass-border);
+                border-radius: 12px;
+                padding: 20px;
+            }
+
+            .editor-group label {
+                display: block;
+                margin-bottom: 10px;
+                color: var(--text-dark);
+                font-weight: 600;
+            }
+
+            .editor-group textarea {
+                min-height: 120px;
+                resize: vertical;
+            }
+
+            .editor-actions {
+                display: flex;
+                gap: 12px;
+                justify-content: flex-end;
+                margin-top: 25px;
             }
 
             /* Loading & Messages */
@@ -524,40 +516,47 @@ class AdminSystem {
                 100% { transform: rotate(360deg); }
             }
 
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.05); }
+                100% { transform: scale(1); }
+            }
+
             /* Scrollbar Styling */
             .admin-content::-webkit-scrollbar,
-            .registrations-list::-webkit-scrollbar,
-            .sheet-content-list::-webkit-scrollbar {
+            .registrations-list::-webkit-scrollbar {
                 width: 8px;
             }
 
             .admin-content::-webkit-scrollbar-track,
-            .registrations-list::-webkit-scrollbar-track,
-            .sheet-content-list::-webkit-scrollbar-track {
+            .registrations-list::-webkit-scrollbar-track {
                 background: rgba(255, 255, 255, 0.1);
                 border-radius: 4px;
             }
 
             .admin-content::-webkit-scrollbar-thumb,
-            .registrations-list::-webkit-scrollbar-thumb,
-            .sheet-content-list::-webkit-scrollbar-thumb {
+            .registrations-list::-webkit-scrollbar-thumb {
                 background: var(--accent-blue);
                 border-radius: 4px;
             }
 
             .admin-content::-webkit-scrollbar-thumb:hover,
-            .registrations-list::-webkit-scrollbar-thumb:hover,
-            .sheet-content-list::-webkit-scrollbar-thumb:hover {
+            .registrations-list::-webkit-scrollbar-thumb:hover {
                 background: var(--secondary-blue);
             }
 
             /* Responsive Design */
             @media (max-width: 768px) {
                 #adminPanelToggle {
-                    top: 15px;
-                    right: 15px;
-                    padding: 10px 15px;
-                    font-size: 13px;
+                    bottom: 10px;
+                    right: 10px;
+                    padding: 6px 10px;
+                    font-size: 11px;
+                }
+
+                .secret-admin-activator {
+                    width: 40px;
+                    height: 40px;
                 }
 
                 .admin-panel {
@@ -584,10 +583,6 @@ class AdminSystem {
                 .admin-header h3 {
                     font-size: 1.3rem;
                 }
-
-                .content-actions {
-                    flex-direction: column;
-                }
             }
         `;
 
@@ -600,13 +595,105 @@ class AdminSystem {
     createAdminButton() {
         if (document.getElementById('adminPanelToggle')) return;
 
+        // Create secret activation area (top-right corner)
+        const secretActivator = document.createElement('div');
+        secretActivator.className = 'secret-admin-activator';
+        secretActivator.id = 'secretAdminActivator';
+        secretActivator.title = 'Secret admin area';
+        document.body.appendChild(secretActivator);
+
+        // Create admin button (hidden by default)
         const adminBtn = document.createElement('button');
         adminBtn.id = 'adminPanelToggle';
         adminBtn.innerHTML = `
             <i class="fas fa-cog"></i>
-            Admin Panel
+            Admin
         `;
+        adminBtn.style.display = 'none'; // Start hidden
         document.body.appendChild(adminBtn);
+
+        // Setup secret activation
+        this.setupSecretActivation();
+    }
+
+    setupSecretActivation() {
+        const activator = document.getElementById('secretAdminActivator');
+        const adminBtn = document.getElementById('adminPanelToggle');
+        
+        let clickCount = 0;
+        let lastClickTime = 0;
+
+        activator.addEventListener('click', (e) => {
+            const currentTime = new Date().getTime();
+            
+            // Double click detection (within 500ms)
+            if (currentTime - lastClickTime < 500) {
+                clickCount++;
+                
+                if (clickCount >= 2) { // Triple click to show admin button
+                    this.showAdminButtonTemporarily();
+                    clickCount = 0;
+                }
+            } else {
+                clickCount = 1;
+            }
+            
+            lastClickTime = currentTime;
+        });
+
+        // Right-click on activator to toggle admin button
+        activator.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            this.toggleAdminButtonVisibility();
+        });
+
+        // Keyboard shortcut: Ctrl+Alt+A
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.altKey && e.key === 'a') {
+                e.preventDefault();
+                this.toggleAdminButtonVisibility();
+            }
+        });
+    }
+
+    showAdminButtonTemporarily() {
+        const adminBtn = document.getElementById('adminPanelToggle');
+        
+        // Show the button
+        adminBtn.style.display = 'flex';
+        adminBtn.classList.add('admin-visible');
+        
+        // Hide after 5 seconds
+        setTimeout(() => {
+            if (!this.isAdmin) { // Don't hide if admin is logged in
+                adminBtn.style.display = 'none';
+                adminBtn.classList.remove('admin-visible');
+            }
+        }, 5000);
+    }
+
+    toggleAdminButtonVisibility() {
+        const adminBtn = document.getElementById('adminPanelToggle');
+        
+        if (adminBtn.style.display === 'none' || adminBtn.style.display === '') {
+            adminBtn.style.display = 'flex';
+            adminBtn.classList.add('admin-visible');
+        } else {
+            adminBtn.style.display = 'none';
+            adminBtn.classList.remove('admin-visible');
+        }
+    }
+
+    updateAdminButtonState() {
+        const adminBtn = document.getElementById('adminPanelToggle');
+        
+        if (this.isAdmin) {
+            adminBtn.style.display = 'flex';
+            adminBtn.classList.add('admin-logged-in');
+            adminBtn.classList.remove('admin-visible');
+        } else {
+            adminBtn.classList.remove('admin-logged-in');
+        }
     }
 
     createAdminPanel() {
@@ -658,15 +745,30 @@ class AdminSystem {
                     </div>
 
                     <div class="stats-grid" id="adminStats">
-                        <!-- Stats will be loaded dynamically -->
+                        <div class="stat-card">
+                            <div class="stat-number">25</div>
+                            <div class="stat-label">Active Teams</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">1000+</div>
+                            <div class="stat-label">Students</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">23</div>
+                            <div class="stat-label">Years Experience</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">50+</div>
+                            <div class="stat-label">Events</div>
+                        </div>
                     </div>
 
                     <div class="admin-actions">
                         <button class="btn btn-success" onclick="adminSystem.loadRegistrations()">
                             <i class="fas fa-users"></i> View Registrations
                         </button>
-                        <button class="btn btn-info" onclick="adminSystem.loadGoogleSheetEditor()">
-                            <i class="fas fa-edit"></i> Edit Google Sheet Content
+                        <button class="btn btn-info" onclick="window.location.href = 'js/Admin.html';">
+                            <i class="fas fa-edit"></i> Edit Website Content
                         </button>
                         <button class="btn btn-secondary" onclick="adminSystem.loadStats()">
                             <i class="fas fa-sync"></i> Refresh Stats
@@ -681,14 +783,33 @@ class AdminSystem {
                         <div id="registrationsList" class="registrations-list"></div>
                     </div>
 
-                    <div id="sheetContentSection" class="admin-section" style="display: none;">
-                        <h4><i class="fas fa-table"></i> Google Sheet Content Editor</h4>
-                        <div class="admin-actions">
-                            <button class="btn btn-primary btn-small" onclick="adminSystem.loadGoogleSheetEditor()">
-                                <i class="fas fa-sync"></i> Refresh Content
-                            </button>
+                    <div id="contentSection" class="admin-section" style="display: none;">
+                        <h4><i class="fas fa-edit"></i> Website Content Editor</h4>
+                        <div id="contentEditor" class="content-editor">
+                            <div class="editor-group">
+                                <label for="welcomeTitle"><i class="fas fa-heading"></i> Welcome Title</label>
+                                <input type="text" id="welcomeTitle" class="form-control" value="Zaha's Culture Center">
+                            </div>
+                            
+                            <div class="editor-group">
+                                <label for="aboutText"><i class="fas fa-file-text"></i> About Text</label>
+                                <textarea id="aboutText" class="form-control" rows="4">Zaha Culture Center has been providing exceptional educational and cultural programs for over 23 years. We offer 25+ teams and have taught thousands of students.</textarea>
+                            </div>
+                            
+                            <div class="editor-group">
+                                <label for="contactInfo"><i class="fas fa-address-book"></i> Contact Information</label>
+                                <textarea id="contactInfo" class="form-control" rows="3">Phone: 06 55 31 577 | Email: info@zaha.gov.jo | Address: Amman, Jordan</textarea>
+                            </div>
+                            
+                            <div class="editor-actions">
+                                <button class="btn btn-secondary" onclick="adminSystem.loadContentEditor()">
+                                    <i class="fas fa-sync"></i> Reload Content
+                                </button>
+                                <button class="btn btn-primary" onclick="adminSystem.updateContent()">
+                                    <i class="fas fa-save"></i> Save Changes
+                                </button>
+                            </div>
                         </div>
-                        <div id="sheetContentList" class="sheet-content-list"></div>
                     </div>
                 </div>
             </div>
@@ -737,51 +858,60 @@ class AdminSystem {
         
         // Hide sections
         document.getElementById('registrationsSection').style.display = 'none';
-        document.getElementById('sheetContentSection').style.display = 'none';
+        document.getElementById('contentSection').style.display = 'none';
     }
 
+
+    
     // ==================== AUTHENTICATION ====================
     async handleAdminLogin() {
-        const username = document.getElementById('adminUsername').value.trim();
-        const password = document.getElementById('adminPassword').value.trim();
-        const messageDiv = document.getElementById('loginMessage');
+    const username = document.getElementById('adminUsername').value.trim();
+    const password = document.getElementById('adminPassword').value.trim();
+    const messageDiv = document.getElementById('loginMessage');
 
-        if (!username || !password) {
-            this.showMessage('Please enter both username and password', 'error', messageDiv);
-            return;
-        }
-
-        this.showLoading(messageDiv, 'Authenticating...');
-
-        try {
-            const response = await fetch('/api/admin/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username, password })
-            });
-
-            const result = await response.json();
-            
-            if (result.success) {
-                this.isAdmin = true;
-                this.currentUser = result.user;
-                localStorage.setItem('isAdmin', 'true');
-                localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
-                localStorage.setItem('adminToken', result.token);
-                
-                this.showAdminContent();
-                this.showMessage('Login successful!', 'success', messageDiv);
-                this.loadStats();
-            } else {
-                this.showMessage(result.message, 'error', messageDiv);
-            }
-        } catch (error) {
-            console.error('Login error:', error);
-            this.showMessage('Failed to connect to server', 'error', messageDiv);
-        }
+    if (!username || !password) {
+        this.showMessage('Please enter both username and password', 'error', messageDiv);
+        return;
     }
+
+    this.showLoading(messageDiv, 'Authenticating...');
+
+    try {
+        // Use Google Sheets JSON endpoint (gviz)
+        const sheetId = '1_Y3ETDpkkBX_LOBSawAR5WYA3UHFxf8hOm_NQPZfghc';
+        const gid = 0; // first sheet
+        const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&gid=${gid}`;
+
+        const response = await fetch(url);
+        const text = await response.text();
+
+        // Strip the Google callback wrapper
+        const json = JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1));
+
+        const rows = json.table.rows.map(row => ({
+            username: row.c[0]?.v,
+            password: row.c[1]?.v
+        }));
+
+        const adminUser = rows.find(r => r.username === username && r.password === password);
+
+        if (adminUser) {
+            this.isAdmin = true;
+            this.currentUser = { username: adminUser.username };
+            localStorage.setItem('isAdmin', 'true');
+            localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+            this.showAdminContent();
+            this.showMessage('Login successful!', 'success', messageDiv);
+            this.loadStats();
+        } else {
+            this.showMessage('Invalid credentials', 'error', messageDiv);
+        }
+
+    } catch (error) {
+        console.error(error);
+        this.showMessage('Failed to connect to Google Sheets', 'error', messageDiv);
+    }
+}
 
     handleLogout() {
         this.isAdmin = false;
@@ -812,123 +942,59 @@ class AdminSystem {
         }
     }
 
-    // ==================== GOOGLE SHEET CONTENT MANAGEMENT ====================
-    async loadGoogleSheetEditor() {
-        const sheetContentSection = document.getElementById('sheetContentSection');
-        const sheetContentList = document.getElementById('sheetContentList');
-        
-        this.showLoading(sheetContentList, 'Loading Google Sheet content...');
+
+    // ==================== REGISTRATION FUNCTIONS ====================
+    async handleRegistration(event) {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        const registrationData = {
+            name: formData.get('name'),
+            email: formData.get('email'),
+            phone: formData.get('phone'),
+            team: formData.get('team')
+        };
+
+        const messageDiv = document.getElementById('registrationMessage');
+        const submitBtn = document.getElementById('submitBtn');
+        const originalText = submitBtn.innerHTML;
+
+        // Show loading state
+        submitBtn.innerHTML = '<div class="loading"></div> Processing...';
+        submitBtn.disabled = true;
 
         try {
-            const response = await fetch('/api/admin/content', {
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('adminToken')
-                }
-            });
-            
-            const result = await response.json();
-            
-            if (result.success) {
-                if (result.data && result.data.length > 0) {
-                    sheetContentList.innerHTML = this.getSheetContentHTML(result.data);
-                } else {
-                    sheetContentList.innerHTML = '<div class="message message-warning">No content found in Google Sheet.</div>';
-                }
-            } else {
-                sheetContentList.innerHTML = '<div class="message message-error">Error loading content from Google Sheet</div>';
-            }
-
-            sheetContentSection.style.display = 'block';
-            document.getElementById('registrationsSection').style.display = 'none';
-        } catch (error) {
-            console.error('Error loading sheet content:', error);
-            sheetContentList.innerHTML = '<div class="message message-error">Error connecting to server</div>';
-        }
-    }
-
-    getSheetContentHTML(contentArray) {
-        return contentArray.map(item => `
-            <div class="sheet-content-item" data-key="${item.key}">
-                <div class="content-key">${item.key}</div>
-                <div class="content-value">${item.value || '<em>Empty</em>'}</div>
-                <div class="content-actions">
-                    <button class="btn btn-info btn-small" onclick="adminSystem.startEditing('${item.key}', '${this.escapeHtml(item.value || '')}')">
-                        <i class="fas fa-edit"></i> Edit
-                    </button>
-                </div>
-            </div>
-        `).join('');
-    }
-
-    startEditing(key, currentValue) {
-        const contentItem = document.querySelector(`[data-key="${key}"]`);
-        if (!contentItem) return;
-
-        contentItem.innerHTML = `
-            <div class="content-key">${key}</div>
-            <div class="edit-form">
-                <textarea class="form-control" id="editValue-${key}" rows="4">${currentValue}</textarea>
-                <div class="content-actions">
-                    <button class="btn btn-success btn-small" onclick="adminSystem.saveContent('${key}')">
-                        <i class="fas fa-save"></i> Save
-                    </button>
-                    <button class="btn btn-secondary btn-small" onclick="adminSystem.cancelEditing('${key}', '${this.escapeHtml(currentValue)}')">
-                        <i class="fas fa-times"></i> Cancel
-                    </button>
-                </div>
-            </div>
-        `;
-    }
-
-    cancelEditing(key, originalValue) {
-        const contentItem = document.querySelector(`[data-key="${key}"]`);
-        if (!contentItem) return;
-
-        contentItem.innerHTML = `
-            <div class="content-key">${key}</div>
-            <div class="content-value">${originalValue || '<em>Empty</em>'}</div>
-            <div class="content-actions">
-                <button class="btn btn-info btn-small" onclick="adminSystem.startEditing('${key}', '${this.escapeHtml(originalValue)}')">
-                    <i class="fas fa-edit"></i> Edit
-                </button>
-            </div>
-        `;
-    }
-
-    async saveContent(key) {
-        const newValue = document.getElementById(`editValue-${key}`).value.trim();
-        const contentItem = document.querySelector(`[data-key="${key}"]`);
-        
-        if (!contentItem) return;
-
-        this.showLoading(contentItem, 'Saving...');
-
-        try {
-            const response = await fetch('/api/admin/content', {
-                method: 'PUT',
+            const response = await fetch('/api/register', {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + localStorage.getItem('adminToken')
                 },
-                body: JSON.stringify({ key, value: newValue })
+                body: JSON.stringify(registrationData)
             });
 
             const result = await response.json();
             
             if (result.success) {
-                this.showMessage(result.message, 'success', contentItem);
-                // Reload the content to reflect changes
-                setTimeout(() => this.loadGoogleSheetEditor(), 1000);
+                this.showMessage('✅ ' + result.message, 'success', messageDiv);
+                event.target.reset();
+                
+                // Refresh stats if admin is logged in
+                if (this.isAdmin) {
+                    this.loadStats();
+                }
             } else {
-                this.showMessage(result.message, 'error', contentItem);
-                this.cancelEditing(key, newValue);
+                this.showMessage('❌ ' + result.message, 'error', messageDiv);
             }
         } catch (error) {
-            console.error('Error saving content:', error);
-            this.showMessage('Error saving content', 'error', contentItem);
-            this.cancelEditing(key, newValue);
+            this.showMessage('❌ Error submitting registration. Please try again.', 'error', messageDiv);
+        } finally {
+            // Restore button
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
         }
     }
+
+    // ==================== CONTENT MANAGEMENT ====================
+
 
     // ==================== REGISTRATIONS MANAGEMENT ====================
     async loadRegistrations() {
@@ -957,7 +1023,7 @@ class AdminSystem {
             }
 
             registrationsSection.style.display = 'block';
-            document.getElementById('sheetContentSection').style.display = 'none';
+            document.getElementById('contentSection').style.display = 'none';
         } catch (error) {
             registrationsList.innerHTML = '<div class="message message-error">Error loading registrations</div>';
         }
@@ -1065,12 +1131,6 @@ class AdminSystem {
         `;
     }
 
-    escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
-
     // ==================== INITIALIZATION ====================
     static initialize() {
         if (window.adminSystem) {
@@ -1092,3 +1152,5 @@ if (document.readyState === 'loading') {
 
 // Make it available globally
 window.AdminSystem = AdminSystem;
+
+

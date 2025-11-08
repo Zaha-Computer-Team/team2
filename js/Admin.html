@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editable Google Sheet Viewer</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #1e40af;
+            --bg-light: #f8fafc;
+            --bg-dark: #0f172a;
+            --card-light: #ffffff;
+            --card-dark: #1e293b;
+            --text-light: #1e293b;
+            --text-dark: #f1f5f9;
+            --border-light: #e2e8f0;
+            --border-dark: #334155;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            min-height: 100vh;
+            padding: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-mode .glass-card {
+            background: rgba(30, 41, 59, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .glass-card-light {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .dark-mode .glass-card-light {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        .slide-up {
+            animation: slideUp 0.5s ease-out;
+        }
+
+        .slide-left {
+            animation: slideLeft 0.5s ease-out;
+        }
+
+        .pulse-glow {
+            animation: pulseGlow 2s infinite;
+        }
+
+        .bounce-in {
+            animation: bounceIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideLeft {
+            from { 
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulseGlow {
+            0% {
+                box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 15px rgba(59, 130, 246, 0.8);
+            }
+            100% {
+                box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+            }
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .btn-glow {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-glow:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-glow:active {
+            transform: translateY(0);
+        }
+
+        .btn-glow::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: all 0.5s;
+        }
+
+        .btn-glow:hover::after {
+            left: 100%;
+        }
+
+        .editor-textarea {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            color: var(--text-light);
+        }
+
+        .dark-mode .editor-textarea {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid var(--border-dark);
+            color: var(--text-dark);
+        }
+
+        .editor-textarea:focus {
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+            outline: none;
+        }
+
+        .dark-mode .editor-textarea:focus {
+            background: rgba(30, 41, 59, 0.9);
+        }
+
+        .sheet-id {
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            font-family: monospace;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .dark-mode .sheet-id {
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .sidebar-item {
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-item:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 3px solid rgba(59, 130, 246, 0.5);
+        }
+
+        .dark-mode .sidebar-item:hover {
+            background: rgba(59, 130, 246, 0.2);
+        }
+
+        .sidebar-item.active {
+            background: rgba(59, 130, 246, 0.15);
+            border-left: 3px solid var(--primary);
+        }
+
+        .dark-mode .sidebar-item.active {
+            background: rgba(59, 130, 246, 0.25);
+        }
+
+        .floating-action {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .mode-toggle {
+            transition: all 0.3s ease;
+        }
+
+        .mode-toggle:hover {
+            transform: rotate(12deg);
+        }
+
+        .list-item {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .list-item:hover {
+            border-left: 4px solid var(--primary);
+            transform: translateX(5px);
+        }
+
+        .nav-btn {
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            transform: translateX(-3px);
+        }
+
+        .scrollable-list {
+            max-height: 65vh;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .scrollable-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .scrollable-list::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+        }
+
+        .scrollable-list::-webkit-scrollbar-thumb {
+            background: rgba(59, 130, 246, 0.5);
+            border-radius: 10px;
+        }
+
+        .scrollable-list::-webkit-scrollbar-thumb:hover {
+            background: rgba(59, 130, 246, 0.7);
+        }
+
+        .dark-mode .scrollable-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .read-only-field {
+            background: rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .dark-mode .read-only-field {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-dark);
+        }
+    </style>
+</head>
+
+<body class="p-4 md:p-8 fade-in">
+    <div class="max-w-7xl mx-auto">
+        <!-- Top Bar with Navigation and Mode Toggle -->
+        <div class="flex justify-between items-center mb-6">
+            <button id="nav-button" class="nav-btn px-4 py-2 bg-blue-500 text-white rounded-lg font-medium flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+                Back to Dashboard
+            </button>
+            
+            <button id="mode-toggle" class="mode-toggle p-2 rounded-full bg-gray-200 dark:bg-gray-700">
+                <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" />
+                </svg>
+                <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-300 hidden" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Header -->
+        <header class="text-center mb-8 slide-up">
+            <h1 class="text-4xl font-bold text-gray-800 dark:text-white mb-4">Sheet Content Editor</h1>
+            <div class="glass-card-light p-4 inline-block">
+                <p class="text-gray-700 dark:text-gray-300">Displaying and editing data from a public Google Sheet ID:</p>
+                <div class="sheet-id mt-2 text-blue-600 dark:text-blue-300 font-bold">1_Y3ETDpkkBX_LOBSawAR5WYA3UHFxf8hOm_NQPZfghc</div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <div class="flex flex-col lg:flex-row gap-6">
+            <!-- Sidebar -->
+            <div class="w-full lg:w-1/4">
+                <div class="glass-card p-6 mb-6 slide-left">
+                    <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                        </svg>
+                        INFORMATIONS
+                    </h2>
+                    <div class="space-y-3">
+                        <div class="sidebar-item active p-3 rounded-lg">
+                            <p class="text-gray-800 dark:text-white font-semibold">Data Status</p>
+                            <div id="status-message" class="text-gray-700 dark:text-gray-300 text-sm flex items-center mt-1">
+                                <div class="w-2 h-2 bg-green-500 rounded-full mr-2 pulse-glow"></div>
+                                <span>Data view is active.</span>
+                            </div>
+                        </div>
+                        <div class="sidebar-item p-3 rounded-lg">
+                            <p class="text-gray-800 dark:text-white font-semibold">Sheet Info</p>
+                            <p class="text-gray-700 dark:text-gray-300 text-sm mt-1">Rows: <span id="row-count">-</span></p>
+                            <p class="text-gray-700 dark:text-gray-300 text-sm">Columns: <span id="col-count">-</span></p>
+                        </div>
+                        <div class="sidebar-item p-3 rounded-lg">
+                            <p class="text-gray-800 dark:text-white font-semibold">Last Updated</p>
+                            <p class="text-gray-700 dark:text-gray-300 text-sm mt-1" id="last-updated">-</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="glass-card p-6 slide-left">
+                    <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4">Actions</h2>
+                    <div class="space-y-4">
+                        <button id="edit-button"
+                            class="btn-glow w-full px-4 py-3 bg-blue-500 text-white rounded-lg font-semibold flex items-center justify-center floating-action">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                            </svg>
+                            <span id="edit-text">Edit Content</span>
+                        </button>
+                        <button id="save-button"
+                            class="btn-glow w-full px-4 py-3 bg-green-500 text-white rounded-lg font-semibold flex items-center justify-center"
+                            style="display:none;">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                            </svg>
+                            Save Changes
+                        </button>
+                        <button id="view-button"
+                            class="btn-glow w-full px-4 py-3 bg-gray-500 text-white rounded-lg font-semibold flex items-center justify-center"
+                            style="display:none;">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                            Cancel/View Only
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Notice -->
+                <div class="mt-6 p-6 glass-card-light text-gray-700 dark:text-gray-300 rounded-xl slide-left">
+                    <p class="font-bold text-lg flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                        </svg>
+                        Data Persistence Notice
+                    </p>
+                    <p class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
+                        Edits made using the 'Save Changes' button are saved back to the Google Sheet. Make sure your Google
+                        Apps Script endpoint is set up correctly.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Content Container -->
+            <div class="w-full lg:w-3/4">
+                <div id="content-container" class="glass-card p-6 slide-up">
+                    <div class="flex items-center justify-center h-48">
+                        <div class="flex flex-col items-center">
+                            <svg class="animate-spin h-10 w-10 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
+                            <span class="mt-4 text-xl font-medium text-gray-700 dark:text-gray-300">Loading data...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // CONFIG
+        const SHEET_ID = '1_Y3ETDpkkBX_LOBSawAR5WYA3UHFxf8hOm_NQPZfghc';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxuxbnNS_hne0Ws7m3oFgLwlODu_EKC0MH9jLCu2xLqOgxVh2dqtxmHIhSver9EiOJM7Q/exec';
+
+        let sheetData = []; // 2D array
+        let isDarkMode = false;
+
+        // Helper function to safely check if a value is empty
+        function isEmptyValue(val) {
+            if (val === null || val === undefined) return true;
+            if (typeof val === 'string') return val.trim() === '';
+            if (typeof val === 'number') return false; // numbers are not empty
+            return true;
+        }
+
+        // Helper function to safely convert any value to string
+        function safeToString(val) {
+            if (val === null || val === undefined) return '';
+            return String(val);
+        }
+
+        class SheetManager {
+            static init() {
+                this.container = document.getElementById('content-container');
+                this.statusEl = document.getElementById('status-message');
+                this.editBtn = document.getElementById('edit-button');
+                this.viewBtn = document.getElementById('view-button');
+                this.saveBtn = document.getElementById('save-button');
+                this.rowCountEl = document.getElementById('row-count');
+                this.colCountEl = document.getElementById('col-count');
+                this.lastUpdatedEl = document.getElementById('last-updated');
+                this.modeToggle = document.getElementById('mode-toggle');
+                this.navButton = document.getElementById('nav-button');
+                this.sunIcon = document.getElementById('sun-icon');
+                this.moonIcon = document.getElementById('moon-icon');
+
+                this.editBtn.addEventListener('click', () => this.toggleView('editor'));
+                this.viewBtn.addEventListener('click', () => this.toggleView('data'));
+                this.saveBtn.addEventListener('click', () => this.saveChanges());
+                this.modeToggle.addEventListener('click', () => this.toggleDarkMode());
+                this.navButton.addEventListener('click', () => this.navigateToDashboard());
+
+                // Check for saved theme preference or respect OS preference
+                if (localStorage.getItem('darkMode') === 'true' || 
+                    (window.matchMedia('(prefers-color-scheme: dark)').matches && !localStorage.getItem('darkMode'))) {
+                    this.enableDarkMode();
+                }
+
+                this.loadData();
+            }
+
+            static toggleDarkMode() {
+                if (isDarkMode) {
+                    this.disableDarkMode();
+                } else {
+                    this.enableDarkMode();
+                }
+            }
+
+            static enableDarkMode() {
+                document.body.classList.add('dark-mode');
+                this.sunIcon.classList.add('hidden');
+                this.moonIcon.classList.remove('hidden');
+                isDarkMode = true;
+                localStorage.setItem('darkMode', 'true');
+            }
+
+            static disableDarkMode() {
+                document.body.classList.remove('dark-mode');
+                this.sunIcon.classList.remove('hidden');
+                this.moonIcon.classList.add('hidden');
+                isDarkMode = false;
+                localStorage.setItem('darkMode', 'false');
+            }
+
+            static navigateToDashboard() {
+                // In a real app, this would navigate to another page
+                alert('Navigating to Dashboard...');
+                window.location.href = '/index.html';
+            }
+
+            static async loadData() {
+                this.statusEl.innerHTML = '<div class="w-2 h-2 bg-yellow-500 rounded-full mr-2 pulse-glow"></div><span>Fetching data from Google...</span>';
+                try {
+                    const resp = await fetch(`${SCRIPT_URL}?action=get`);
+                    const json = await resp.json();
+                    sheetData = json.values; // expecting { values: [...] }
+                    this.renderDataView();
+                    this.statusEl.innerHTML = '<div class="w-2 h-2 bg-green-500 rounded-full mr-2 pulse-glow"></div><span>Data loaded successfully.</span>';
+                    this.updateInfoPanel();
+                } catch (err) {
+                    this.container.innerHTML = `<div class="text-center p-8 glass-card-light rounded-xl border-2 border-red-200 fade-in">
+                        <p class="text-xl font-bold text-red-600 dark:text-red-400">⚠️ Error Loading Sheet Data</p>
+                        <p class="text-gray-700 dark:text-gray-300 mt-2">Check the script URL or sheet setup.</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Details: ${err.message}</p>
+                    </div>`;
+                    this.statusEl.innerHTML = '<div class="w-2 h-2 bg-red-500 rounded-full mr-2"></div><span>Failed to load data.</span>';
+                    console.error('Load error:', err);
+                }
+            }
+
+            static updateInfoPanel() {
+                const rows = sheetData.length;
+                const cols = sheetData[0]?.length || 0;
+                
+                this.rowCountEl.textContent = rows;
+                this.colCountEl.textContent = cols;
+                this.lastUpdatedEl.textContent = new Date().toLocaleString();
+            }
+
+            static renderDataView() {
+                const rows = sheetData.length;
+                const cols = sheetData[0]?.length || 0;
+
+                // Create a scrollable list view
+                let html = `<div class="scrollable-list space-y-4 fade-in">`;
+                
+                for (let r = 0; r < rows; r++) {
+                    // Skip empty rows using safe checking
+                    if (!sheetData[r] || sheetData[r].every(cell => isEmptyValue(cell))) {
+                        continue;
+                    }
+                    
+                    html += `<div class="list-item glass-card-light p-4 rounded-lg">`;
+                    html += `<h3 class="font-bold text-lg text-gray-800 dark:text-white mb-2 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                                </svg>
+                                Row ${r + 1}
+                            </h3>`;
+                    html += `<div class="grid grid-cols-1 md:grid-cols-2 gap-3">`;
+                    
+                    for (let c = 0; c < cols; c++) {
+                        const val = sheetData[r][c] ?? '';
+                        // Skip empty cells using safe checking
+                        if (isEmptyValue(val)) continue;
+                        
+                        html += `<div class="bg-white dark:bg-gray-800 p-3 rounded border border-gray-200 dark:border-gray-700">
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 font-medium">Column ${c + 1}</p>
+                                    <p class="text-gray-800 dark:text-gray-200 mt-1">${safeToString(val)}</p>
+                                </div>`;
+                    }
+                    
+                    html += `</div></div>`;
+                }
+
+                html += `</div>
+                <button id="edit-button2" class="btn-glow mt-6 px-6 py-3 bg-blue-500 text-white rounded-lg font-semibold flex items-center justify-center mx-auto bounce-in">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                    </svg>
+                    Edit Content
+                </button>`;
+                
+                this.container.innerHTML = html;
+                document.getElementById('edit-button2').addEventListener('click', () => this.toggleView('editor'));
+                this.editBtn.style.display = 'flex';
+                this.viewBtn.style.display = 'none';
+                this.saveBtn.style.display = 'none';
+            }
+
+            static renderEditorView() {
+                const rows = sheetData.length;
+                const cols = sheetData[0]?.length || 0;
+
+                let html = `<form id="editor-form" class="scrollable-list space-y-6 fade-in">`;
+                for (let r = 0; r < rows; r++) {
+                    // Skip empty rows using safe checking
+                    if (!sheetData[r] || sheetData[r].every(cell => isEmptyValue(cell))) {
+                        continue;
+                    }
+                    
+                    html += `<div class="glass-card-light p-6 rounded-lg">`;
+                    html += `<h3 class="text-gray-800 dark:text-white font-bold mb-4 text-lg flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                        </svg>
+                        Row ${r + 1}
+                    </h3>`;
+                    for (let c = 0; c < cols; c++) {
+                        // Skip empty cells using safe checking
+                        if (isEmptyValue(sheetData[r][c])) continue;
+                        
+                        const safeKey = `r${r}c${c}`;
+                        const val = safeToString(sheetData[r][c] ?? '');
+                        
+                        // Make first column (Column A) non-editable
+                        if (c === 0) {
+                            html += `
+                                <label class="block text-sm mb-2 text-gray-700 dark:text-gray-300 font-medium">Column ${c + 1} (Read Only)</label>
+                                <div class="read-only-field">${val}</div>
+                                <input type="hidden" id="${safeKey}" name="${safeKey}" value="${val}">
+                            `;
+                        } else {
+                            html += `
+                                <label class="block text-sm mb-2 text-gray-700 dark:text-gray-300 font-medium">Column ${c + 1}</label>
+                                <textarea id="${safeKey}" name="${safeKey}" class="w-full p-4 editor-textarea rounded-lg" rows="2">${val}</textarea>
+                            `;
+                        }
+                    }
+                    html += `</div>`;
+                }
+                html += `</form>`;
+
+                this.container.innerHTML = html;
+                this.editBtn.style.display = 'none';
+                this.viewBtn.style.display = 'flex';
+                this.saveBtn.style.display = 'flex';
+            }
+
+            static async saveChanges() {
+                this.statusEl.innerHTML = '<div class="w-2 h-2 bg-yellow-500 rounded-full mr-2 pulse-glow"></div><span>Saving changes to Google Sheet...</span>';
+                const form = document.getElementById('editor-form');
+                const data = [];
+                const rows = sheetData.length;
+                const cols = sheetData[0]?.length || 0;
+
+                for (let r = 0; r < rows; r++) {
+                    const rowArr = [];
+                    for (let c = 0; c < cols; c++) {
+                        const field = form.querySelector(`[name="r${r}c${c}"]`);
+                        rowArr.push(field ? field.value : '');
+                    }
+                    data.push(rowArr);
+                }
+
+                try {
+                    const resp = await fetch(`${SCRIPT_URL}?action=update`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
+                        body: JSON.stringify({ values: data })
+                    });
+                    const json = await resp.json();
+                    if (json.success) {
+                        this.statusEl.innerHTML = '<div class="w-2 h-2 bg-green-500 rounded-full mr-2 pulse-glow"></div><span>Changes saved successfully.</span>';
+                        sheetData = data;
+                        this.updateInfoPanel();
+                        this.toggleView('data');
+                    } else {
+                        throw new Error(json.error || 'Unknown error');
+                    }
+                } catch (err) {
+                    this.statusEl.innerHTML = `<div class="w-2 h-2 bg-red-500 rounded-full mr-2"></div><span>Error saving changes: ${err.message}</span>`;
+                    console.error('Save error:', err);
+                }
+            }
+
+            static toggleView(mode) {
+                if (mode === 'data') {
+                    this.renderDataView();
+                } else if (mode === 'editor') {
+                    this.renderEditorView();
+                }
+            }
+        }
+
+        // INIT
+        document.addEventListener('DOMContentLoaded', () => SheetManager.init());
+    </script>
+</body>
+
+</html>
