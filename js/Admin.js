@@ -1,4 +1,4 @@
- class AdminSystem {
+class AdminSystem {
     constructor() {
         this.isAdmin = localStorage.getItem('isAdmin') === 'true';
         this.currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
@@ -618,17 +618,17 @@
     setupSecretActivation() {
         const activator = document.getElementById('secretAdminActivator');
         const adminBtn = document.getElementById('adminPanelToggle');
-        
+
         let clickCount = 0;
         let lastClickTime = 0;
 
         activator.addEventListener('click', (e) => {
             const currentTime = new Date().getTime();
-            
+
             // Double click detection (within 500ms)
             if (currentTime - lastClickTime < 500) {
                 clickCount++;
-                
+
                 if (clickCount >= 2) { // Triple click to show admin button
                     this.showAdminButtonTemporarily();
                     clickCount = 0;
@@ -636,7 +636,7 @@
             } else {
                 clickCount = 1;
             }
-            
+
             lastClickTime = currentTime;
         });
 
@@ -657,11 +657,11 @@
 
     showAdminButtonTemporarily() {
         const adminBtn = document.getElementById('adminPanelToggle');
-        
+
         // Show the button
         adminBtn.style.display = 'flex';
         adminBtn.classList.add('admin-visible');
-        
+
         // Hide after 5 seconds
         setTimeout(() => {
             if (!this.isAdmin) { // Don't hide if admin is logged in
@@ -673,7 +673,7 @@
 
     toggleAdminButtonVisibility() {
         const adminBtn = document.getElementById('adminPanelToggle');
-        
+
         if (adminBtn.style.display === 'none' || adminBtn.style.display === '') {
             adminBtn.style.display = 'flex';
             adminBtn.classList.add('admin-visible');
@@ -685,7 +685,7 @@
 
     updateAdminButtonState() {
         const adminBtn = document.getElementById('adminPanelToggle');
-        
+
         if (this.isAdmin) {
             adminBtn.style.display = 'flex';
             adminBtn.classList.add('admin-logged-in');
@@ -766,9 +766,9 @@
                         <button class="btn btn-success" onclick="adminSystem.loadRegistrations()">
                             <i class="fas fa-users"></i> View Registrations
                         </button>
-                        <button class="btn btn-info" onclick="window.location.href = 'js/Admin.html';">
-                            <i class="fas fa-edit"></i> Edit Website Content
-                        </button>
+                        <button class="btn btn-info" onclick="adminSystem.openContentEditor()">
+    <i class="fas fa-edit"></i> Edit Website Content
+</button>
                         <button class="btn btn-secondary" onclick="adminSystem.loadStats()">
                             <i class="fas fa-sync"></i> Refresh Stats
                         </button>
@@ -832,12 +832,30 @@
             }
         });
     }
+// ==================== CONTENT EDITOR FUNCTIONS ====================
+// ==================== CONTENT EDITOR FUNCTIONS ====================
+openContentEditor() {
+    if (!this.isAdmin || !this.currentUser) {
+        this.showMessage('Please log in to access content editor', 'error', document.getElementById('loginMessage'));
+        return;
+    }
 
+    const username = this.currentUser.username;
+    
+    // Create dynamic URL based on username
+    const editorUrl = `js/Admin-${username}.html`;
+    
+    // Open in new tab
+    window.open(editorUrl, '_blank');
+    
+    // Show confirmation message
+    this.showMessage(`Opening content editor for ${username}`, 'success', document.getElementById('loginMessage'));
+}
     // ==================== ADMIN PANEL FUNCTIONS ====================
     toggleAdminPanel() {
         const panel = document.getElementById('adminPanel');
         const overlay = document.getElementById('adminOverlay');
-        
+
         if (panel.style.display === 'block') {
             this.closeAdminPanel();
         } else {
@@ -850,67 +868,69 @@
     closeAdminPanel() {
         const panel = document.getElementById('adminPanel');
         const overlay = document.getElementById('adminOverlay');
-        
+
         panel.style.display = 'none';
         overlay.style.display = 'none';
         document.body.style.overflow = '';
-        
+
         // Hide sections
         document.getElementById('registrationsSection').style.display = 'none';
         document.getElementById('contentSection').style.display = 'none';
     }
 
 
-    
+
     // ==================== AUTHENTICATION ====================
     async handleAdminLogin() {
-    const username = document.getElementById('adminUsername').value.trim();
-    const password = document.getElementById('adminPassword').value.trim();
-    const messageDiv = document.getElementById('loginMessage');
+        const username = document.getElementById('adminUsername').value.trim();
+        const password = document.getElementById('adminPassword').value.trim();
+        const messageDiv = document.getElementById('loginMessage');
 
-    if (!username || !password) {
-        this.showMessage('Please enter both username and password', 'error', messageDiv);
-        return;
-    }
-
-    this.showLoading(messageDiv, 'Authenticating...');
-
-    try {
-        // Use Google Sheets JSON endpoint (gviz)
-        const sheetId = '1_Y3ETDpkkBX_LOBSawAR5WYA3UHFxf8hOm_NQPZfghc';
-        const gid = 0; // first sheet
-        const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&gid=${gid}`;
-
-        const response = await fetch(url);
-        const text = await response.text();
-
-        // Strip the Google callback wrapper
-        const json = JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1));
-
-        const rows = json.table.rows.map(row => ({
-            username: row.c[0]?.v,
-            password: row.c[1]?.v
-        }));
-
-        const adminUser = rows.find(r => r.username === username && r.password === password);
-
-        if (adminUser) {
-            this.isAdmin = true;
-            this.currentUser = { username: adminUser.username };
-            localStorage.setItem('isAdmin', 'true');
-            localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
-            this.showAdminContent();
-            this.showMessage('Login successful!', 'success', messageDiv);
-            this.loadStats();
-        } else {
-            this.showMessage('Invalid credentials', 'error', messageDiv);
+        if (!username || !password) {
+            this.showMessage('Please enter both username and password', 'error', messageDiv);
+            return;
         }
 
-    } catch (error) {
-        console.error(error);
-        this.showMessage('Failed to connect to Google Sheets', 'error', messageDiv);
+        this.showLoading(messageDiv, 'Authenticating...');
+
+        try {
+            // Use Google Sheets JSON endpoint (gviz)
+            const sheetId = '1_Y3ETDpkkBX_LOBSawAR5WYA3UHFxf8hOm_NQPZfghc';
+            const gid = 0; // first sheet
+            const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&gid=${gid}`;
+
+            const response = await fetch(url);
+            const text = await response.text();
+
+            // Strip the Google callback wrapper
+            const json = JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1));
+
+            const rows = json.table.rows.map(row => ({
+                username: row.c[0]?.v,
+                password: row.c[1]?.v
+            }));
+
+            const adminUser = rows.find(r => r.username === username && r.password === password);
+
+            if (adminUser) {
+                this.isAdmin = true;
+                // --- MODIFICATION START ---
+                this.currentUser = { username: adminUser.username }; // Store the found username
+                // --- MODIFICATION END ---
+                localStorage.setItem('isAdmin', 'true');
+                localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+                this.showAdminContent();
+                this.showMessage('Login successful!', 'success', messageDiv);
+                this.loadStats();
+            } else {
+                this.showMessage('Invalid credentials', 'error', messageDiv);
+            }
+
+        } catch (error) {
+            console.error(error);
+            this.showMessage('Failed to connect to Google Sheets', 'error', messageDiv);
+        }
     }
-}
 
     handleLogout() {
         this.isAdmin = false;
@@ -918,13 +938,13 @@
         localStorage.removeItem('isAdmin');
         localStorage.removeItem('currentUser');
         localStorage.removeItem('adminToken');
-        
+
         document.getElementById('loginSection').style.display = 'block';
         document.getElementById('adminContent').style.display = 'none';
         document.getElementById('adminUsername').value = '';
         document.getElementById('adminPassword').value = '';
         document.getElementById('loginMessage').innerHTML = '';
-        
+
         this.showMessage('Logged out successfully', 'success', document.getElementById('loginMessage'));
         this.closeAdminPanel();
     }
@@ -936,8 +956,21 @@
     }
 
     checkAdminStatus() {
-        if (this.isAdmin && this.currentUser) {
+        if (this.isAdmin) {
+            console.log(`✅ Admin Logged In: ${this.currentUser.username}`);
+            this.updateAdminButtonState();
+
+            // --- MODIFICATION START ---
+            // If the panel is open during reload, or if you want to
+            // immediately set the content if logged in:
+            // This is primarily for maintaining the button state and logging.
+            // When the panel is toggled, showAdminContent() will be called from there.
+            // Let's call it here so the panel is initialized with the username
+            // in case the user opens it.
             this.showAdminContent();
+            // --- MODIFICATION END ---
+        } else {
+            console.log('❌ Admin Not Logged In');
         }
     }
 
@@ -971,11 +1004,11 @@
             });
 
             const result = await response.json();
-            
+
             if (result.success) {
                 this.showMessage('✅ ' + result.message, 'success', messageDiv);
                 event.target.reset();
-                
+
                 // Refresh stats if admin is logged in
                 if (this.isAdmin) {
                     this.loadStats();
@@ -999,7 +1032,7 @@
     async loadRegistrations() {
         const registrationsSection = document.getElementById('registrationsSection');
         const registrationsList = document.getElementById('registrationsList');
-        
+
         this.showLoading(registrationsList, 'Loading registrations...');
 
         try {
@@ -1008,9 +1041,9 @@
                     'Authorization': 'Bearer ' + localStorage.getItem('adminToken')
                 }
             });
-            
+
             const result = await response.json();
-            
+
             if (result.success) {
                 if (result.data && result.data.length > 0) {
                     registrationsList.innerHTML = this.getRegistrationsHTML(result.data);
@@ -1062,176 +1095,192 @@
     }
 
     // ==================== STATISTICS ====================
-async loadStats() {
-    const statsContainer = document.getElementById('adminStats');
-    
-    try {
-        this.showLoading(statsContainer, 'Loading live statistics...');
+    async loadStats() {
+        const statsContainer = document.getElementById('adminStats');
 
-        // Get all real-time data
-        const [activeUsers, sheetData, registrationStats] = await Promise.all([
-            this.getRealTimeActiveUsers(),
-            this.getGoogleSheetData(),
-            this.getRegistrationStats()
-        ]);
+        try {
+            this.showLoading(statsContainer, 'Loading live statistics...');
 
-        const stats = {
-            activeUsersNow: activeUsers,
-            lastSheetUpdate: sheetData.lastUpdate,
-            totalRegistrations: sheetData.totalRows || 0,
-            activeTeams: sheetData.activeTeams || 0,
-            pendingApprovals: registrationStats.pending || 0,
-            todayRegistrations: registrationStats.today || 0
-        };
+            // Get all real-time data
+            const [activeUsers, sheetData, registrationStats] = await Promise.all([
+                this.getRealTimeActiveUsers(),
+                this.getGoogleSheetData(),
+                this.getRegistrationStats()
+            ]);
 
-        statsContainer.innerHTML = this.getLiveStatsHTML(stats);
-        
-        // Start real-time user tracking
-        this.startUserActivityTracking();
-        
-    } catch (error) {
-        console.error('Error loading live stats:', error);
-        statsContainer.innerHTML = `
+            const stats = {
+                activeUsersNow: activeUsers,
+                lastSheetUpdate: sheetData.lastUpdate,
+                totalRegistrations: sheetData.totalRows || 0,
+                activeTeams: sheetData.activeTeams || 0,
+                pendingApprovals: registrationStats.pending || 0,
+                todayRegistrations: registrationStats.today || 0
+            };
+
+            statsContainer.innerHTML = this.getLiveStatsHTML(stats);
+
+            // Start real-time user tracking
+            this.startUserActivityTracking();
+
+        } catch (error) {
+            console.error('Error loading live stats:', error);
+            statsContainer.innerHTML = `
             <div class="message message-error">
                 <i class="fas fa-exclamation-triangle"></i>
                 Error loading live statistics
             </div>
         `;
-    }
-}
-
-// Track real active users with session management
-async getRealTimeActiveUsers() {
-    const now = Date.now();
-    const sessionTimeout = 5 * 60 * 1000; // 5 minutes
-    
-    // Get or create current user session
-    let currentSession = JSON.parse(localStorage.getItem('currentUserSession') || '{}');
-    
-    if (!currentSession.sessionId || now - currentSession.lastActivity > sessionTimeout) {
-        // Create new session
-        currentSession = {
-            sessionId: 'user_' + now + '_' + Math.random().toString(36).substr(2, 9),
-            lastActivity: now,
-            userAgent: navigator.userAgent,
-            page: window.location.pathname
-        };
-    } else {
-        // Update existing session
-        currentSession.lastActivity = now;
-    }
-    
-    localStorage.setItem('currentUserSession', JSON.stringify(currentSession));
-    
-    // Get all active sessions across users
-    const activeSessions = this.getAllActiveSessions();
-    
-    return activeSessions.length;
-}
-
-// Get all active sessions from all users
-getAllActiveSessions() {
-    const now = Date.now();
-    const sessionTimeout = 5 * 60 * 1000; // 5 minutes
-    const activeSessions = [];
-    
-    // Check all localStorage items for active sessions
-    for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        
-        if (key && (key === 'currentUserSession' || key.startsWith('userSession_'))) {
-            try {
-                const session = JSON.parse(localStorage.getItem(key));
-                if (now - session.lastActivity < sessionTimeout) {
-                    activeSessions.push(session);
-                } else {
-                    // Remove expired session
-                    localStorage.removeItem(key);
-                }
-            } catch (e) {
-                // Invalid session data, remove it
-                localStorage.removeItem(key);
-            }
         }
     }
-    
-    return activeSessions;
-}
 
-// Get live data from Google Sheets
-async getGoogleSheetData() {
-    try {
-        const sheetId = '1_Y3ETDpkkBX_LOBSawAR5WYA3UHFxf8hOm_NQPZfghc'; // Your sheet ID
-        const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
-        
-        const response = await fetch(url);
-        const text = await response.text();
-        const json = JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1));
-        
-        const rows = json.table.rows || [];
-        const teams = new Set();
-        let lastUpdateTime = null;
-        
-        // Process rows to get real data
-        rows.forEach(row => {
-            if (row.c && row.c.length > 0) {
-                // Assuming team data is in one of the columns
-                const team = row.c[2]?.v; // Adjust column index based on your sheet
-                if (team) teams.add(team);
-                
-                // Get timestamp from last column or use current time
-                const timestamp = row.c[row.c.length - 1]?.v;
-                if (timestamp && (!lastUpdateTime || timestamp > lastUpdateTime)) {
-                    lastUpdateTime = timestamp;
+    // Track real active users with session management
+    async getRealTimeActiveUsers() {
+        const now = Date.now();
+        const sessionTimeout = 5 * 60 * 1000; // 5 minutes
+
+        // Get or create current user session
+        let currentSession = JSON.parse(localStorage.getItem('currentUserSession') || '{}');
+
+        if (!currentSession.sessionId || now - currentSession.lastActivity > sessionTimeout) {
+            // Create new session
+            currentSession = {
+                sessionId: 'user_' + now + '_' + Math.random().toString(36).substr(2, 9),
+                lastActivity: now,
+                userAgent: navigator.userAgent,
+                page: window.location.pathname
+            };
+        } else {
+            // Update existing session
+            currentSession.lastActivity = now;
+        }
+
+        localStorage.setItem('currentUserSession', JSON.stringify(currentSession));
+
+        // Get all active sessions across users
+        const activeSessions = this.getAllActiveSessions();
+
+        return activeSessions.length;
+    }
+
+    // Get all active sessions from all users
+    getAllActiveSessions() {
+        const now = Date.now();
+        const sessionTimeout = 5 * 60 * 1000; // 5 minutes
+        const activeSessions = [];
+
+        // Check all localStorage items for active sessions
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+
+            if (key && (key === 'currentUserSession' || key.startsWith('userSession_'))) {
+                try {
+                    const session = JSON.parse(localStorage.getItem(key));
+                    if (now - session.lastActivity < sessionTimeout) {
+                        activeSessions.push(session);
+                    } else {
+                        // Remove expired session
+                        localStorage.removeItem(key);
+                    }
+                } catch (e) {
+                    // Invalid session data, remove it
+                    localStorage.removeItem(key);
                 }
             }
-        });
-        
-        return {
-            totalRows: rows.length,
-            activeTeams: teams.size,
-            lastUpdate: lastUpdateTime ? new Date(lastUpdateTime).toLocaleString() : 'Just now',
-            rawData: rows
-        };
-        
-    } catch (error) {
-        console.error('Error fetching Google Sheets data:', error);
-        return {
-            totalRows: 0,
-            activeTeams: 0,
-            lastUpdate: 'Unable to fetch',
-            rawData: []
-        };
-    }
-}
+        }
 
-// Get registration statistics
-async getRegistrationStats() {
-    try {
-        const registrations = JSON.parse(localStorage.getItem('teamRegistrations') || '[]');
-        const now = new Date();
-        const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
-        
-        const todayRegistrations = registrations.filter(reg => {
-            const regTime = new Date(reg.timestamp || reg.date).getTime();
-            return regTime >= todayStart;
-        });
-        
-        return {
-            total: registrations.length,
-            pending: registrations.filter(r => r.status === 'pending').length,
-            approved: registrations.filter(r => r.status === 'approved').length,
-            today: todayRegistrations.length
-        };
-        
-    } catch (error) {
-        return { total: 0, pending: 0, approved: 0, today: 0 };
+        return activeSessions;
     }
-}
+    showAdminContent() {
+        const loginSection = document.getElementById('loginSection');
+        const adminContent = document.getElementById('adminContent');
+        const adminUserNameSpan = document.getElementById('adminUserName');
 
-// Enhanced HTML with real-time data
-getLiveStatsHTML(stats) {
-    return `
+        if (this.isAdmin) {
+            loginSection.style.display = 'none';
+            adminContent.style.display = 'block';
+            // Update the welcome message with the current user's username
+            adminUserNameSpan.textContent = this.currentUser.username || 'Admin';
+        } else {
+            loginSection.style.display = 'block';
+            adminContent.style.display = 'none';
+        }
+
+        this.updateAdminButtonState(); // Update the floating button style
+    }
+    // Get live data from Google Sheets
+    async getGoogleSheetData() {
+        try {
+            const sheetId = '1_Y3ETDpkkBX_LOBSawAR5WYA3UHFxf8hOm_NQPZfghc'; // Your sheet ID
+            const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
+
+            const response = await fetch(url);
+            const text = await response.text();
+            const json = JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1));
+
+            const rows = json.table.rows || [];
+            const teams = new Set();
+            let lastUpdateTime = null;
+
+            // Process rows to get real data
+            rows.forEach(row => {
+                if (row.c && row.c.length > 0) {
+                    // Assuming team data is in one of the columns
+                    const team = row.c[2]?.v; // Adjust column index based on your sheet
+                    if (team) teams.add(team);
+
+                    // Get timestamp from last column or use current time
+                    const timestamp = row.c[row.c.length - 1]?.v;
+                    if (timestamp && (!lastUpdateTime || timestamp > lastUpdateTime)) {
+                        lastUpdateTime = timestamp;
+                    }
+                }
+            });
+
+            return {
+                totalRows: rows.length,
+                activeTeams: teams.size,
+                lastUpdate: lastUpdateTime ? new Date(lastUpdateTime).toLocaleString() : 'Just now',
+                rawData: rows
+            };
+
+        } catch (error) {
+            console.error('Error fetching Google Sheets data:', error);
+            return {
+                totalRows: 0,
+                activeTeams: 0,
+                lastUpdate: 'Unable to fetch',
+                rawData: []
+            };
+        }
+    }
+
+    // Get registration statistics
+    async getRegistrationStats() {
+        try {
+            const registrations = JSON.parse(localStorage.getItem('teamRegistrations') || '[]');
+            const now = new Date();
+            const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+
+            const todayRegistrations = registrations.filter(reg => {
+                const regTime = new Date(reg.timestamp || reg.date).getTime();
+                return regTime >= todayStart;
+            });
+
+            return {
+                total: registrations.length,
+                pending: registrations.filter(r => r.status === 'pending').length,
+                approved: registrations.filter(r => r.status === 'approved').length,
+                today: todayRegistrations.length
+            };
+
+        } catch (error) {
+            return { total: 0, pending: 0, approved: 0, today: 0 };
+        }
+    }
+
+    // Enhanced HTML with real-time data
+    getLiveStatsHTML(stats) {
+        return `
         <div class="stat-card live-stat" style="border-left: 4px solid #10b981;">
             <div class="stat-number real-time-counter" id="activeUsersCount">${stats.activeUsersNow}</div>
             <div class="stat-label">
@@ -1298,150 +1347,150 @@ getLiveStatsHTML(stats) {
             </div>
         </div>
     `;
-}
+    }
 
-// Get currently active team based on time and day
-getCurrentActiveTeam() {
-    const now = new Date();
-    const hour = now.getHours();
-    const day = now.getDay();
-    
-    // Team schedule based on typical operating hours
-    const teamSchedule = [
-        { team: 'Ballet', days: [1, 3, 5], hours: [16, 17, 18] }, // Mon, Wed, Fri 4-7 PM
-        { team: 'Taekwondo', days: [2, 4, 6], hours: [17, 18, 19] }, // Tue, Thu, Sat 5-8 PM
-        { team: 'Programming', days: [1, 2, 3, 4, 5], hours: [15, 16, 17, 18] }, // Weekdays 3-7 PM
-        { team: 'Theater', days: [3, 5], hours: [18, 19, 20] }, // Wed, Fri 6-9 PM
-        { team: 'Guitar', days: [2, 4, 6], hours: [16, 17, 18] } // Tue, Thu, Sat 4-7 PM
-    ];
-    
-    const currentTeam = teamSchedule.find(schedule => 
-        schedule.days.includes(day) && schedule.hours.includes(hour)
-    );
-    
-    return currentTeam ? currentTeam.team : 'Planning';
-}
+    // Get currently active team based on time and day
+    getCurrentActiveTeam() {
+        const now = new Date();
+        const hour = now.getHours();
+        const day = now.getDay();
 
-// Start real-time user activity tracking
-startUserActivityTracking() {
-    // Update user activity on various events
-    const updateActivity = () => {
+        // Team schedule based on typical operating hours
+        const teamSchedule = [
+            { team: 'Ballet', days: [1, 3, 5], hours: [16, 17, 18] }, // Mon, Wed, Fri 4-7 PM
+            { team: 'Taekwondo', days: [2, 4, 6], hours: [17, 18, 19] }, // Tue, Thu, Sat 5-8 PM
+            { team: 'Programming', days: [1, 2, 3, 4, 5], hours: [15, 16, 17, 18] }, // Weekdays 3-7 PM
+            { team: 'Theater', days: [3, 5], hours: [18, 19, 20] }, // Wed, Fri 6-9 PM
+            { team: 'Guitar', days: [2, 4, 6], hours: [16, 17, 18] } // Tue, Thu, Sat 4-7 PM
+        ];
+
+        const currentTeam = teamSchedule.find(schedule =>
+            schedule.days.includes(day) && schedule.hours.includes(hour)
+        );
+
+        return currentTeam ? currentTeam.team : 'Planning';
+    }
+
+    // Start real-time user activity tracking
+    startUserActivityTracking() {
+        // Update user activity on various events
+        const updateActivity = () => {
+            this.updateUserActivity();
+            this.updateLiveCounter();
+        };
+
+        // Track user interactions
+        document.addEventListener('mousemove', updateActivity);
+        document.addEventListener('keypress', updateActivity);
+        document.addEventListener('click', updateActivity);
+        document.addEventListener('scroll', updateActivity);
+
+        // Update every minute
+        this.liveUpdateInterval = setInterval(() => {
+            this.updateLiveCounter();
+        }, 60000);
+
+        // Initial update
         this.updateUserActivity();
-        this.updateLiveCounter();
-    };
-    
-    // Track user interactions
-    document.addEventListener('mousemove', updateActivity);
-    document.addEventListener('keypress', updateActivity);
-    document.addEventListener('click', updateActivity);
-    document.addEventListener('scroll', updateActivity);
-    
-    // Update every minute
-    this.liveUpdateInterval = setInterval(() => {
-        this.updateLiveCounter();
-    }, 60000);
-    
-    // Initial update
-    this.updateUserActivity();
-}
-
-// Update user activity timestamp
-updateUserActivity() {
-    const session = JSON.parse(localStorage.getItem('currentUserSession') || '{}');
-    if (session.sessionId) {
-        session.lastActivity = Date.now();
-        session.page = window.location.pathname;
-        localStorage.setItem('currentUserSession', JSON.stringify(session));
     }
-}
 
-// Update the live counter display
-updateLiveCounter() {
-    const activeUsers = this.getAllActiveSessions().length;
-    const counter = document.getElementById('activeUsersCount');
-    const timeDisplay = document.getElementById('activeUsersTime');
-    
-    if (counter) {
-        // Smooth counter animation
-        const currentCount = parseInt(counter.textContent) || 0;
-        this.animateCounter(counter, currentCount, activeUsers);
+    // Update user activity timestamp
+    updateUserActivity() {
+        const session = JSON.parse(localStorage.getItem('currentUserSession') || '{}');
+        if (session.sessionId) {
+            session.lastActivity = Date.now();
+            session.page = window.location.pathname;
+            localStorage.setItem('currentUserSession', JSON.stringify(session));
+        }
     }
-    
-    if (timeDisplay) {
-        timeDisplay.innerHTML = `
+
+    // Update the live counter display
+    updateLiveCounter() {
+        const activeUsers = this.getAllActiveSessions().length;
+        const counter = document.getElementById('activeUsersCount');
+        const timeDisplay = document.getElementById('activeUsersTime');
+
+        if (counter) {
+            // Smooth counter animation
+            const currentCount = parseInt(counter.textContent) || 0;
+            this.animateCounter(counter, currentCount, activeUsers);
+        }
+
+        if (timeDisplay) {
+            timeDisplay.innerHTML = `
             <i class="fas fa-circle" style="color: #10b981; animation: pulse 2s infinite;"></i>
             Updated: ${new Date().toLocaleTimeString()}
         `;
-    }
-}
-
-// Animate counter changes
-animateCounter(element, start, end) {
-    const duration = 1000;
-    const startTime = performance.now();
-    
-    const updateCount = (currentTime) => {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        
-        // Easing function
-        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-        const currentValue = Math.floor(start + (end - start) * easeOutQuart);
-        
-        element.textContent = currentValue;
-        
-        if (progress < 1) {
-            requestAnimationFrame(updateCount);
-        } else {
-            element.textContent = end;
         }
-    };
-    
-    requestAnimationFrame(updateCount);
-}
+    }
 
-// Clean up expired sessions periodically
-startSessionCleanup() {
-    setInterval(() => {
-        this.cleanupExpiredSessions();
-    }, 300000); // Clean up every 5 minutes
-}
+    // Animate counter changes
+    animateCounter(element, start, end) {
+        const duration = 1000;
+        const startTime = performance.now();
 
-cleanupExpiredSessions() {
-    const now = Date.now();
-    const sessionTimeout = 10 * 60 * 1000; // 10 minutes
-    
-    for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        
-        if (key && (key === 'currentUserSession' || key.startsWith('userSession_'))) {
-            try {
-                const session = JSON.parse(localStorage.getItem(key));
-                if (now - session.lastActivity > sessionTimeout) {
+        const updateCount = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+
+            // Easing function
+            const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+            const currentValue = Math.floor(start + (end - start) * easeOutQuart);
+
+            element.textContent = currentValue;
+
+            if (progress < 1) {
+                requestAnimationFrame(updateCount);
+            } else {
+                element.textContent = end;
+            }
+        };
+
+        requestAnimationFrame(updateCount);
+    }
+
+    // Clean up expired sessions periodically
+    startSessionCleanup() {
+        setInterval(() => {
+            this.cleanupExpiredSessions();
+        }, 300000); // Clean up every 5 minutes
+    }
+
+    cleanupExpiredSessions() {
+        const now = Date.now();
+        const sessionTimeout = 10 * 60 * 1000; // 10 minutes
+
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+
+            if (key && (key === 'currentUserSession' || key.startsWith('userSession_'))) {
+                try {
+                    const session = JSON.parse(localStorage.getItem(key));
+                    if (now - session.lastActivity > sessionTimeout) {
+                        localStorage.removeItem(key);
+                    }
+                } catch (e) {
                     localStorage.removeItem(key);
                 }
-            } catch (e) {
-                localStorage.removeItem(key);
             }
         }
     }
-}
 
-// Enhanced initialization with session management
-init() {
-    this.injectStyles();
-    this.createAdminButton();
-    this.createAdminPanel();
-    this.setupEventListeners();
-    this.checkAdminStatus();
-    this.startSessionCleanup();
-    console.log('✅ Admin System Initialized with Live Tracking');
-}
+    // Enhanced initialization with session management
+    init() {
+        this.injectStyles();
+        this.createAdminButton();
+        this.createAdminPanel();
+        this.setupEventListeners();
+        this.checkAdminStatus();
+        this.startSessionCleanup();
+        console.log('✅ Admin System Initialized with Live Tracking');
+    }
 
     // ==================== UTILITY FUNCTIONS ====================
     showMessage(message, type, container) {
         container.innerHTML = `<div class="message message-${type}">${message}</div>`;
-        
+
         // Auto-hide success messages after 5 seconds
         if (type === 'success') {
             setTimeout(() => {
@@ -1469,7 +1518,7 @@ init() {
             console.warn('Admin System already initialized');
             return window.adminSystem;
         }
-        
+
         window.adminSystem = new AdminSystem();
         return window.adminSystem;
     }

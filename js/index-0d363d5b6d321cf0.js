@@ -24,142 +24,142 @@
 
             const getDefaultData = () => ({
                 'header_email': 'info@zaha.gov.jo',
-                    'menu_home': 'Home',
-                    'menu_about': 'About',
-                    'menu_teams': 'Teams',
-                    'menu_contact': 'Contact',
-                    'menu_blog': 'Blog',
-                    
-                    // About Section
-                    'about_title_1': "Zhaha's Culture",
-                    'about_title_2': "Center",
-                    'about_founded': '27 Years Ago',
-                    'about_nationality': 'Jordan',
-                    'about_open_hours': '9 AM - 8 PM',
-                    'about_founder': 'Zaha Jardaneh Mango',
-                    'about_address': 'Amman',
-                    'about_phone': '06 55 31 577',
-                    'about_email': 'info@zaha.gov.jo',
-                    'about_name': 'مركز زها',
-                    
-                    // Teams
-                    'teams_title': 'Teams',
-                    'team_programming': 'Programming Team',
-                    'team_taekwondo': 'Taekwondo',
-                    'team_theater': 'Theater',
-                    'team_photography': 'Photography',
-                    'team_guitar': 'Guitar',
-                    'team_chess': 'Chess',
-                    'team_ballet': 'Ballet',
-                    'team_zumba': 'Zumba',
-                    'team_dabke': 'Dabke',
-                    'team_orchestra': 'Orchestra',
-                    'team_piano': 'Piano',
-                    'team_caricature': 'Caricature Drawing',
-                    'team_booking': 'Booking',
-                    'team_animation': 'Animation',
-                    'team_flags': 'Flags',
-                    'team_drums': 'Drums',
-                    'team_violin_oud': 'Violin and Oud',
-                    'team_melodica': 'Melodica',
-                    
-                    // Poping Teams
-                    'poping_teams_title': 'Our Poping Teams',
-                    'poping_team_programming': 'Programming Team',
-                    'poping_team_ballet': 'Ballet',
-                    'poping_team_dabke': 'Dabke',
-                    'poping_team_drums': 'Drums',
-                    'poping_team_taekwondo': 'Taekwando',
-                    
-                    // Team durations and coaches
-                    'programming_duration': '2021 - Now',
-                    'programming_coach': 'Coach : Mays Alkhlil',
-                    'ballet_duration': '2018 - Now',
-                    'ballet_coach': 'Coach : Nanse Atyeat',
-                    'dabke_duration': '2009 - Now',
-                    'dabke_coach': 'Coach : Rsan Daees',
-                    'drums_duration': '2014 - Now',
-                    'drums_coach': 'Coach : Bshar khrees',
-                    'taekwondo_duration': '2014 - Now',
-                    'taekwondo_coach': 'Coach : -------',
-                    
-                    // Blog
-                    'blog_title': 'Latest Posts',
-                    'post1_title': 'The Executive Director of the Zaha Cultural Center, Raneh Sabih, received the General Manager of the King Abdullah II Development Fund',
-                    'post1_date': '27 October 2025',
-                    'post1_comments': '124 comments',
-                    'post2_title': 'A remarkable achievement achieved by our students from the team of the Zaha Cultural Center, Deir Olaa, by obtaining the first place in the Jerusalem and Palestine Football Championship',
-                    'post2_date': '22 October 2025',
-                    'post2_comments': '34 comments',
-                    'post3_title': 'Zaha Cultural Centers launch Zaha Knights teams from the youth As part of its ongoing quest to empower young people and develop their leadership and social skills',
-                    'post3_date': '19 October 2025',
-                    'post3_comments': '45 comments',
-                    
-                    // Contact
-                    'contact_title': 'Get in touch',
-                    'contact_phone': '065 53 15 77',
-                    'contact_address': 'Amman, Jordan',
-                    'contact_email': 'info@zaha.gov.jo',
-                    'contact_follow': 'follow Us',
-                    
-                    // Copyright
-                    'copyright_text': 'مركز زها',
-                    'copyright_designed': 'Designed By',
-                    'copyright_designer': 'Team Programming',
-                    
-                    // Facts
-                    'facts_experience': '23',
-                    'facts_experience_text': 'years of',
-                    'facts_experience_span': 'experience',
-                    'facts_teams': '25',
-                    'facts_teams_text': 'Teams',
-                    'facts_students': '1000 <',
-                    'facts_students_text': 'Students',
-                    'facts_students_span': 'taught',
-                    'facts_awards': '13 <',
-                    'facts_awards_text': 'awards',
-                    'facts_awards_span': 'won',
-                    'facts_skills': '679 <',
-                    'facts_skills_text': 'learned',
-                    'facts_skills_span': 'New Skills',
-                    
-                    // Home
-                    'home_title_1': "Zaha's",
-                    'home_title_2': "Teams",
-                    'home_title_3': "Program",
-                    
-                    // Portfolio
-                    'portfolio_title': 'Recent Events',
-                    'portfolio_zumba_title': 'فريق الزومبا',
-                    'portfolio_zumba_event': 'مشاركة فريق الزومبا في مهرجان جرش الثقافي',
-                    'portfolio_zumba_team': 'Zumba',
-                    'portfolio_zumba_time': '2 months Ago',
-                    'portfolio_zumba_location': 'Jarash',
-                    'portfolio_dabke_title': 'فريق الدبكة',
-                    'portfolio_dabke_event': 'مشاركة فريق الدبكة مركز زها الثقافي في مهرجان جرش',
-                    'portfolio_dabke_team': 'Dabkeh',
-                    'portfolio_dabke_time': '2 months Ago',
-                    'portfolio_dabke_location': 'Jarash',
-                    'portfolio_guitar_title': 'فريق جيتار',
-                    'portfolio_guitar_event': 'مشاركة فريق جيتار مركز زها الثقافي في مهرجان جرش للثقافة والفنون',
-                    'portfolio_guitar_team': 'فريق جيتار',
-                    'portfolio_guitar_time': '2 Years Ago',
-                    'portfolio_guitar_location': 'Jarash',
-                    'portfolio_drums_title': ' فريق درم',
-                    'portfolio_drums_event': 'مشاركة فريق زها درم جام في فعاليات مهرجان جرش',
-                    'portfolio_drums_team': 'فريق درم',
-                    'portfolio_drums_time': '2 Years Ago',
-                    'portfolio_drums_location': 'Jarash',
-                    'portfolio_preview': 'preview',
-                    
-                    // Testimonials
-                    'testimonial1_quote': '"Being part of the programming team at Zaha Culture Center has been an amazing experience! I\'ve learned how to think logically, solve problems creatively, and work with others to build real projects. The mentors here are super supportive, and every session feels like a step forward in my journey as a future developer."',
-                    'testimonial1_person': 'Khalid Alnemat',
-                    'testimonial1_team': 'Programming Team',
-                    'testimonial2_quote': '"Joining the piano team at Zaha Culture Center has really helped me grow as a musician. I\'ve learned not only how to play better but also how to express myself through music. The teachers are so patient and inspiring, and practicing with other students motivates me to keep improving every week!"',
-                    'testimonial2_person': 'Asl Alkhalel',
-                    'testimonial2_team': 'Piano Team'
-                
+                'menu_home': 'Home',
+                'menu_about': 'About',
+                'menu_teams': 'Teams',
+                'menu_contact': 'Contact',
+                'menu_blog': 'Blog',
+
+                // About Section
+                'about_title_1': "Zhaha's Culture",
+                'about_title_2': "Center",
+                'about_founded': '27 Years Ago',
+                'about_nationality': 'Jordan',
+                'about_open_hours': '9 AM - 8 PM',
+                'about_founder': 'Zaha Jardaneh Mango',
+                'about_address': 'Amman',
+                'about_phone': '06 55 31 577',
+                'about_email': 'info@zaha.gov.jo',
+                'about_name': 'مركز زها',
+
+                // Teams
+                'teams_title': 'Teams',
+                'team_programming': 'Programming Team',
+                'team_taekwondo': 'Taekwondo',
+                'team_theater': 'Theater',
+                'team_photography': 'Photography',
+                'team_guitar': 'Guitar',
+                'team_chess': 'Chess',
+                'team_ballet': 'Ballet',
+                'team_zumba': 'Zumba',
+                'team_dabke': 'Dabke',
+                'team_orchestra': 'Orchestra',
+                'team_piano': 'Piano',
+                'team_caricature': 'Caricature Drawing',
+                'team_booking': 'Booking',
+                'team_animation': 'Animation',
+                'team_flags': 'Flags',
+                'team_drums': 'Drums',
+                'team_violin_oud': 'Violin and Oud',
+                'team_melodica': 'Melodica',
+
+                // Poping Teams
+                'poping_teams_title': 'Our Poping Teams',
+                'poping_team_programming': 'Programming Team',
+                'poping_team_ballet': 'Ballet',
+                'poping_team_dabke': 'Dabke',
+                'poping_team_drums': 'Drums',
+                'poping_team_taekwondo': 'Taekwando',
+
+                // Team durations and coaches
+                'programming_duration': '2021 - Now',
+                'programming_coach': 'Coach : Mays Alkhlil',
+                'ballet_duration': '2018 - Now',
+                'ballet_coach': 'Coach : Nanse Atyeat',
+                'dabke_duration': '2009 - Now',
+                'dabke_coach': 'Coach : Rsan Daees',
+                'drums_duration': '2014 - Now',
+                'drums_coach': 'Coach : Bshar khrees',
+                'taekwondo_duration': '2014 - Now',
+                'taekwondo_coach': 'Coach : -------',
+
+                // Blog
+                'blog_title': 'Latest Posts',
+                'post1_title': 'The Executive Director of the Zaha Cultural Center, Raneh Sabih, received the General Manager of the King Abdullah II Development Fund',
+                'post1_date': '27 October 2025',
+                'post1_comments': '124 comments',
+                'post2_title': 'A remarkable achievement achieved by our students from the team of the Zaha Cultural Center, Deir Olaa, by obtaining the first place in the Jerusalem and Palestine Football Championship',
+                'post2_date': '22 October 2025',
+                'post2_comments': '34 comments',
+                'post3_title': 'Zaha Cultural Centers launch Zaha Knights teams from the youth As part of its ongoing quest to empower young people and develop their leadership and social skills',
+                'post3_date': '19 October 2025',
+                'post3_comments': '45 comments',
+
+                // Contact
+                'contact_title': 'Get in touch',
+                'contact_phone': '065 53 15 77',
+                'contact_address': 'Amman, Jordan',
+                'contact_email': 'info@zaha.gov.jo',
+                'contact_follow': 'follow Us',
+
+                // Copyright
+                'copyright_text': 'مركز زها',
+                'copyright_designed': 'Designed By',
+                'copyright_designer': 'Team Programming',
+
+                // Facts
+                'facts_experience': '23',
+                'facts_experience_text': 'years of',
+                'facts_experience_span': 'experience',
+                'facts_teams': '25',
+                'facts_teams_text': 'Teams',
+                'facts_students': '1000 <',
+                'facts_students_text': 'Students',
+                'facts_students_span': 'taught',
+                'facts_awards': '13 <',
+                'facts_awards_text': 'awards',
+                'facts_awards_span': 'won',
+                'facts_skills': '679 <',
+                'facts_skills_text': 'learned',
+                'facts_skills_span': 'New Skills',
+
+                // Home
+                'home_title_1': "Zaha's",
+                'home_title_2': "Teams",
+                'home_title_3': "Program",
+
+                // Portfolio
+                'portfolio_title': 'Recent Events',
+                'portfolio_zumba_title': 'فريق الزومبا',
+                'portfolio_zumba_event': 'مشاركة فريق الزومبا في مهرجان جرش الثقافي',
+                'portfolio_zumba_team': 'Zumba',
+                'portfolio_zumba_time': '2 months Ago',
+                'portfolio_zumba_location': 'Jarash',
+                'portfolio_dabke_title': 'فريق الدبكة',
+                'portfolio_dabke_event': 'مشاركة فريق الدبكة مركز زها الثقافي في مهرجان جرش',
+                'portfolio_dabke_team': 'Dabkeh',
+                'portfolio_dabke_time': '2 months Ago',
+                'portfolio_dabke_location': 'Jarash',
+                'portfolio_guitar_title': 'فريق جيتار',
+                'portfolio_guitar_event': 'مشاركة فريق جيتار مركز زها الثقافي في مهرجان جرش للثقافة والفنون',
+                'portfolio_guitar_team': 'فريق جيتار',
+                'portfolio_guitar_time': '2 Years Ago',
+                'portfolio_guitar_location': 'Jarash',
+                'portfolio_drums_title': ' فريق درم',
+                'portfolio_drums_event': 'مشاركة فريق زها درم جام في فعاليات مهرجان جرش',
+                'portfolio_drums_team': 'فريق درم',
+                'portfolio_drums_time': '2 Years Ago',
+                'portfolio_drums_location': 'Jarash',
+                'portfolio_preview': 'preview',
+
+                // Testimonials
+                'testimonial1_quote': '"Being part of the programming team at Zaha Culture Center has been an amazing experience! I\'ve learned how to think logically, solve problems creatively, and work with others to build real projects. The mentors here are super supportive, and every session feels like a step forward in my journey as a future developer."',
+                'testimonial1_person': 'Khalid Alnemat',
+                'testimonial1_team': 'Programming Team',
+                'testimonial2_quote': '"Joining the piano team at Zaha Culture Center has really helped me grow as a musician. I\'ve learned not only how to play better but also how to express myself through music. The teachers are so patient and inspiring, and practicing with other students motivates me to keep improving every week!"',
+                'testimonial2_person': 'Asl Alkhalel',
+                'testimonial2_team': 'Piano Team'
+
             });
 
             // Fetch data from Google Apps Script
@@ -198,116 +198,116 @@
             };
 
 
-let n = () => (0, i.jsxs)("header", {
-    children: [
-        (0, i.jsxs)("div", {
-            className: "header-inner hide-mobile",
-            children: [
-                (0, i.jsx)("div", {
-                    className: "menu",
-                    children: (0, i.jsx)("nav", {
-                        children: (0, i.jsxs)("ul", {
+            let n = () => (0, i.jsxs)("header", {
+                children: [
+                    (0, i.jsxs)("div", {
+                        className: "header-inner hide-mobile",
+                        children: [
+                            (0, i.jsx)("div", {
+                                className: "menu",
+                                children: (0, i.jsx)("nav", {
+                                    children: (0, i.jsxs)("ul", {
+                                        children: [
+                                            (0, i.jsx)("li", { children: (0, i.jsx)("span", { className: "active", id: "home-link", children: getText('menu_home') }) }),
+                                            (0, i.jsx)("li", { children: (0, i.jsx)("span", { id: "about-link", children: getText('menu_about') }) }),
+                                            (0, i.jsx)("li", { children: (0, i.jsx)("span", { id: "Teams-link", children: getText('menu_teams') }) }),
+                                            (0, i.jsx)("li", { children: (0, i.jsx)("span", { id: "contact-link", children: getText('menu_contact') }) }),
+                                            (0, i.jsx)("li", { children: (0, i.jsx)("span", { id: "blog-link", children: getText('menu_blog') }) }),
+                                        ],
+                                    }),
+                                }),
+                            }),
+
+
+                            (0, i.jsx)("button", {
+                                className: "profile-photo-btn",
+                                onClick: () => window.location.href = "https://www.zaha.gov.jo/",
+                                children: (0, i.jsx)("img", {
+                                    src: "/images/Zaha.jpg",
+                                    alt: "Profile",
+                                    className: "nav-photo"
+                                }),
+                            })
+                        ],
+                    }),
+
+                    // Mobile Menu Toggle Button
+                    (0, i.jsx)("div", {
+                        id: "menuToggle",
+                        className: "hide-desktop",
+                        children: (0, i.jsxs)("div", {
+                            className: "menu-toggle-inner",
                             children: [
-                                (0, i.jsx)("li", { children: (0, i.jsx)("span", { className: "active", id: "home-link", children: getText('menu_home') }) }),
-                                (0, i.jsx)("li", { children: (0, i.jsx)("span", { id: "about-link", children: getText('menu_about') }) }),
-                                (0, i.jsx)("li", { children: (0, i.jsx)("span", { id: "Teams-link", children: getText('menu_teams') }) }),
-                                (0, i.jsx)("li", { children: (0, i.jsx)("span", { id: "contact-link", children: getText('menu_contact') }) }),
-                                (0, i.jsx)("li", { children: (0, i.jsx)("span", { id: "blog-link", children: getText('menu_blog') }) }),
+                                (0, i.jsx)("span", {}),
+                                (0, i.jsx)("span", {}),
+                                (0, i.jsx)("span", {}),
                             ],
                         }),
                     }),
-                }),
 
-
-(0, i.jsx)("button", {
-    className: "profile-photo-btn",
-    onClick: () => window.location.href = "https://www.zaha.gov.jo/",
-    children: (0, i.jsx)("img", {
-        src: "/images/Zaha.jpg",
-        alt: "Profile", 
-        className: "nav-photo"
-    }),
-})
-            ],
-        }),
-        
-        // Mobile Menu Toggle Button
-        (0, i.jsx)("div", {
-            id: "menuToggle",
-            className: "hide-desktop",
-            children: (0, i.jsxs)("div", {
-                className: "menu-toggle-inner",
-                children: [
-                    (0, i.jsx)("span", {}),
-                    (0, i.jsx)("span", {}),
-                    (0, i.jsx)("span", {}),
-                ],
-            }),
-        }),
-
-        // Mobile Menu Overlay - FIXED POSITIONING
-        (0, i.jsxs)("div", {
-            className: "mobile-menu",
-            children: [
-                (0, i.jsx)("div", { 
-                    className: "mobile-menu-close",
-                    onClick: () => handleMobileMenuClose(),
-                    children: "✕" 
-                }),
-                (0, i.jsxs)("ul", {
-                    className: "list-unstyled mobile-menu-list",
-                    children: [
-                        (0, i.jsx)("li", { 
-                            children: (0, i.jsx)("span", { 
-                                onClick: () => handleMobileMenuClick('home'),
-                                children: getText('menu_home') 
-                            }) 
-                        }),
-                        (0, i.jsx)("li", { 
-                            children: (0, i.jsx)("span", { 
-                                onClick: () => handleMobileMenuClick('about'),
-                                children: getText('menu_about') 
-                            }) 
-                        }),
-                        (0, i.jsx)("li", { 
-                            children: (0, i.jsx)("span", { 
-                                onClick: () => handleMobileMenuClick('Teams'),
-                                children: getText('menu_teams') 
-                            }) 
-                        }),
-                        (0, i.jsx)("li", { 
-                            children: (0, i.jsx)("span", { 
-                                onClick: () => handleMobileMenuClick('contact'),
-                                children: getText('menu_contact') 
-                            }) 
-                        }),
-                        (0, i.jsx)("li", { 
-                            children: (0, i.jsx)("span", { 
-                                onClick: () => handleMobileMenuClick('blog'),
-                                children: getText('menu_blog') 
-                            }) 
-                        }),
-                    ],
-                }),
-                (0, i.jsx)("div", {
-                    className: "mobile-menu-mail",
-                    children: (0, i.jsxs)("p", {
+                    // Mobile Menu Overlay - FIXED POSITIONING
+                    (0, i.jsxs)("div", {
+                        className: "mobile-menu",
                         children: [
-                            "Email: ",
-                            (0, i.jsx)("span", { children: getText('header_email') }),
+                            (0, i.jsx)("div", {
+                                className: "mobile-menu-close",
+                                onClick: () => handleMobileMenuClose(),
+                                children: "✕"
+                            }),
+                            (0, i.jsxs)("ul", {
+                                className: "list-unstyled mobile-menu-list",
+                                children: [
+                                    (0, i.jsx)("li", {
+                                        children: (0, i.jsx)("span", {
+                                            onClick: () => handleMobileMenuClick('home'),
+                                            children: getText('menu_home')
+                                        })
+                                    }),
+                                    (0, i.jsx)("li", {
+                                        children: (0, i.jsx)("span", {
+                                            onClick: () => handleMobileMenuClick('about'),
+                                            children: getText('menu_about')
+                                        })
+                                    }),
+                                    (0, i.jsx)("li", {
+                                        children: (0, i.jsx)("span", {
+                                            onClick: () => handleMobileMenuClick('Teams'),
+                                            children: getText('menu_teams')
+                                        })
+                                    }),
+                                    (0, i.jsx)("li", {
+                                        children: (0, i.jsx)("span", {
+                                            onClick: () => handleMobileMenuClick('contact'),
+                                            children: getText('menu_contact')
+                                        })
+                                    }),
+                                    (0, i.jsx)("li", {
+                                        children: (0, i.jsx)("span", {
+                                            onClick: () => handleMobileMenuClick('blog'),
+                                            children: getText('menu_blog')
+                                        })
+                                    }),
+                                ],
+                            }),
+                            (0, i.jsx)("div", {
+                                className: "mobile-menu-mail",
+                                children: (0, i.jsxs)("p", {
+                                    children: [
+                                        "Email: ",
+                                        (0, i.jsx)("span", { children: getText('header_email') }),
+                                    ],
+                                }),
+                            }),
                         ],
                     }),
-                }),
-            ],
-        }),
-    ],
-});
+                ],
+            });
 
             let l = () => (0, i.jsxs)("div", {
                 className: "scroll-progress hide-mobile",
                 children: [
                     (0, i.jsx)("div", { className: "progress-line", children: (0, i.jsx)("div", { className: "progress-fill", style: { width: "100%" } }) }),
-          
+
                 ],
             });
 
@@ -476,12 +476,38 @@ let n = () => (0, i.jsxs)("header", {
                                     (0, i.jsxs)("div", {
                                         children: [
                                             (0, i.jsxs)("div", {
-                                                className: "animated-layer fade-in-down-animation fadeInLeft wow",
-                                                onClick: () => sendTeamMessage("Programming"),
-                                                style: { cursor: "pointer" },
                                                 children: [
-                                                    (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-computer" }) }),
-                                                    (0, i.jsx)("h4", { children: getText('team_programming') }),
+                                                    (0, i.jsxs)("div", {
+                                                        className: "animated-layer fade-in-down-animation fadeInLeft wow",
+                                                        // Normal click - navigate to HTML page
+                                                        onClick: () => window.location.href = '/info.html',
+                                                        // Hold click functionality
+                                                        onMouseDown: (event) => {
+                                                            if (event.button === 0) { // Left mouse button
+                                                                event.target.holdTimer = setTimeout(() => {
+                                                                    console.log("Hold click detected for Programming");
+                                                                    sendTeamMessage("Programming");
+                                                                }, 800); // 800ms hold duration
+                                                            }
+                                                        },
+                                                        onMouseUp: (event) => {
+                                                            if (event.button === 0 && event.target.holdTimer) {
+                                                                clearTimeout(event.target.holdTimer);
+                                                                event.target.holdTimer = null;
+                                                            }
+                                                        },
+                                                        onMouseLeave: (event) => {
+                                                            if (event.target.holdTimer) {
+                                                                clearTimeout(event.target.holdTimer);
+                                                                event.target.holdTimer = null;
+                                                            }
+                                                        },
+                                                        style: { cursor: "pointer" },
+                                                        children: [
+                                                            (0, i.jsx)("span", { children: (0, i.jsx)("i", { className: "fa-solid fa-computer" }) }),
+                                                            (0, i.jsx)("h4", { children: getText('team_programming') }),
+                                                        ],
+                                                    }),
                                                 ],
                                             }),
 
@@ -1478,87 +1504,111 @@ let n = () => (0, i.jsxs)("header", {
 
             var k = a(7294);
             let I = () => {
-    const [dataVersion, setDataVersion] = (0, k.useState)(0);
+                const [dataVersion, setDataVersion] = (0, k.useState)(0);
 
-    const handleMobileMenuClick = (sectionId) => {
-    // Close mobile menu
-    const mobileMenu = document.querySelector('.mobile-menu');
-    if (mobileMenu) {
-        mobileMenu.classList.remove('active');
-        document.body.style.overflow = '';
-    }
-    
-    // Scroll to section
-    if (typeof window !== 'undefined' && window.jQuery) {
-        const $ = window.jQuery;
-        if ($(window).width() > 1024) {
-            $("#wrapper").mCustomScrollbar("scrollTo", `#${sectionId}`, { scrollInertia: 1500 });
-        } else {
-            $("html, body").animate({ scrollTop: $(`#${sectionId}`).offset().top }, 800);
-        }
-    }
-};
+                const handleMobileMenuClick = (sectionId) => {
+                    // Close mobile menu
+                    const mobileMenu = document.querySelector('.mobile-menu');
+                    if (mobileMenu) {
+                        mobileMenu.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
 
-// Update your useEffect to include mobile menu functionality
-(0, k.useEffect)(() => {
-    // Your existing initialization code
-    if (typeof y !== 'undefined') y();
+                    // Scroll to section
+                    if (typeof window !== 'undefined' && window.jQuery) {
+                        const $ = window.jQuery;
+                        if ($(window).width() > 1024) {
+                            $("#wrapper").mCustomScrollbar("scrollTo", `#${sectionId}`, { scrollInertia: 1500 });
+                        } else {
+                            $("html, body").animate({ scrollTop: $(`#${sectionId}`).offset().top }, 800);
+                        }
+                    }
+                };
 
-    // Fetch data from Apps Script
-    fetchSheetData().then(fetchedData => {
-        sheetData = fetchedData;
-        if (Object.keys(fetchedData).length > 0) {
-            setDataVersion(v => v + 1);
-        }
-    });
+                // Update your useEffect to include mobile menu functionality
+                (0, k.useEffect)(() => {
+                    // Your existing initialization code
+                    if (typeof y !== 'undefined') y();
 
-    // =========================================================
-    // 🎯 MOBILE MENU FUNCTIONALITY
-    // =========================================================
-    const menuToggle = document.getElementById('menuToggle');
-    const mobileMenu = document.querySelector('.mobile-menu');
-    const mobileMenuClose = document.querySelector('.mobile-menu-close');
-    
-    if (menuToggle && mobileMenu) {
-        // Toggle mobile menu
-        menuToggle.addEventListener('click', function() {
-            mobileMenu.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        });
-        
-        // Close mobile menu
-        if (mobileMenuClose) {
-            mobileMenuClose.addEventListener('click', function() {
-                mobileMenu.classList.remove('active');
-                document.body.style.overflow = '';
-            });
-        }
-        
-        // Close menu when clicking on links
-        const mobileLinks = mobileMenu.querySelectorAll('span');
-        mobileLinks.forEach(link => {
-            link.addEventListener('click', function() {
-                // Small delay to show the click effect
-                setTimeout(() => {
-                    mobileMenu.classList.remove('active');
-                    document.body.style.overflow = '';
-                }, 300);
-            });
-        });
-        
-        // Close menu when clicking outside
-        mobileMenu.addEventListener('click', function(e) {
-            if (e.target === mobileMenu) {
-                mobileMenu.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        });
-    }
-        // =========================================================
-        // END OF MOBILE MENU CODE
-        // =========================================================
+                    // Fetch data from Apps Script
+                    fetchSheetData().then(fetchedData => {
+                        sheetData = fetchedData;
+                        if (Object.keys(fetchedData).length > 0) {
+                            setDataVersion(v => v + 1);
+                        }
+                    });
 
-    }, []);
+                    // =========================================================
+                    // 🎯 MOBILE MENU FUNCTIONALITY
+                    // =========================================================
+                    const menuToggle = document.getElementById('menuToggle');
+                    const mobileMenu = document.querySelector('.mobile-menu');
+                    const mobileMenuClose = document.querySelector('.mobile-menu-close');
+
+                    if (menuToggle && mobileMenu) {
+                        // Toggle mobile menu
+                        menuToggle.addEventListener('click', function () {
+                            mobileMenu.classList.add('active');
+                            document.body.style.overflow = 'hidden';
+                        });
+
+                        // Close mobile menu
+                        if (mobileMenuClose) {
+                            mobileMenuClose.addEventListener('click', function () {
+                                mobileMenu.classList.remove('active');
+                                document.body.style.overflow = '';
+                            });
+                        }
+
+                        // Close menu when clicking on links
+                        const mobileLinks = mobileMenu.querySelectorAll('span');
+                        mobileLinks.forEach(link => {
+                            link.addEventListener('click', function () {
+                                // Small delay to show the click effect
+                                setTimeout(() => {
+                                    mobileMenu.classList.remove('active');
+                                    document.body.style.overflow = '';
+                                }, 300);
+                            });
+                        });
+
+                        // Close menu when clicking outside
+                        mobileMenu.addEventListener('click', function (e) {
+                            if (e.target === mobileMenu) {
+                                mobileMenu.classList.remove('active');
+                                document.body.style.overflow = '';
+                            }
+                        });
+                    }
+                    // =========================================================
+                    // END OF MOBILE MENU CODE
+                    // =========================================================
+                    const handleRightClick = (teamName) => {
+                        console.log(`Right click action for ${teamName}`);
+
+                        // Add your specific right-click actions here
+                        switch (teamName) {
+                            case "Programming":
+                                // Programming team right-click action
+                                console.log("Opening programming team details...");
+                                // Example: open modal, show details, etc.
+                                break;
+                            case "Taekwondo":
+                                // Taekwondo team right-click action
+                                console.log("Opening taekwondo team details...");
+                                break;
+                            // Add more cases for other teams as needed
+                            default:
+                                console.log(`Right click on ${teamName}`);
+                        }
+
+                        // You can also trigger other actions like:
+                        // - Open a context menu
+                        // - Show team statistics
+                        // - Quick actions
+                        // - etc.
+                    };
+                }, []);
 
 
                 return (0, i.jsx)(k.Fragment, {
