@@ -1,0 +1,421 @@
+/* ==============================================
+   Original Styles (Variables & Base)
+   ============================================== */
+
+/* CSS variables for glass morphism */
+:root {
+    --glass-bg: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.18);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    --glass-blur: blur(20px);
+    --accent-primary: rgba(44, 90, 160, 0.9);
+    --accent-secondary: rgba(30, 58, 138, 0.9);
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.8);
+    --bg-primary: #0b0b0b;
+    --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Light mode variables */
+body:not(.dark-mode) {
+    --glass-bg: rgba(255, 255, 255, 0.75);
+    --glass-border: rgba(255, 255, 255, 0.25);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    --text-primary: #0b0b0b;
+    --text-secondary: rgba(11, 11, 11, 0.8);
+    --bg-primary: #f5f5f5;
+}
+
+/* Base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Livvic", sans-serif;
+    font-size: 18px;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: var(--transition);
+    line-height: 1.6;
+}
+
+/* Glass morphism component */
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    box-shadow: var(--glass-shadow);
+    transition: var(--transition);
+    overflow: hidden;
+    padding: 30px; /* Added default padding for dashboard cards */
+}
+
+.glass-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+}
+
+/* ==============================================
+   Original Header Styles
+   ============================================== */
+header {
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    padding: 20px 40px;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-bottom: 1px solid var(--glass-border);
+    transition: var(--transition);
+}
+
+.header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+.logo span {
+    color: var(--accent-primary);
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+.nav-menu li a {
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 30px;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-menu li a:hover {
+    background: var(--accent-primary);
+    transform: translateY(-2px);
+}
+
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* ==============================================
+   NEW Dashboard Layout Styles
+   ============================================== */
+
+.dashboard-layout {
+    display: grid;
+    /* Defines the 3-column structure */
+    grid-template-columns: 280px 1fr 240px;
+    gap: 25px;
+    max-width: 1600px;
+    margin: 0 auto;
+    /* Padding to offset fixed header and add space */
+    padding: 120px 40px 40px;
+}
+
+/* Main Content Area */
+.dashboard-main-content .dashboard-title {
+    font-size: 3.5rem; /* Borrowed size */
+    font-weight: 800;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.dashboard-main-content .dashboard-title span {
+    color: var(--accent-primary);
+    -webkit-text-fill-color: initial; /* Reset for span */
+}
+
+.dashboard-main-content .dashboard-subtitle {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    margin-bottom: 30px;
+}
+
+.dashboard-module {
+    margin-bottom: 25px;
+}
+
+.module-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: var(--text-primary);
+}
+
+/* Left Sidebar (Photos) */
+.photo-feed-card h3 {
+    font-weight: 600;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.photo-feed img {
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    border: 1px solid var(--glass-border);
+    transition: var(--transition);
+}
+.photo-feed img:hover {
+    transform: scale(1.03);
+}
+
+/* Borrowed button styles for the "View Gallery" link */
+.btn {
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    width: 100%;
+    justify-content: center;
+}
+
+.btn-secondary {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    color: var(--text-primary);
+    border: 1px solid var(--glass-border);
+}
+
+.btn-secondary:hover {
+    transform: translateY(-5px);
+    background: var(--accent-primary);
+    color: white;
+}
+
+
+/* Center Content (Coaches) */
+.coaches-container {
+    display: flex;
+    gap: 20px;
+}
+
+.team-member-condensed {
+    flex: 1;
+    text-align: center;
+    padding: 20px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    transition: var(--transition);
+}
+.team-member-condensed:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.12); /* Slightly lighter glass */
+}
+
+.member-avatar {
+    width: 100px; /* Smaller avatar */
+    height: 100px;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    overflow: hidden;
+    border: 3px solid var(--glass-border);
+}
+
+.member-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.member-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.member-role {
+    font-size: 0.9rem;
+    color: var(--accent-primary);
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.member-social {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.member-social a {
+    width: 35px; /* Smaller icons */
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--glass-bg);
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: var(--transition);
+    border: 1px solid var(--glass-border);
+}
+
+.member-social a:hover {
+    background: var(--accent-primary);
+    transform: translateY(-3px);
+}
+
+
+/* Center Content (Events) */
+.events-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.event-preview-card {
+    /* This style is inspired by the blue boxes in your layout */
+    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+    padding: 20px;
+    border-radius: 16px;
+    color: white;
+    transition: var(--transition);
+    box-shadow: 0 10px 20px rgba(44, 90, 160, 0.3);
+}
+.event-preview-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(44, 90, 160, 0.4);
+}
+.event-preview-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+.event-preview-date {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    font-weight: 500;
+}
+
+/* Right Sidebar (Nav) */
+.page-nav-card {
+    position: sticky; /* Makes the nav stick on scroll */
+    top: 120px; /* 100px for header + 20px spacing */
+}
+.page-nav-card h3 {
+    font-weight: 600;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.page-nav {
+    list-style: none;
+}
+
+.page-nav li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 10px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: var(--transition);
+}
+.page-nav li a:hover {
+    background: var(--glass-bg);
+    color: var(--accent-primary);
+    transform: translateX(5px);
+}
+.page-nav li a .fas {
+    width: 20px;
+    text-align: center;
+}
+
+/* ==============================================
+   Responsive Design Adjustments
+   ============================================== */
+
+@media (max-width: 1200px) {
+    .dashboard-layout {
+        /* Stack to 2 columns: Main content + right sidebar */
+        grid-template-columns: 1fr 240px;
+    }
+    .dashboard-sidebar-left {
+        /* Move left sidebar to the top */
+        grid-column: 1 / -1; /* Span full width */
+    }
+    .photo-feed {
+        display: flex;
+        gap: 15px;
+    }
+    .photo-feed img {
+        width: 33.3%;
+    }
+}
+
+@media (max-width: 992px) {
+    .dashboard-layout {
+        /* Stack to 1 column */
+        grid-template-columns: 1fr;
+        padding: 100px 20px 20px; /* Adjust padding for mobile */
+    }
+    .page-nav-card {
+        position: static; /* Unstick nav */
+    }
+    .coaches-container {
+        flex-direction: column;
+    }
+    .events-preview-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Original mobile menu styles */
+    .nav-menu {
+        display: none;
+        /* Add JS to toggle this */
+    }
+    .mobile-menu-btn {
+        display: block;
+    }
+}

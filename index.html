@@ -29,7 +29,6 @@
     <script src="js/framework-cda2f1305c3d9424.js" defer=""></script>
     <script src="js/main-627138c22ebf06ea.js" defer=""></script>
     <script src="js/_app-939fc81c9b33b38b.js" defer=""></script>
-    <script src="js/ScrollRect.jsx" defer=""></script>
     <script src="https://apis.google.com/js/api.js"></script>
     <script src="js/b637e9a5-72306854ad8c548c.js" defer=""></script>
     <script src="js/574-3e6def5898b0fc8d.js" defer=""></script>
@@ -529,36 +528,80 @@
             <div class="line"></div>
         </div>
         <div class="page-content">
+<body class="dark-mode">
+    <div id="__next">
+        <div class="page-content">
             <header>
+                <!-- Desktop Navbar -->
                 <div class="header-inner hide-mobile">
                     <div class="menu">
                         <nav>
                             <ul>
                                 <li><span class="active" id="home-link">Home</span></li>
                                 <li><span id="about-link">About</span></li>
-                                <li><span id="portfolio-link">Portfolio</span></li>
+                                <li><span id="Teams-link">Teams</span></li>
                                 <li><span id="contact-link">Contact</span></li>
                                 <li><span id="blog-link">Blog</span></li>
                             </ul>
                         </nav>
                     </div>
                     <div class="mail">
-                        <p>Email :<span> contact@steven.net</span></p>
+                        <p>Email :<span> info@zaha.gov.jo</span></p>
                     </div>
                 </div>
-                <nav class="mobile-menu">
-                    <div id="menuToggle"><input type="checkbox"
-                            id="checkboxmenu"><span></span><span></span><span></span>
-                        <ul class="list-unstyled" id="menu">
-                            <li><a href="#home"><span>Home</span></a></li>
-                            <li><a href="#my-photo"><span>About</span></a></li>
-                            <li><a href="#portfolio"><span>Portfolio</span></a></li>
-                            <li><a href="#contact"><span>Contact</span></a></li>
-                            <li><a href="#blog"><span>Blog</span></a></li>
-                        </ul>
+
+                <!-- Mobile Menu Toggle Button -->
+                <div id="menuToggle" class="hide-desktop">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <!-- Mobile Menu Overlay -->
+                <div class="mobile-menu">
+                    <div class="mobile-menu-close">✕</div>
+                    <ul>
+                        <li><span onclick="handleMobileMenuClick('home')">Home</span></li>
+                        <li><span onclick="handleMobileMenuClick('about')">About</span></li>
+                        <li><span onclick="handleMobileMenuClick('Teams')">Teams</span></li>
+                        <li><span onclick="handleMobileMenuClick('contact')">Contact</span></li>
+                        <li><span onclick="handleMobileMenuClick('blog')">Blog</span></li>
+                    </ul>
+                    <div class="mail">
+                        <p>Email: <span>info@zaha.gov.jo</span></p>
                     </div>
-                </nav>
+                </div>
             </header>
+
+            <main>
+                <section class="home" id="home">
+                    <h1>Zaha's Teams</h1>
+                    <p>Welcome to our amazing platform</p>
+                </section>
+                
+                <section class="about" id="about">
+                    <h2>About Us</h2>
+                    <p>Learn more about our team and mission</p>
+                </section>
+                
+                <section class="portfolio" id="Teams">
+                    <h2>Our Teams</h2>
+                    <p>Meet our talented teams</p>
+                </section>
+                
+                <section class="contact" id="contact">
+                    <h2>Contact Us</h2>
+                    <p>Get in touch with our team</p>
+                </section>
+                
+                <section class="blog" id="blog">
+                    <h2>Blog</h2>
+                    <p>Latest updates and news</p>
+                </section>
+            </main>
+        </div>
+    </div>
+
             <div id="wrapper">
                 <main class="flex-column-mobile">
                     <section class="home image" id="home">
@@ -1026,7 +1069,7 @@
                     <section class="copyright"><img alt="" class="z-1 hide-mobile" src="images/separator-copyright.png">
                         <div><span>©<!-- --> <a
                                     target="_blank"
-                                    href="https://themeforest.net/user/Codeefly/portfolio">Codeefly</a></span>
+                                    href="">Codeefly</a></span>
                             <ul>
                                 <li><a href="#"><i class="fa-brands fa-github"></i></a></li>
                                 <li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
@@ -1075,6 +1118,10 @@
       <div class="chatbot-avatar">
         <img src="images/logo.png" alt="Zaha Chatbot" />
       </div>
+    </style>
+
+       
+
       <div class="chatbot-info">
         <h4>مساعد زها</h4>
         <span class="status">متصل الآن</span>
@@ -1110,8 +1157,106 @@
   </div>
 </div>
 
+<script>
+          // Mobile menu functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menuToggle');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const mobileMenuClose = document.querySelector('.mobile-menu-close');
+            
+            // Toggle mobile menu
+            if (menuToggle && mobileMenu) {
+                menuToggle.addEventListener('click', function() {
+                    mobileMenu.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                });
+                
+                // Close mobile menu
+                if (mobileMenuClose) {
+                    mobileMenuClose.addEventListener('click', function() {
+                        mobileMenu.classList.remove('active');
+                        document.body.style.overflow = '';
+                    });
+                }
+                
+                // Close menu when clicking on links
+                const mobileLinks = mobileMenu.querySelectorAll('span');
+                mobileLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        // Small delay to show the click effect
+                        setTimeout(() => {
+                            mobileMenu.classList.remove('active');
+                            document.body.style.overflow = '';
+                        }, 300);
+                    });
+                });
+                
+                // Close menu when clicking outside
+                mobileMenu.addEventListener('click', function(e) {
+                    if (e.target === mobileMenu) {
+                        mobileMenu.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+            }
 
+            // Desktop navigation click handlers
+            const desktopLinks = document.querySelectorAll('.header-inner .menu ul li span');
+            desktopLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    const targetId = this.id.replace('-link', '');
+                    scrollToSection(targetId);
+                });
+            });
+        });
 
+        // Mobile menu click handler
+        function handleMobileMenuClick(sectionId) {
+            // Close mobile menu
+            const mobileMenu = document.querySelector('.mobile-menu');
+            if (mobileMenu) {
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            
+            // Scroll to section
+            scrollToSection(sectionId);
+        }
+
+        // Smooth scroll to section
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }
+
+        // Add active class to current section in navigation
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.header-inner .menu ul li span, .mobile-menu ul li span');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - 100)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('onclick')?.includes(current) || 
+                    link.id === `${current}-link`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+</script>
 
 </body>
 

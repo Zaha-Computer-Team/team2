@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Zaha's Teams Program</title>
+
+  <!-- Arabic fonts + general -->
+  <style>
+    @import url('https://fonts.googleapis.com/earlyaccess/amiri.css');
+    @import url('https://fonts.googleapis.com/earlyaccess/droidarabicnaskh.css');
+    @import url('https://fonts.googleapis.com/earlyaccess/lateef.css');
+    @import url('https://fonts.googleapis.com/earlyaccess/scheherazade.css');
+    @import url('https://fonts.googleapis.com/earlyaccess/thabit.css');
+    @import url('https://fonts.googleapis.com/css2?family=Livvic:wght@300;400;700;900&display=swap');
+  </style>
+
+  <style>
+    /* ---------- Reset & base ---------- */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html,body { height:100%; }
+    body {
+      font-family: "Livvic", "Amiri", "Droid Arabic Naskh", sans-serif;
+      font-size: 18px;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      background: #0b0b0b;
+      color: #fff;
+      overflow: hidden; /* hide vertical scroll; horizontal handled inside */
+    }
+
+    /* Light mode */
+    body.light {
+      background:#f5f5f5;
+      color: #0b0b0b;
+    }
+
+    a { color: inherit; text-decoration:none; }
+
+    /* ---------- Preloader ---------- */
+    #preloader {
+      position:fixed; inset:0; z-index:99999; display:flex; align-items:center; justify-content:center;
+      pointer-events:none;
+    }
+    #preloader .line {
+      width:4px; height:220px; background:linear-gradient(#666,#222);
+      border-radius:6px; position:relative; overflow:hidden;
+    }
+    #preloader .line:before{
+      content:""; position:absolute; left:0; top:50%; width:100%; height:0;
+      background:linear-gradient(180deg,#ffb86b,#ff6b6b);
+      transform:translateY(-50%);
+      animation: preLine 900ms ease-in-out forwards;
+    }
+    @keyframes preLine {
+      0%{ height:0 } 100%{ height:100% }
+    }
+    .preloaded { opacity:0; pointer-events:none; transition: all .5s ease 0.5s; }
+
+    /* ---------- Header ---------- */
+    header {
+      position:fixed; top:0; left:0; right:0; z-index: 60;
+      display:flex; justify-content:space-between; align-items:center;
+      padding:26px 36px; gap:20px;
+      background:transparent;
+      backdrop-filter: blur(6px);
+    }
+    header .logo { font-weight:800; letter-spacing:0.4px; font-size:20px; color:#fff; }
+    body.light header .logo { color:#0b0b0b; }
+    header nav ul { list-style:none; display:flex; gap:28px; align-items:center; }
+    header nav li { font-weight:500; cursor:pointer; position:relative; padding:6px 0; }
+    header nav li:hover::after,
+    header nav li.active::after { content:""; position:absolute; left:0; right:0; height:8px; top:-34px; border-radius:0 0 6px 6px; background: rgba(255,255,255,0.06); }
+    .header-right { display:flex; gap:16px; align-items:center; }
+
+    /* ---------- Settings floating button & panel ---------- */
+    .settings { position:fixed; bottom:20px; right:20px; z-index:200; font-family:"Livvic"; }
+    #showSettings{
+      width:46px; height:46px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+      background:#007bff; color:#fff; cursor:pointer; box-shadow:0 8px 30px rgba(0,0,0,0.35);
+    }
+    body.light #showSettings { background:#007bff; color:#fff; }
+    .settings-panel{
+      width:240px; border-radius:10px; padding:14px; background:#1c1c1c; color:#fff;
+      position:absolute; bottom:70px; right:0; box-shadow:0 8px 30px rgba(0,0,0,.45); display:none;
+    }
+    .settings.open .settings-panel{ display:block; animation:fadeIn .25s ease; }
+    .setting-item{ display:flex; justify-content:space-between; align-items:center; margin:10px 0; font-size:15px; }
+    .setting-item button { padding:6px 10px; border-radius:6px; border:0; background:#007bff; color:#fff; cursor:pointer; }
+
+    /* ---------- Horizontal sections container ---------- */
+    main.wrapper {
+      position:relative; height:100vh; display:block; overflow-x:auto; overflow-y:hidden;
+      scroll-behavior:smooth; -webkit-overflow-scrolling:touch;
+      scroll-snap-type:x mandatory;
+      display:flex; gap:0;
+      /* leave space for header */
+      padding-top:0;
+    }
+
+    section.panel {
+      min-width:100vw; height:100vh; scroll-snap-align:start; display:flex; align-items:center;
+      justify-content:center; position:relative; flex-shrink:0;
+      padding:0 80px; gap:40px;
+    }
+
+    /* left vertical title */
+    .title-vertical {
+      writing-mode: vertical-rl; transform: scale(-1, -1);
+      width:120px; text-align:center; font-weight:900; letter-spacing:2px; font-size:48px;
+      display:flex; align-items:center; justify-content:center;
+    }
+
+    /* central card */
+    .card {
+      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.15));
+      width:920px; max-width:86vw; border-radius:20px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.6);
+      display:grid; grid-template-columns: 1fr 420px; gap:0; align-items:stretch;
+    }
+    body.light .card { background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.08); color:#0b0b0b; }
+
+    .card .visual {
+      position:relative; overflow:hidden;
+    }
+    .card .visual img {
+      width:100%; height:100%; object-fit:cover; display:block;
+    }
+    .img-overlay {
+      position:absolute; inset:0; background:linear-gradient(90deg, rgba(11,11,11,0.55), rgba(11,11,11,0.15));
+      transition:all .9s ease;
+    }
+    body.light .img-overlay { background: linear-gradient(90deg, rgba(245,245,245,0.65), rgba(245,245,245,0.15)); }
+
+    .card .info {
+      padding:36px 34px; display:flex; flex-direction:column; gap:18px;
+    }
+    .info h2 { font-size:34px; line-height:1; margin-bottom:4px; font-weight:800; letter-spacing:0.6px; }
+    .info .meta { color: rgba(255,255,255,0.7); font-size:14px; }
+    body.light .info .meta { color: rgba(0,0,0,0.6); }
+    .info p { margin-top:6px; line-height:1.6; color: rgba(255,255,255,0.9); }
+    body.light .info p { color:#333; }
+
+    .info .roles { display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+    .role-pill { background: rgba(255,255,255,0.06); padding:8px 12px; border-radius:999px; font-weight:600; font-size:13px; }
+    body.light .role-pill { background:#f1f5ff; color:#003d82; }
+
+    .info .actions { margin-top:auto; display:flex; gap:12px; align-items:center; }
+    .btn { padding:10px 16px; border-radius:40px; display:inline-flex; align-items:center; gap:10px; border:0; cursor:pointer; font-weight:600; }
+    .btn.ghost { background:transparent; color:inherit; border:1px solid rgba(255,255,255,0.08); }
+    .btn.primary { background:#007bff; color:#fff; }
+
+    /* achievements / list */
+    .achievements { margin-top:14px; display:flex; flex-direction:column; gap:8px; font-size:14px; color:rgba(255,255,255,0.9); }
+    body.light .achievements { color:#333; }
+
+    /* small thumbnails list on right (for multiple photos) */
+    .thumbs {
+      padding:18px; display:flex; flex-direction:column; gap:12px; background: rgba(0,0,0,0.02);
+      align-items:center; justify-content:flex-start;
+    }
+    body.light .thumbs { background: transparent; }
+    .thumbs img { width:100%; height:110px; object-fit:cover; border-radius:12px; box-shadow: 0 8px 30px rgba(0,0,0,0.25); }
+
+    /* arrows & progress */
+    .nav-arrow { position:fixed; top:50%; transform:translateY(-50%); z-index:80; width:56px; height:56px; border-radius:50%;
+                 display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,.45); color:#fff; cursor:pointer; }
+    .nav-arrow.left { left:18px; }
+    .nav-arrow.right { right:18px; }
+    body.light .nav-arrow { background: rgba(255,255,255,0.85); color:#0b0b0b; box-shadow:0 8px 30px rgba(0,0,0,0.06); }
+
+    .scroll-progress {
+      position:fixed; bottom:30px; left:50%; transform:translateX(-50%); width:calc(100vw - 260px); height:8px; z-index:70;
+      background: rgba(255,255,255,0.06); border-radius:6px; overflow:hidden;
+    }
+    .scroll-progress .bar { height:100%; width:0%; background:#007bff; border-radius:6px; transition: width .12s linear; }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 980px) {
+      .card { grid-template-columns: 1fr; width:86vw; max-width:86vw; }
+      .card .info{ padding:20px; }
+      .thumbs { display:none; }
+      .title-vertical { display:none; }
+    }
+    @media (max-width:600px){
+      header { padding:18px; }
+      header .logo { font-size:16px; }
+      .nav-arrow { width:48px; height:48px; }
+    }
+
+    @keyframes fadeIn { from{opacity:0; transform:translateY(-8px)} to{opacity:1; transform:none} }
+  </style>
+</head>
+
+<body>
+  <!-- PRELOADER -->
+  <div id="preloader"><div class="line"></div></div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">Zaha's Teams Program</div>
+    <nav>
+      <ul>
+        <li data-target="home" class="active">Home</li>
+        <li data-target="about">About</li>
+        <li data-target="teams">Teams</li>
+        <li data-target="events">Events</li>
+        <li data-target="contact">Contact</li>
+      </ul>
+    </nav>
+    <div class="header-right">
+      <div class="mail"><p>info@zaha.gov.jo</p></div>
+    </div>
+  </header>
+
+  <!-- SETTINGS -->
+  <div class="settings" id="settingsWrap">
+    <div id="showSettings" title="Settings">⚙</div>
+
+    <div class="settings-panel" id="settingsPanel" aria-hidden="true">
+      <div id="hideSettings" style="position:absolute;right:10px;top:8px;cursor:pointer;font-size:18px;color:#999">✕</div>
+      <div class="setting-item"><span>Dark Mode</span><button id="toggleTheme">Toggle</button></div>
+      <div class="setting-item"><span>RTL</span><button id="toggleDir">Toggle</button></div>
+      <div class="setting-item"><span>Snap Scroll</span><button id="toggleSnap">Toggle</button></div>
+    </div>
+  </div>
+
+  <!-- HORIZONTAL PANELS -->
+  <main class="wrapper" id="hScroll">
+
+    <!-- Panel 1 - Home / big intro -->
+    <section class="panel" data-panel="1" style="background:linear-gradient(180deg,#0b0b0b,#111)">
+      <div class="title-vertical">Z A H A</div>
+
+      <div class="card" role="article" aria-label="Team portfolio card example">
+        <div class="visual">
+          <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1400&q=80" alt="Team photo 1">
+          <div class="img-overlay"></div>
+        </div>
+
+        <div class="info">
+          <h2>Team Name — Replace Me</h2>
+          <div class="meta">Coach: <strong>اسم المدرب</strong> · Founded 2010</div>
+          <p>
+            This is a portfolio-style presentation for the team. Use this area to describe the team’s mission,
+            activities, specialties and recent accomplishments. Keep it clear and concise so visitors can quickly
+            grasp what the team does.
+          </p>
+
+          <div class="roles">
+            <span class="role-pill">Performing Arts</span>
+            <span class="role-pill">Community Outreach</span>
+            <span class="role-pill">Workshops</span>
+          </div>
+
+          <div class="achievements">
+            <div>• 1st place at City Festival — 2024</div>
+            <div>• 12 workshops hosted last year</div>
+            <div>• 30+ active members</div>
+          </div>
+
+          <div class="actions">
+            <button class="btn primary" onclick="window.open('#')">View Program</button>
+            <button class="btn ghost" onclick="window.open('#')">Contact Coach</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="thumbs" style="width:320px;margin-left:24px;">
+        <img src="https://images.unsplash.com/photo-1507537269974-8b6265a554b4?auto=format&fit=crop&w=800&q=70" alt="thumb1">
+        <img src="https://images.unsplash.com/photo-1515162305288-1d9f1a4e5bfe?auto=format&fit=crop&w=800&q=70" alt="thumb2">
+        <img src="https://images.unsplash.com/photo-1526947431965-0f2f6d9c7a8b?auto=format&fit=crop&w=800&q=70" alt="thumb3">
+      </div>
+    </section>
+
+    <!-- Panel 2 - Team 2 -->
+    <section class="panel" data-panel="2" style="background:linear-gradient(180deg,#071220,#091824)">
+      <div class="title-vertical">TEAM</div>
+
+      <div class="card">
+        <div class="visual">
+          <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1400&q=80" alt="Team photo 2">
+          <div class="img-overlay"></div>
+        </div>
+
+        <div class="info">
+          <h2>Another Team</h2>
+          <div class="meta">Coach: <strong>John Doe</strong> · Focus: Education</div>
+          <p>
+            A short summary about this team’s portfolio: programs, training, public performances and ways to join.
+            Replace texts and links with your own content.
+          </p>
+
+          <div class="roles">
+            <span class="role-pill">Education</span>
+            <span class="role-pill">Workshops</span>
+            <span class="role-pill">Kids</span>
+          </div>
+
+          <div class="achievements">
+            <div>• 8 summer programs delivered</div>
+            <div>• Collaborations with schools</div>
+          </div>
+
+          <div class="actions">
+            <button class="btn primary">Program Details</button>
+            <button class="btn ghost">Join</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="thumbs" style="width:320px;margin-left:24px;">
+        <img src="https://images.unsplash.com/photo-1508609349937-5ec4ae374ebf?auto=format&fit=crop&w=800&q=70" alt="thumbA">
+        <img src="https://images.unsplash.com/photo-1529220502055-3b7a2e1d83df?auto=format&fit=crop&w=800&q=70" alt="thumbB">
+        <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=70" alt="thumbC">
+      </div>
+    </section>
+
+    <!-- Panel 3 - Team 3 -->
+    <section class="panel" data-panel="3" style="background:linear-gradient(180deg,#14080a,#2b0f12)">
+      <div class="title-vertical">PORTFOLIO</div>
+
+      <div class="card">
+        <div class="visual">
+          <img src="https://images.unsplash.com/photo-1519677100203-a0e668c92439?auto=format&fit=crop&w=1400&q=80" alt="Team photo 3">
+          <div class="img-overlay"></div>
+        </div>
+
+        <div class="info">
+          <h2>Team Three</h2>
+          <div class="meta">Coach: <strong>Jane Smith</strong> · Events & Culture</div>
+          <p>
+            Show off achievements, recent events, and media. Use the thumbnails on the right to link to galleries or videos.
+          </p>
+
+          <div class="roles">
+            <span class="role-pill">Events</span>
+            <span class="role-pill">Media</span>
+          </div>
+
+          <div class="achievements">
+            <div>• Community festival showcases</div>
+            <div>• Photo & video archive</div>
+          </div>
+
+          <div class="actions">
+            <button class="btn primary">See Gallery</button>
+            <button class="btn ghost">Invite to Event</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="thumbs" style="width:320px;margin-left:24px;">
+        <img src="https://images.unsplash.com/photo-1504461923275-5c8f31c8a8d4?auto=format&fit=crop&w=800&q=70" alt="t1">
+        <img src="https://images.unsplash.com/photo-1526240980533-5a56d0925b3b?auto=format&fit=crop&w=800&q=70" alt="t2">
+        <img src="https://images.unsplash.com/photo-1501901609772-6a70a3ae3e2b?auto=format&fit=crop&w=800&q=70" alt="t3">
+      </div>
+    </section>
+  </main>
+
+  <!-- Nav arrows -->
+  <div class="nav-arrow left" id="arrowLeft" title="Previous">◀</div>
+  <div class="nav-arrow right" id="arrowRight" title="Next">▶</div>
+
+  <!-- Scroll progress -->
+  <div class="scroll-progress" aria-hidden="true">
+    <div class="bar" id="scrollBar" style="width:0%"></div>
+  </div>
+
+  <!-- SCRIPT: Behaviors -->
+  <script>
+    (function () {
+      const pre = document.getElementById('preloader');
+      const wrapper = document.getElementById('hScroll');
+      const panels = Array.from(document.querySelectorAll('section.panel'));
+      const arrowLeft = document.getElementById('arrowLeft');
+      const arrowRight = document.getElementById('arrowRight');
+      const scrollBar = document.getElementById('scrollBar');
+      const settingsWrap = document.getElementById('settingsWrap');
+      const showSettings = document.getElementById('showSettings');
+      const settingsPanel = document.getElementById('settingsPanel');
+      const hideSettings = document.getElementById('hideSettings');
+      const toggleTheme = document.getElementById('toggleTheme');
+      const toggleDir = document.getElementById('toggleDir');
+      const toggleSnap = document.getElementById('toggleSnap');
+      const navItems = document.querySelectorAll('header nav li');
+
+      // Preloader finish
+      window.addEventListener('load', () => {
+        pre.classList.add('preloaded');
+        setTimeout(()=> pre.style.display='none',700);
+      });
+
+      // Arrow scroll helpers
+      function scrollToPanel(index) {
+        if (index < 0) index = 0;
+        if (index >= panels.length) index = panels.length - 1;
+        panels[index].scrollIntoView({behavior:'smooth', inline:'start'});
+      }
+
+      arrowLeft.addEventListener('click', () => {
+        const curIndex = Math.round(wrapper.scrollLeft / window.innerWidth);
+        scrollToPanel(curIndex - 1);
+      });
+      arrowRight.addEventListener('click', () => {
+        const curIndex = Math.round(wrapper.scrollLeft / window.innerWidth);
+        scrollToPanel(curIndex + 1);
+      });
+
+      // Update progress and active nav
+      function updateProgress() {
+        const maxScroll = wrapper.scrollWidth - wrapper.clientWidth;
+        const pos = wrapper.scrollLeft;
+        const pct = maxScroll <= 0 ? 0 : Math.round((pos / maxScroll) * 100);
+        scrollBar.style.width = pct + '%';
+
+        // update nav active based on nearest panel
+        const index = Math.round(wrapper.scrollLeft / window.innerWidth);
+        navItems.forEach((li,i)=> li.classList.toggle('active', i===index));
+      }
+      wrapper.addEventListener('scroll', throttle(updateProgress, 50));
+      updateProgress();
+
+      // keyboard nav
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') arrowLeft.click();
+        if (e.key === 'ArrowRight') arrowRight.click();
+      });
+
+      // settings toggle
+      showSettings.addEventListener('click', () => {
+        settingsWrap.classList.toggle('open');
+      });
+      hideSettings.addEventListener('click', () => settingsWrap.classList.remove('open'));
+
+      // Theme toggle
+      toggleTheme.addEventListener('click', () => {
+        document.body.classList.toggle('light');
+      });
+
+      // RTL toggle
+      toggleDir.addEventListener('click', () => {
+        const d = document.documentElement.getAttribute('dir') === 'rtl' ? 'ltr' : 'rtl';
+        document.documentElement.setAttribute('dir', d);
+        // mirror layout for header nav if rtl
+        if (d === 'rtl') document.body.setAttribute('dir','rtl'); else document.body.removeAttribute('dir');
+      });
+
+      // Snap toggle
+      toggleSnap.addEventListener('click', () => {
+        const snap = wrapper.style.scrollSnapType;
+        wrapper.style.scrollSnapType = snap === 'none' ? 'x mandatory' : 'none';
+      });
+
+      // nav items click to scroll to panels
+      navItems.forEach((li, i) => {
+        li.addEventListener('click', () => scrollToPanel(i));
+      });
+
+      // tiny throttler
+      function throttle(fn, wait) {
+        let t = 0;
+        return function() {
+          const now = Date.now();
+          if (now - t > wait) { t = now; fn.apply(this, arguments); }
+        };
+      }
+
+      // Make horizontal scroll work with mouse wheel (shift + wheel or normal wheel translate to x)
+      wrapper.addEventListener('wheel', (e) => {
+        // if vertical wheel, move horizontally (except when shift is pressed we let default)
+        if (!e.shiftKey) {
+          e.preventDefault();
+          wrapper.scrollLeft += e.deltaY + e.deltaX;
+        }
+      }, { passive:false });
+
+      // responsive: snap to nearest panel on resize
+      let resizeTimeout;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+          const idx = Math.round(wrapper.scrollLeft / window.innerWidth);
+          scrollToPanel(idx);
+        }, 120);
+      });
+
+      // touch: allow natural momentum; nothing extra needed (scroll-snap handles alignment)
+    })();
+  </script>
+</body>
+</html>
