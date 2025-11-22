@@ -131,8 +131,7 @@
             let l = () => (0, i.jsxs)("div", {
                 className: "scroll-progress hide-mobile",
                 children: [
-                    (0, i.jsx)("div", { className: "progress-line", children: (0, i.jsx)("div", { className: "progress-fill", style: { width: "0%" } }) }),
-                    (0, i.jsx)("div", { className: "progress-markers" })
+                    (0, i.jsx)("div", { className: "progress-line", children: (0, i.jsx)("div", { className: "progress-fill", style: { width: "100%" } }) }),       
                 ],
             });
 
@@ -766,7 +765,7 @@
                                             (0, i.jsxs)("div", {
                                                 className: "content",
                                                 children: [
-                                                    (0, i.jsx)("span", { className: "category", children: "essentials" }),
+                                                    (0, i.jsx)("span", { className: "category", children: "" }),
                                                     (0, i.jsx)("span", { className: "title", children: getText('post3_title') }),
                                                     (0, i.jsx)("p", { children: "" }),
                                                     (0, i.jsxs)("div", {

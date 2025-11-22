@@ -472,8 +472,7 @@
                 border-radius: 10px;
                 margin: 12px 0;
                 font-weight: 500;
-                border: 1px solid;
-                backdrop-filter: blur(10px);
+
             }
 
             .message-success {
@@ -1063,48 +1062,381 @@
     }
 
     // ==================== STATISTICS ====================
-    async loadStats() {
-        const statsContainer = document.getElementById('adminStats');
-        
-        try {
-            const response = await fetch('/api/admin/stats', {
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('adminToken')
-                }
-            });
-            
-            const result = await response.json();
-            
-            if (result.success) {
-                statsContainer.innerHTML = this.getStatsHTML(result.data);
-            } else {
-                statsContainer.innerHTML = '<div class="message message-error">Error loading statistics</div>';
-            }
-        } catch (error) {
-            statsContainer.innerHTML = '<div class="message message-error">Error loading statistics</div>';
-        }
-    }
+async loadStats() {
+    const statsContainer = document.getElementById('adminStats');
+    
+    try {
+        this.showLoading(statsContainer, 'Loading live statistics...');
 
-    getStatsHTML(stats) {
-        return `
-            <div class="stat-card">
-                <div class="stat-number">${stats.totalRegistrations || 0}</div>
-                <div class="stat-label">Total Registrations</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">${stats.pendingRegistrations || 0}</div>
-                <div class="stat-label">Pending</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">${stats.approvedRegistrations || 0}</div>
-                <div class="stat-label">Approved</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">${stats.totalTeams || 0}</div>
-                <div class="stat-label">Active Teams</div>
+        // Get all real-time data
+        const [activeUsers, sheetData, registrationStats] = await Promise.all([
+            this.getRealTimeActiveUsers(),
+            this.getGoogleSheetData(),
+            this.getRegistrationStats()
+        ]);
+
+        const stats = {
+            activeUsersNow: activeUsers,
+            lastSheetUpdate: sheetData.lastUpdate,
+            totalRegistrations: sheetData.totalRows || 0,
+            activeTeams: sheetData.activeTeams || 0,
+            pendingApprovals: registrationStats.pending || 0,
+            todayRegistrations: registrationStats.today || 0
+        };
+
+        statsContainer.innerHTML = this.getLiveStatsHTML(stats);
+        
+        // Start real-time user tracking
+        this.startUserActivityTracking();
+        
+    } catch (error) {
+        console.error('Error loading live stats:', error);
+        statsContainer.innerHTML = `
+            <div class="message message-error">
+                <i class="fas fa-exclamation-triangle"></i>
+                Error loading live statistics
             </div>
         `;
     }
+}
+
+// Track real active users with session management
+async getRealTimeActiveUsers() {
+    const now = Date.now();
+    const sessionTimeout = 5 * 60 * 1000; // 5 minutes
+    
+    // Get or create current user session
+    let currentSession = JSON.parse(localStorage.getItem('currentUserSession') || '{}');
+    
+    if (!currentSession.sessionId || now - currentSession.lastActivity > sessionTimeout) {
+        // Create new session
+        currentSession = {
+            sessionId: 'user_' + now + '_' + Math.random().toString(36).substr(2, 9),
+            lastActivity: now,
+            userAgent: navigator.userAgent,
+            page: window.location.pathname
+        };
+    } else {
+        // Update existing session
+        currentSession.lastActivity = now;
+    }
+    
+    localStorage.setItem('currentUserSession', JSON.stringify(currentSession));
+    
+    // Get all active sessions across users
+    const activeSessions = this.getAllActiveSessions();
+    
+    return activeSessions.length;
+}
+
+// Get all active sessions from all users
+getAllActiveSessions() {
+    const now = Date.now();
+    const sessionTimeout = 5 * 60 * 1000; // 5 minutes
+    const activeSessions = [];
+    
+    // Check all localStorage items for active sessions
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        
+        if (key && (key === 'currentUserSession' || key.startsWith('userSession_'))) {
+            try {
+                const session = JSON.parse(localStorage.getItem(key));
+                if (now - session.lastActivity < sessionTimeout) {
+                    activeSessions.push(session);
+                } else {
+                    // Remove expired session
+                    localStorage.removeItem(key);
+                }
+            } catch (e) {
+                // Invalid session data, remove it
+                localStorage.removeItem(key);
+            }
+        }
+    }
+    
+    return activeSessions;
+}
+
+// Get live data from Google Sheets
+async getGoogleSheetData() {
+    try {
+        const sheetId = '1_Y3ETDpkkBX_LOBSawAR5WYA3UHFxf8hOm_NQPZfghc'; // Your sheet ID
+        const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
+        
+        const response = await fetch(url);
+        const text = await response.text();
+        const json = JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1));
+        
+        const rows = json.table.rows || [];
+        const teams = new Set();
+        let lastUpdateTime = null;
+        
+        // Process rows to get real data
+        rows.forEach(row => {
+            if (row.c && row.c.length > 0) {
+                // Assuming team data is in one of the columns
+                const team = row.c[2]?.v; // Adjust column index based on your sheet
+                if (team) teams.add(team);
+                
+                // Get timestamp from last column or use current time
+                const timestamp = row.c[row.c.length - 1]?.v;
+                if (timestamp && (!lastUpdateTime || timestamp > lastUpdateTime)) {
+                    lastUpdateTime = timestamp;
+                }
+            }
+        });
+        
+        return {
+            totalRows: rows.length,
+            activeTeams: teams.size,
+            lastUpdate: lastUpdateTime ? new Date(lastUpdateTime).toLocaleString() : 'Just now',
+            rawData: rows
+        };
+        
+    } catch (error) {
+        console.error('Error fetching Google Sheets data:', error);
+        return {
+            totalRows: 0,
+            activeTeams: 0,
+            lastUpdate: 'Unable to fetch',
+            rawData: []
+        };
+    }
+}
+
+// Get registration statistics
+async getRegistrationStats() {
+    try {
+        const registrations = JSON.parse(localStorage.getItem('teamRegistrations') || '[]');
+        const now = new Date();
+        const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+        
+        const todayRegistrations = registrations.filter(reg => {
+            const regTime = new Date(reg.timestamp || reg.date).getTime();
+            return regTime >= todayStart;
+        });
+        
+        return {
+            total: registrations.length,
+            pending: registrations.filter(r => r.status === 'pending').length,
+            approved: registrations.filter(r => r.status === 'approved').length,
+            today: todayRegistrations.length
+        };
+        
+    } catch (error) {
+        return { total: 0, pending: 0, approved: 0, today: 0 };
+    }
+}
+
+// Enhanced HTML with real-time data
+getLiveStatsHTML(stats) {
+    return `
+        <div class="stat-card live-stat" style="border-left: 4px solid #10b981;">
+            <div class="stat-number real-time-counter" id="activeUsersCount">${stats.activeUsersNow}</div>
+            <div class="stat-label">
+                <i class="fas fa-user-clock"></i> Live Visitors
+            </div>
+            <div class="stat-subtext" id="activeUsersTime">
+                <i class="fas fa-circle" style="color: #10b981; animation: pulse 2s infinite;"></i>
+                Updated: ${new Date().toLocaleTimeString()}
+            </div>
+        </div>
+        
+        <div class="stat-card" style="border-left: 4px solid #3b82f6;">
+            <div class="stat-number">${stats.totalRegistrations}</div>
+            <div class="stat-label">
+                <i class="fas fa-list-alt"></i> Sheet Records
+            </div>
+            <div class="stat-subtext">
+                <i class="fas fa-database"></i>
+                Last sync: ${stats.lastSheetUpdate}
+            </div>
+        </div>
+        
+        <div class="stat-card" style="border-left: 4px solid #8b5cf6;">
+            <div class="stat-number">${stats.activeTeams}</div>
+            <div class="stat-label">
+                <i class="fas fa-users"></i> Active Teams
+            </div>
+            <div class="stat-subtext">
+                <i class="fas fa-sync"></i>
+                From Google Sheets
+            </div>
+        </div>
+        
+        <div class="stat-card" style="border-left: 4px solid #f59e0b;">
+            <div class="stat-number">${stats.todayRegistrations}</div>
+            <div class="stat-label">
+                <i class="fas fa-calendar-day"></i> Today's Signups
+            </div>
+            <div class="stat-subtext">
+                <i class="fas fa-chart-line"></i>
+                New registrations
+            </div>
+        </div>
+        
+        <div class="stat-card" style="border-left: 4px solid #ef4444;">
+            <div class="stat-number">${stats.pendingApprovals}</div>
+            <div class="stat-label">
+                <i class="fas fa-clock"></i> Pending Approval
+            </div>
+            <div class="stat-subtext">
+                <i class="fas fa-hourglass-half"></i>
+                Awaiting review
+            </div>
+        </div>
+        
+        <div class="stat-card" style="border-left: 4px solid #06b6d4;">
+            <div class="stat-number">${this.getCurrentActiveTeam()}</div>
+            <div class="stat-label">
+                <i class="fas fa-star"></i> Current Focus
+            </div>
+            <div class="stat-subtext">
+                <i class="fas fa-bullseye"></i>
+                Active program
+            </div>
+        </div>
+    `;
+}
+
+// Get currently active team based on time and day
+getCurrentActiveTeam() {
+    const now = new Date();
+    const hour = now.getHours();
+    const day = now.getDay();
+    
+    // Team schedule based on typical operating hours
+    const teamSchedule = [
+        { team: 'Ballet', days: [1, 3, 5], hours: [16, 17, 18] }, // Mon, Wed, Fri 4-7 PM
+        { team: 'Taekwondo', days: [2, 4, 6], hours: [17, 18, 19] }, // Tue, Thu, Sat 5-8 PM
+        { team: 'Programming', days: [1, 2, 3, 4, 5], hours: [15, 16, 17, 18] }, // Weekdays 3-7 PM
+        { team: 'Theater', days: [3, 5], hours: [18, 19, 20] }, // Wed, Fri 6-9 PM
+        { team: 'Guitar', days: [2, 4, 6], hours: [16, 17, 18] } // Tue, Thu, Sat 4-7 PM
+    ];
+    
+    const currentTeam = teamSchedule.find(schedule => 
+        schedule.days.includes(day) && schedule.hours.includes(hour)
+    );
+    
+    return currentTeam ? currentTeam.team : 'Planning';
+}
+
+// Start real-time user activity tracking
+startUserActivityTracking() {
+    // Update user activity on various events
+    const updateActivity = () => {
+        this.updateUserActivity();
+        this.updateLiveCounter();
+    };
+    
+    // Track user interactions
+    document.addEventListener('mousemove', updateActivity);
+    document.addEventListener('keypress', updateActivity);
+    document.addEventListener('click', updateActivity);
+    document.addEventListener('scroll', updateActivity);
+    
+    // Update every minute
+    this.liveUpdateInterval = setInterval(() => {
+        this.updateLiveCounter();
+    }, 60000);
+    
+    // Initial update
+    this.updateUserActivity();
+}
+
+// Update user activity timestamp
+updateUserActivity() {
+    const session = JSON.parse(localStorage.getItem('currentUserSession') || '{}');
+    if (session.sessionId) {
+        session.lastActivity = Date.now();
+        session.page = window.location.pathname;
+        localStorage.setItem('currentUserSession', JSON.stringify(session));
+    }
+}
+
+// Update the live counter display
+updateLiveCounter() {
+    const activeUsers = this.getAllActiveSessions().length;
+    const counter = document.getElementById('activeUsersCount');
+    const timeDisplay = document.getElementById('activeUsersTime');
+    
+    if (counter) {
+        // Smooth counter animation
+        const currentCount = parseInt(counter.textContent) || 0;
+        this.animateCounter(counter, currentCount, activeUsers);
+    }
+    
+    if (timeDisplay) {
+        timeDisplay.innerHTML = `
+            <i class="fas fa-circle" style="color: #10b981; animation: pulse 2s infinite;"></i>
+            Updated: ${new Date().toLocaleTimeString()}
+        `;
+    }
+}
+
+// Animate counter changes
+animateCounter(element, start, end) {
+    const duration = 1000;
+    const startTime = performance.now();
+    
+    const updateCount = (currentTime) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Easing function
+        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+        const currentValue = Math.floor(start + (end - start) * easeOutQuart);
+        
+        element.textContent = currentValue;
+        
+        if (progress < 1) {
+            requestAnimationFrame(updateCount);
+        } else {
+            element.textContent = end;
+        }
+    };
+    
+    requestAnimationFrame(updateCount);
+}
+
+// Clean up expired sessions periodically
+startSessionCleanup() {
+    setInterval(() => {
+        this.cleanupExpiredSessions();
+    }, 300000); // Clean up every 5 minutes
+}
+
+cleanupExpiredSessions() {
+    const now = Date.now();
+    const sessionTimeout = 10 * 60 * 1000; // 10 minutes
+    
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        
+        if (key && (key === 'currentUserSession' || key.startsWith('userSession_'))) {
+            try {
+                const session = JSON.parse(localStorage.getItem(key));
+                if (now - session.lastActivity > sessionTimeout) {
+                    localStorage.removeItem(key);
+                }
+            } catch (e) {
+                localStorage.removeItem(key);
+            }
+        }
+    }
+}
+
+// Enhanced initialization with session management
+init() {
+    this.injectStyles();
+    this.createAdminButton();
+    this.createAdminPanel();
+    this.setupEventListeners();
+    this.checkAdminStatus();
+    this.startSessionCleanup();
+    console.log('✅ Admin System Initialized with Live Tracking');
+}
 
     // ==================== UTILITY FUNCTIONS ====================
     showMessage(message, type, container) {
