@@ -1,0 +1,192 @@
+[
+{
+"name": "فريق الدبكة",
+"name_en": "Dabke Team",
+"yearFounded": 2009,
+"participants": 10,
+"trainer": "رزان دعيس",
+"category": "Performing Arts",
+"notes_ar": "تعليم الرقصات الشعبية الأردنية وتنمية الحس الفني. شارك في مهرجانات جرش والفحيص وأيام المدينة داخل الأردن، وفي مهرجانات دولية بأنطاليا.",
+"notes_en": "Teaches Jordanian folk dances, develops artistic sense. Participated in Jerash, Fuheis, City Day festivals locally, and international festivals in Antalya."
+},
+{
+"name": "فريق الباليه",
+"name_en": "Ballet Team",
+"yearFounded": 2018,
+"participants": 5,
+"trainer": "نانسي عطيات",
+"category": "Performing Arts",
+"notes_ar": "جزء من أكاديمية الفنون الأدائية. التعليم مجاني. شارك في مهرجانات جرش والفحيص وبوليفارد العبدلي.",
+"notes_en": "Part of the Performing Arts Academy. Free learning. Participated in Jerash, Fuheis, and Abdali Boulevard festivals."
+},
+{
+"name": "فريق الزومبا",
+"name_en": "Zumba Team",
+"yearFounded": 2018,
+"participants": 8,
+"trainer": "داليا عقروق",
+"category": "Performing Arts",
+"notes_ar": "جزء من أكاديمية الفنون الأدائية. يعزز اللياقة البدنية.",
+"notes_en": "Part of the Performing Arts Academy. Enhances physical fitness."
+},
+{
+"name": "فريق الرقص",
+"name_en": "Dance Team",
+"yearFounded": 2018,
+"participants": 9,
+"trainer": "داليا عقروق",
+"category": "Performing Arts",
+"notes_ar": "جزء من أكاديمية الفنون الأدائية. يعزز القدرات الإبداعية والبدنية.",
+"notes_en": "Part of the Performing Arts Academy. Enhances creative and physical skills."
+},
+{
+"name": "الفريق المسرحي",
+"name_en": "Theater Team",
+"yearFounded": 2014,
+"participants": 25,
+"trainer": "يوسف البري و محمد جمال",
+"category": "Performing Arts",
+"notes_ar": "يهدف لتعليم أساسيات المسرح، الكتابة، الإخراج، ورفع الثقة بالنفس.",
+"notes_en": "Teaches basics of theater, writing, directing, and builds self-confidence."
+},
+{
+"name": "فريق الإذاعي",
+"name_en": "Radio Team",
+"yearFounded": 2014,
+"participants": 18,
+"trainer": "محمد جمال عمرو و يوسف البري",
+"category": "Performing Arts",
+"notes_ar": "يهدف لتعليم مهارات التقديم الإذاعي، المراسلة، واللغة السليمة.",
+"notes_en": "Teaches radio presentation, correspondence, and proper language skills."
+},
+{
+"name": "فريق التايكوندو",
+"name_en": "Taekwondo Team",
+"yearFounded": 2015,
+"participants": "غير محدد",
+"trainer": "عبدالله شمالي",
+"category": "Sports",
+"notes_ar": "فن قتالي كوري تقليدي. ينمي القدرات الجسدية والعقلية.",
+"notes_en": "Traditional Korean martial art. Develops physical and mental abilities."
+},
+{
+"name": "فريق التصوير الفوتوغرافي",
+"name_en": "Photography Team",
+"yearFounded": 2008,
+"participants": 15,
+"trainer": "ليون كفليان",
+"category": "Visual Arts",
+"notes_ar": "تعريف الأطفال بأساليب التصوير، تنمية الحس الفني والإبداعي. شارك في مسابقات شومان وأمانة عمان وجرش الدولية.",
+"notes_en": "Introduces photography techniques, develops artistic creativity. Participated in Shoman, Amman Municipality, and Jerash contests."
+},
+{
+"name": "فريق الرسم",
+"name_en": "Drawing Team",
+"yearFounded": 2020,
+"participants": 3,
+"trainer": "ياسمين",
+"category": "Visual Arts",
+"notes_ar": "وسيلة للتعبير عن المشاعر، وتطوير المهارات العقلية والنفسية.",
+"notes_en": "Means of expressing emotions and developing mental and cognitive skills."
+},
+{
+"name": "فريق صحافة وإعلام",
+"name_en": "Journalism Team",
+"yearFounded": 2010,
+"participants": 2,
+"trainer": "باسمين",
+"category": "Visual Arts",
+"notes_ar": "يركز على كتابة المقالات والمشاركة في المسابقات.",
+"notes_en": "Focuses on writing articles and participating in competitions."
+},
+{
+"name": "فريق الجيتار",
+"name_en": "Guitar Team",
+"yearFounded": 2017,
+"participants": 2,
+"trainer": "عماد قاقيش",
+"category": "Music",
+"notes_ar": "-",
+"notes_en": "-"
+},
+{
+"name": "فريق البيانو",
+"name_en": "Piano Team",
+"yearFounded": 2014,
+"participants": 1,
+"trainer": "أحمد العساف",
+"category": "Music",
+"notes_ar": "جزء من أكاديمية الموسيقيين الصغار. اكتساب مهارات العزف.",
+"notes_en": "Part of the Young Musicians Academy. Learn instrument skills."
+},
+{
+"name": "فريق الكمان",
+"name_en": "Violin Team",
+"yearFounded": 2014,
+"participants": "غير محدد",
+"trainer": "أحمد العساف",
+"category": "Music",
+"notes_ar": "جزء من أكاديمية الموسيقيين الصغار. اكتساب مهارات العزف.",
+"notes_en": "Part of the Young Musicians Academy. Learn instrument skills."
+},
+{
+"name": "فريق العود",
+"name_en": "Oud Team",
+"yearFounded": 2014,
+"participants": 1,
+"trainer": "حسين",
+"category": "Music",
+"notes_ar": "جزء من أكاديمية الموسيقيين الصغار. اكتساب مهارات العزف.",
+"notes_en": "Part of the Young Musicians Academy. Learn instrument skills."
+},
+{
+"name": "فريق الأورج",
+"name_en": "Organ Team",
+"yearFounded": 2014,
+"participants": "غير محدد",
+"trainer": "حسين",
+"category": "Music",
+"notes_ar": "جزء من أكاديمية الموسيقيين الصغار. اكتساب مهارات العزف.",
+"notes_en": "Part of the Young Musicians Academy. Learn instrument skills."
+},
+{
+"name": "فريق الدرم جام",
+"name_en": "Drum Jam Team",
+"yearFounded": 2014,
+"participants": 26,
+"trainer": "بشار خريس",
+"category": "Music",
+"notes_ar": "تعلم الإيقاعات الشرقية والغربية على الطبول.",
+"notes_en": "Learn Eastern and Western rhythms on drums."
+},
+{
+"name": "فريق الكورال",
+"name_en": "Choir Team",
+"yearFounded": 2017,
+"participants": 8,
+"trainer": "ناشبي عمليات",
+"category": "Music",
+"notes_ar": "جزء من أكاديمية الموسيقيين الصغار. اكتساب مهارات الغناء.",
+"notes_en": "Part of the Young Musicians Academy. Learn singing skills."
+},
+{
+"name": "فريق البرمجة",
+"name_en": "Programming Team",
+"yearFounded": 2021,
+"participants": "غير محدد",
+"trainer": "ميس الخليل",
+"category": "Programming/Design",
+"notes_ar": "يهدف لتطوير المهارات الذهنية والمعرفية في البرمجة والتصميم. التعليم مجاني.",
+"notes_en": "Develops logical and cognitive skills in programming and design. Free learning."
+},
+{
+"name": "فريق التصميم",
+"name_en": "Design Team",
+"yearFounded": 2021,
+"participants": "غير محدد",
+"trainer": "ميس الخليل",
+"category": "Programming/Design",
+"notes_ar": "يهدف لتطوير المهارات الذهنية والمعرفية في البرمجة والتصميم. التعليم مجاني.",
+"notes_en": "Develops logical and cognitive skills in programming and design. Free learning."
+}
+]

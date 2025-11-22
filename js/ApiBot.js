@@ -225,202 +225,361 @@ bindTimelineItems() {
     }, 150);
   }
 }
-
-// Chatbot class (your existing one)
 class Chatbot {
-  constructor() {
+  constructor(options = {}) {
+    // UI / state
     this.isOpen = false;
     this.messages = [];
-    this.apiKey = '6297e19b-8854-4c7a-9584-e595087ea087';
-    this.chatId = 'hftVYa96W-xMkYlO8vgIC';
-    this.apiUrl = 'https://www.chatbase.co/api/v1/chat';
-    
+
+    // Backend (must run separately)
+    this.backendUrl = options.backendUrl || "http://localhost:3000/api/gemini";
+    this.modelName = options.modelName || "gemini-2.0-flash-exp";
+
+    // Conversation state
+    this.conversationHistory = [];
+    this.isSending = false;
+
+    // DOM references (initialized in initializeElements)
+    this.toggleBtn = null;
+    this.chatWindow = null;
+    this.closeBtn = null;
+    this.messagesContainer = null;
+    this.input = null;
+    this.sendBtn = null;
+    this.currentTimeElement = null;
+
+    // Init
     this.initializeElements();
     this.bindEvents();
     this.setCurrentTime();
+    this.timeUpdateInterval = setInterval(() => this.setCurrentTime(), 60000);
   }
 
+  /* ---------------- DOM initialization ---------------- */
   initializeElements() {
-    this.toggleBtn = document.getElementById('chatbot-toggle');
-    this.chatWindow = document.getElementById('chatbot-window');
-    this.closeBtn = document.getElementById('close-chatbot');
-    this.messagesContainer = document.getElementById('chatbot-messages');
-    this.input = document.getElementById('chatbot-input');
-    this.sendBtn = document.getElementById('send-button');
-    this.currentTimeElement = document.getElementById('current-time');
+    // Attempt to find elements; if not present, create helpful console warnings
+    this.toggleBtn = document.getElementById("chatbot-toggle");
+    this.chatWindow = document.getElementById("chatbot-window");
+    this.closeBtn = document.getElementById("close-chatbot");
+    this.messagesContainer = document.getElementById("chatbot-messages");
+    this.input = document.getElementById("chatbot-input");
+    this.sendBtn = document.getElementById("send-button");
+    this.currentTimeElement = document.getElementById("current-time");
+
+    // If some required elements are missing, warn but do NOT throw
+    if (!this.messagesContainer) {
+      console.warn("Chatbot: #chatbot-messages not found. Messages will not be displayed.");
+    }
+    if (!this.input) {
+      console.warn("Chatbot: #chatbot-input not found. Input will not function.");
+    }
+    if (!this.sendBtn) {
+      console.warn("Chatbot: #send-button not found. Sending via button will not work.");
+    }
+    if (!this.toggleBtn) {
+      console.info("Chatbot: #chatbot-toggle not found. Toggle button not available.");
+    }
   }
 
+  /* ---------------- Public helpers ---------------- */
+  resetChat() {
+    this.conversationHistory = [];
+    if (this.messagesContainer) this.messagesContainer.innerHTML = "";
+    if (this.input) this.input.value = "";
+    this.isSending = false;
+    if (this.sendBtn) this.sendBtn.disabled = false;
+    this.adjustTextareaHeight();
+    if (this.input) this.input.focus();
+    console.log("Chat session reset.");
+  }
+
+  destroy() {
+    clearInterval(this.timeUpdateInterval);
+    // Remove listeners if you attached them to external objects (not needed here)
+  }
+
+  /* ---------------- Event binding ---------------- */
   bindEvents() {
-    this.toggleBtn.addEventListener('click', () => this.toggleChat());
-    this.closeBtn.addEventListener('click', () => this.closeChat());
-    this.sendBtn.addEventListener('click', () => this.sendMessage());
-    
-    this.input.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
+    // Toggle
+    if (this.toggleBtn) {
+      this.toggleBtn.addEventListener("click", () => this.toggleChat());
+    }
+
+    if (this.closeBtn) {
+      this.closeBtn.addEventListener("click", () => this.closeChat());
+    }
+
+    // Send button
+    if (this.sendBtn) {
+      this.sendBtn.addEventListener("click", (e) => {
         e.preventDefault();
         this.sendMessage();
-      }
-    });
+      });
+    }
 
-    this.input.addEventListener('input', () => {
-      this.adjustTextareaHeight();
-    });
+    // Enter to send
+    if (this.input) {
+      this.input.addEventListener("keypress", (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          this.sendMessage();
+        }
+      });
+
+      // Resize textarea
+      this.input.addEventListener("input", () => this.adjustTextareaHeight());
+    }
   }
 
   setCurrentTime() {
     const now = new Date();
     if (this.currentTimeElement) {
-      this.currentTimeElement.textContent = now.toLocaleTimeString('ar-EG', {
-        hour: '2-digit', 
-        minute: '2-digit'
+      this.currentTimeElement.textContent = now.toLocaleTimeString("default", {
+        hour: "2-digit",
+        minute: "2-digit",
       });
     }
   }
 
   toggleChat() {
     this.isOpen = !this.isOpen;
-    if (this.isOpen) {
-      this.chatWindow.classList.add('open');
-      this.toggleBtn.classList.add('open');
-      this.input.focus();
-    } else {
-      this.chatWindow.classList.remove('open');
-      this.toggleBtn.classList.remove('open');
+    if (this.chatWindow) {
+      this.chatWindow.classList.toggle("open", this.isOpen);
+    }
+    if (this.toggleBtn) {
+      this.toggleBtn.classList.toggle("open", this.isOpen);
+      if (this.isOpen && this.input) this.input.focus();
     }
   }
 
   closeChat() {
     this.isOpen = false;
-    this.chatWindow.classList.remove('open');
-    this.toggleBtn.classList.remove('open');
+    if (this.chatWindow) this.chatWindow.classList.remove("open");
+    if (this.toggleBtn) this.toggleBtn.classList.remove("open");
   }
 
   adjustTextareaHeight() {
-    this.input.style.height = 'auto';
-    this.input.style.height = Math.min(this.input.scrollHeight, 120) + 'px';
+    if (!this.input) return;
+    this.input.style.height = "auto";
+    this.input.style.height = Math.min(this.input.scrollHeight, 120) + "px";
   }
 
-  addMessage(content, role) {
-    const messageDiv = document.createElement('div');
+  /* ---------------- UI message helpers ---------------- */
+  addMessage(content, role = "assistant") {
+    // role: 'user' | 'assistant' | 'system'
+    if (!this.messagesContainer) {
+      console.log(`[${role}] ${content}`);
+      return;
+    }
+
+    const messageDiv = document.createElement("div");
     messageDiv.className = `message ${role}-message`;
-    
-    const messageContent = document.createElement('div');
-    messageContent.className = 'message-content';
+
+    const messageContent = document.createElement("div");
+    messageContent.className = "message-content";
+    // Use textContent to avoid XSS
     messageContent.textContent = content;
-    
-    const messageTime = document.createElement('div');
-    messageTime.className = 'message-time';
-    messageTime.textContent = new Date().toLocaleTimeString('ar-EG', {
-      hour: '2-digit',
-      minute: '2-digit'
+
+    const messageTime = document.createElement("div");
+    messageTime.className = "message-time";
+    messageTime.textContent = new Date().toLocaleTimeString("default", {
+      hour: "2-digit",
+      minute: "2-digit",
     });
-    
+
     messageDiv.appendChild(messageContent);
     messageDiv.appendChild(messageTime);
     this.messagesContainer.appendChild(messageDiv);
-    
+
     this.scrollToBottom();
   }
 
   showTypingIndicator() {
-    const typingDiv = document.createElement('div');
-    typingDiv.className = 'message assistant-message';
-    typingDiv.id = 'typing-indicator';
-    
-    const typingContent = document.createElement('div');
-    typingContent.className = 'message-content typing-indicator';
-    
+    this.hideTypingIndicator();
+    if (!this.messagesContainer) return;
+    const typingDiv = document.createElement("div");
+    typingDiv.className = "message assistant-message";
+    typingDiv.id = "typing-indicator";
+
+    const typingContent = document.createElement("div");
+    typingContent.className = "message-content typing-indicator";
+
     for (let i = 0; i < 3; i++) {
-      const dot = document.createElement('span');
-      typingContent.appendChild(dot);
+      typingContent.appendChild(document.createElement("span"));
     }
-    
+
     typingDiv.appendChild(typingContent);
     this.messagesContainer.appendChild(typingDiv);
     this.scrollToBottom();
   }
 
   hideTypingIndicator() {
-    const typingIndicator = document.getElementById('typing-indicator');
-    if (typingIndicator) {
-      typingIndicator.remove();
-    }
+    const typingIndicator = document.getElementById("typing-indicator");
+    if (typingIndicator) typingIndicator.remove();
   }
 
   scrollToBottom() {
+    if (!this.messagesContainer) return;
     this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
   }
 
+  /* ---------------- Convenience: send team message ---------------- */
+  sendTeamMessage(teamName) {
+    if (!teamName) return;
+    const msg = `Tell me about the ${teamName} team.`;
+    // add to input (if present) then send
+    if (this.input) {
+      this.input.value = msg;
+      this.adjustTextareaHeight();
+      this.sendMessage();
+    } else {
+      // If no input, just call the API directly
+      this.sendMessageDirect(msg);
+    }
+  }
+
+  /* ---------------- Public/simple direct send (skips input UI) ---------------- */
+  async sendMessageDirect(messageText) {
+    if (!messageText) return;
+    try {
+      const botReply = await this.callGeminiAPI(messageText);
+      this.addMessage(botReply, "assistant");
+    } catch (err) {
+      console.error("sendMessageDirect error:", err);
+      this.addMessage("Error: Could not connect to server.", "assistant");
+    }
+  }
+
+  /* ---------------- Main sendMessage (from UI) ---------------- */
   async sendMessage() {
+    if (!this.input) {
+      console.warn("sendMessage called but no input element exists.");
+      return;
+    }
+
     const message = this.input.value.trim();
     if (!message) return;
 
-    this.addMessage(message, 'user');
-    this.input.value = '';
-    this.adjustTextareaHeight();
-    this.sendBtn.disabled = true;
+    if (this.isSending) {
+      console.warn("Already sending. Dropping duplicate send.");
+      return;
+    }
 
+    this.isSending = true;
+    this.addMessage(message, "user");
+    this.input.value = "";
+    this.adjustTextareaHeight();
+    if (this.sendBtn) this.sendBtn.disabled = true;
     this.showTypingIndicator();
 
     try {
-      const response = await this.callChatbaseAPI(message);
+      const response = await this.callGeminiAPI(message);
       this.hideTypingIndicator();
-      this.addMessage(response, 'assistant');
-    } catch (error) {
-      console.error('Chatbase API Error:', error);
+      this.addMessage(response, "assistant");
+    } catch (err) {
+      console.error("Gemini API Error:", err);
       this.hideTypingIndicator();
-      this.addMessage('عذراً، حدث خطأ في الاتصال. يرجى المحاولة مرة أخرى.', 'assistant');
+      this.addMessage("Error: Could not connect to server.", "assistant");
     } finally {
-      this.sendBtn.disabled = false;
-      this.input.focus();
+      if (this.sendBtn) this.sendBtn.disabled = false;
+      this.isSending = false;
+      if (this.input) this.input.focus();
     }
   }
 
-  async callChatbaseAPI(message) {
-    const requestBody = {
-      messages: [{ content: message, role: "user" }],
-      chatbotId: this.chatId,
-      stream: false,
-      temperature: 0.7
+  /* ---------------- Core API call (talks to YOUR backend) ---------------- */
+  async callGeminiAPI(message) {
+    // Append to history in the format we expect
+    this.conversationHistory.push({
+      role: "user",
+      parts: [{ text: message }],
+    });
+
+    // Prepare the request body forwarded to Google by your backend
+const body = {
+  contents: this.conversationHistory,
+  generationConfig: { // <--- FIXED KEY
+    temperature: 0.8,
+    topK: 40,
+    topP: 0.95,
+    maxOutputTokens: 1024,
+  },
+  safetySettings: [ /* ... */ ],
+
+      safetySettings: [
+        { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+        { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+        { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+        { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+      ],
     };
 
+    // POST to your backend (which should forward to Google with the API key)
+    let response;
     try {
-      const response = await fetch(this.apiUrl, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${this.apiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestBody)
+      console.log("Posting to backend:", this.backendUrl, body);
+      response = await fetch(this.backendUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
       });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      return data.text;
-
-    } catch (error) {
-      console.error('Fetch error:', error);
-      throw error;
+    } catch (networkErr) {
+      console.error("Network error when calling backend:", networkErr);
+      throw networkErr;
     }
+
+    if (!response.ok) {
+      const text = await response.text().catch(() => "");
+      console.error("Backend returned non-OK:", response.status, text);
+      throw new Error(`Backend error ${response.status}`);
+    }
+
+    // Parse JSON
+    let data;
+    try {
+      data = await response.json();
+    } catch (parseErr) {
+      console.error("Failed to parse backend JSON:", parseErr);
+      throw parseErr;
+    }
+
+    // Extract text safely
+    const aiText = data?.candidates?.[0]?.content?.parts?.[0]?.text || "No response received.";
+
+    // Save model reply in conversation history
+    this.conversationHistory.push({
+      role: "model",
+      parts: [{ text: aiText }],
+    });
+
+    // Keep history limited
+    if (this.conversationHistory.length > 20) {
+      this.conversationHistory = this.conversationHistory.slice(-20);
+    }
+
+    return aiText;
   }
 
-  sendTeamMessage(teamName) {
-    const message = `Tell me everything about ${teamName} Team`;
-    
-    if (!this.isOpen) {
-      this.toggleChat();
+  /* ---------------- Debug helper: test backend connection from console ---------------- */
+  async testConnection() {
+    console.log("Chatbot.testConnection: sending a test message to backend...");
+    try {
+      const res = await fetch(this.backendUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contents: [{ parts: [{ text: "ping" }] }] }),
+      });
+      console.log("Test connection raw response:", res);
+      const json = await res.json().catch(() => null);
+      console.log("Test connection parsed JSON:", json);
+      return json;
+    } catch (err) {
+      console.error("Test connection failed:", err);
+      throw err;
     }
-    
-    setTimeout(() => {
-      this.input.value = message;
-      this.adjustTextareaHeight();
-      this.sendMessage();
-    }, 300);
   }
 }
+
 
 // Initialize everything
 document.addEventListener('DOMContentLoaded', function() {

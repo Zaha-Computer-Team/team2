@@ -1,491 +1,1610 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Zaha's Teams Program</title>
-
-  <!-- Arabic fonts + general -->
-  <style>
-    @import url('https://fonts.googleapis.com/earlyaccess/amiri.css');
-    @import url('https://fonts.googleapis.com/earlyaccess/droidarabicnaskh.css');
-    @import url('https://fonts.googleapis.com/earlyaccess/lateef.css');
-    @import url('https://fonts.googleapis.com/earlyaccess/scheherazade.css');
-    @import url('https://fonts.googleapis.com/earlyaccess/thabit.css');
-    @import url('https://fonts.googleapis.com/css2?family=Livvic:wght@300;400;700;900&display=swap');
-  </style>
-
-  <style>
-    /* ---------- Reset & base ---------- */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html,body { height:100%; }
-    body {
-      font-family: "Livvic", "Amiri", "Droid Arabic Naskh", sans-serif;
-      font-size: 18px;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      background: #0b0b0b;
-      color: #fff;
-      overflow: hidden; /* hide vertical scroll; horizontal handled inside */
-    }
-
-    /* Light mode */
-    body.light {
-      background:#f5f5f5;
-      color: #0b0b0b;
-    }
-
-    a { color: inherit; text-decoration:none; }
-
-    /* ---------- Preloader ---------- */
-    #preloader {
-      position:fixed; inset:0; z-index:99999; display:flex; align-items:center; justify-content:center;
-      pointer-events:none;
-    }
-    #preloader .line {
-      width:4px; height:220px; background:linear-gradient(#666,#222);
-      border-radius:6px; position:relative; overflow:hidden;
-    }
-    #preloader .line:before{
-      content:""; position:absolute; left:0; top:50%; width:100%; height:0;
-      background:linear-gradient(180deg,#ffb86b,#ff6b6b);
-      transform:translateY(-50%);
-      animation: preLine 900ms ease-in-out forwards;
-    }
-    @keyframes preLine {
-      0%{ height:0 } 100%{ height:100% }
-    }
-    .preloaded { opacity:0; pointer-events:none; transition: all .5s ease 0.5s; }
-
-    /* ---------- Header ---------- */
-    header {
-      position:fixed; top:0; left:0; right:0; z-index: 60;
-      display:flex; justify-content:space-between; align-items:center;
-      padding:26px 36px; gap:20px;
-      background:transparent;
-      backdrop-filter: blur(6px);
-    }
-    header .logo { font-weight:800; letter-spacing:0.4px; font-size:20px; color:#fff; }
-    body.light header .logo { color:#0b0b0b; }
-    header nav ul { list-style:none; display:flex; gap:28px; align-items:center; }
-    header nav li { font-weight:500; cursor:pointer; position:relative; padding:6px 0; }
-    header nav li:hover::after,
-    header nav li.active::after { content:""; position:absolute; left:0; right:0; height:8px; top:-34px; border-radius:0 0 6px 6px; background: rgba(255,255,255,0.06); }
-    .header-right { display:flex; gap:16px; align-items:center; }
-
-    /* ---------- Settings floating button & panel ---------- */
-    .settings { position:fixed; bottom:20px; right:20px; z-index:200; font-family:"Livvic"; }
-    #showSettings{
-      width:46px; height:46px; border-radius:50%; display:flex; align-items:center; justify-content:center;
-      background:#007bff; color:#fff; cursor:pointer; box-shadow:0 8px 30px rgba(0,0,0,0.35);
-    }
-    body.light #showSettings { background:#007bff; color:#fff; }
-    .settings-panel{
-      width:240px; border-radius:10px; padding:14px; background:#1c1c1c; color:#fff;
-      position:absolute; bottom:70px; right:0; box-shadow:0 8px 30px rgba(0,0,0,.45); display:none;
-    }
-    .settings.open .settings-panel{ display:block; animation:fadeIn .25s ease; }
-    .setting-item{ display:flex; justify-content:space-between; align-items:center; margin:10px 0; font-size:15px; }
-    .setting-item button { padding:6px 10px; border-radius:6px; border:0; background:#007bff; color:#fff; cursor:pointer; }
-
-    /* ---------- Horizontal sections container ---------- */
-    main.wrapper {
-      position:relative; height:100vh; display:block; overflow-x:auto; overflow-y:hidden;
-      scroll-behavior:smooth; -webkit-overflow-scrolling:touch;
-      scroll-snap-type:x mandatory;
-      display:flex; gap:0;
-      /* leave space for header */
-      padding-top:0;
-    }
-
-    section.panel {
-      min-width:100vw; height:100vh; scroll-snap-align:start; display:flex; align-items:center;
-      justify-content:center; position:relative; flex-shrink:0;
-      padding:0 80px; gap:40px;
-    }
-
-    /* left vertical title */
-    .title-vertical {
-      writing-mode: vertical-rl; transform: scale(-1, -1);
-      width:120px; text-align:center; font-weight:900; letter-spacing:2px; font-size:48px;
-      display:flex; align-items:center; justify-content:center;
-    }
-
-    /* central card */
-    .card {
-      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.15));
-      width:920px; max-width:86vw; border-radius:20px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.6);
-      display:grid; grid-template-columns: 1fr 420px; gap:0; align-items:stretch;
-    }
-    body.light .card { background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.08); color:#0b0b0b; }
-
-    .card .visual {
-      position:relative; overflow:hidden;
-    }
-    .card .visual img {
-      width:100%; height:100%; object-fit:cover; display:block;
-    }
-    .img-overlay {
-      position:absolute; inset:0; background:linear-gradient(90deg, rgba(11,11,11,0.55), rgba(11,11,11,0.15));
-      transition:all .9s ease;
-    }
-    body.light .img-overlay { background: linear-gradient(90deg, rgba(245,245,245,0.65), rgba(245,245,245,0.15)); }
-
-    .card .info {
-      padding:36px 34px; display:flex; flex-direction:column; gap:18px;
-    }
-    .info h2 { font-size:34px; line-height:1; margin-bottom:4px; font-weight:800; letter-spacing:0.6px; }
-    .info .meta { color: rgba(255,255,255,0.7); font-size:14px; }
-    body.light .info .meta { color: rgba(0,0,0,0.6); }
-    .info p { margin-top:6px; line-height:1.6; color: rgba(255,255,255,0.9); }
-    body.light .info p { color:#333; }
-
-    .info .roles { display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
-    .role-pill { background: rgba(255,255,255,0.06); padding:8px 12px; border-radius:999px; font-weight:600; font-size:13px; }
-    body.light .role-pill { background:#f1f5ff; color:#003d82; }
-
-    .info .actions { margin-top:auto; display:flex; gap:12px; align-items:center; }
-    .btn { padding:10px 16px; border-radius:40px; display:inline-flex; align-items:center; gap:10px; border:0; cursor:pointer; font-weight:600; }
-    .btn.ghost { background:transparent; color:inherit; border:1px solid rgba(255,255,255,0.08); }
-    .btn.primary { background:#007bff; color:#fff; }
-
-    /* achievements / list */
-    .achievements { margin-top:14px; display:flex; flex-direction:column; gap:8px; font-size:14px; color:rgba(255,255,255,0.9); }
-    body.light .achievements { color:#333; }
-
-    /* small thumbnails list on right (for multiple photos) */
-    .thumbs {
-      padding:18px; display:flex; flex-direction:column; gap:12px; background: rgba(0,0,0,0.02);
-      align-items:center; justify-content:flex-start;
-    }
-    body.light .thumbs { background: transparent; }
-    .thumbs img { width:100%; height:110px; object-fit:cover; border-radius:12px; box-shadow: 0 8px 30px rgba(0,0,0,0.25); }
-
-    /* arrows & progress */
-    .nav-arrow { position:fixed; top:50%; transform:translateY(-50%); z-index:80; width:56px; height:56px; border-radius:50%;
-                 display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,.45); color:#fff; cursor:pointer; }
-    .nav-arrow.left { left:18px; }
-    .nav-arrow.right { right:18px; }
-    body.light .nav-arrow { background: rgba(255,255,255,0.85); color:#0b0b0b; box-shadow:0 8px 30px rgba(0,0,0,0.06); }
-
-    .scroll-progress {
-      position:fixed; bottom:30px; left:50%; transform:translateX(-50%); width:calc(100vw - 260px); height:8px; z-index:70;
-      background: rgba(255,255,255,0.06); border-radius:6px; overflow:hidden;
-    }
-    .scroll-progress .bar { height:100%; width:0%; background:#007bff; border-radius:6px; transition: width .12s linear; }
-
-    /* ---------- Responsive ---------- */
-    @media (max-width: 980px) {
-      .card { grid-template-columns: 1fr; width:86vw; max-width:86vw; }
-      .card .info{ padding:20px; }
-      .thumbs { display:none; }
-      .title-vertical { display:none; }
-    }
-    @media (max-width:600px){
-      header { padding:18px; }
-      header .logo { font-size:16px; }
-      .nav-arrow { width:48px; height:48px; }
-    }
-
-    @keyframes fadeIn { from{opacity:0; transform:translateY(-8px)} to{opacity:1; transform:none} }
-  </style>
-</head>
-
-<body>
-  <!-- PRELOADER -->
-  <div id="preloader"><div class="line"></div></div>
-
-  <!-- HEADER -->
-  <header>
-    <div class="logo">Zaha's Teams Program</div>
-    <nav>
-      <ul>
-        <li data-target="home" class="active">Home</li>
-        <li data-target="about">About</li>
-        <li data-target="teams">Teams</li>
-        <li data-target="events">Events</li>
-        <li data-target="contact">Contact</li>
-      </ul>
-    </nav>
-    <div class="header-right">
-      <div class="mail"><p>info@zaha.gov.jo</p></div>
-    </div>
-  </header>
-
-  <!-- SETTINGS -->
-  <div class="settings" id="settingsWrap">
-    <div id="showSettings" title="Settings">⚙</div>
-
-    <div class="settings-panel" id="settingsPanel" aria-hidden="true">
-      <div id="hideSettings" style="position:absolute;right:10px;top:8px;cursor:pointer;font-size:18px;color:#999">✕</div>
-      <div class="setting-item"><span>Dark Mode</span><button id="toggleTheme">Toggle</button></div>
-      <div class="setting-item"><span>RTL</span><button id="toggleDir">Toggle</button></div>
-      <div class="setting-item"><span>Snap Scroll</span><button id="toggleSnap">Toggle</button></div>
-    </div>
-  </div>
-
-  <!-- HORIZONTAL PANELS -->
-  <main class="wrapper" id="hScroll">
-
-    <!-- Panel 1 - Home / big intro -->
-    <section class="panel" data-panel="1" style="background:linear-gradient(180deg,#0b0b0b,#111)">
-      <div class="title-vertical">Z A H A</div>
-
-      <div class="card" role="article" aria-label="Team portfolio card example">
-        <div class="visual">
-          <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1400&q=80" alt="Team photo 1">
-          <div class="img-overlay"></div>
-        </div>
-
-        <div class="info">
-          <h2>Team Name — Replace Me</h2>
-          <div class="meta">Coach: <strong>اسم المدرب</strong> · Founded 2010</div>
-          <p>
-            This is a portfolio-style presentation for the team. Use this area to describe the team’s mission,
-            activities, specialties and recent accomplishments. Keep it clear and concise so visitors can quickly
-            grasp what the team does.
-          </p>
-
-          <div class="roles">
-            <span class="role-pill">Performing Arts</span>
-            <span class="role-pill">Community Outreach</span>
-            <span class="role-pill">Workshops</span>
-          </div>
-
-          <div class="achievements">
-            <div>• 1st place at City Festival — 2024</div>
-            <div>• 12 workshops hosted last year</div>
-            <div>• 30+ active members</div>
-          </div>
-
-          <div class="actions">
-            <button class="btn primary" onclick="window.open('#')">View Program</button>
-            <button class="btn ghost" onclick="window.open('#')">Contact Coach</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="thumbs" style="width:320px;margin-left:24px;">
-        <img src="https://images.unsplash.com/photo-1507537269974-8b6265a554b4?auto=format&fit=crop&w=800&q=70" alt="thumb1">
-        <img src="https://images.unsplash.com/photo-1515162305288-1d9f1a4e5bfe?auto=format&fit=crop&w=800&q=70" alt="thumb2">
-        <img src="https://images.unsplash.com/photo-1526947431965-0f2f6d9c7a8b?auto=format&fit=crop&w=800&q=70" alt="thumb3">
-      </div>
-    </section>
-
-    <!-- Panel 2 - Team 2 -->
-    <section class="panel" data-panel="2" style="background:linear-gradient(180deg,#071220,#091824)">
-      <div class="title-vertical">TEAM</div>
-
-      <div class="card">
-        <div class="visual">
-          <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1400&q=80" alt="Team photo 2">
-          <div class="img-overlay"></div>
-        </div>
-
-        <div class="info">
-          <h2>Another Team</h2>
-          <div class="meta">Coach: <strong>John Doe</strong> · Focus: Education</div>
-          <p>
-            A short summary about this team’s portfolio: programs, training, public performances and ways to join.
-            Replace texts and links with your own content.
-          </p>
-
-          <div class="roles">
-            <span class="role-pill">Education</span>
-            <span class="role-pill">Workshops</span>
-            <span class="role-pill">Kids</span>
-          </div>
-
-          <div class="achievements">
-            <div>• 8 summer programs delivered</div>
-            <div>• Collaborations with schools</div>
-          </div>
-
-          <div class="actions">
-            <button class="btn primary">Program Details</button>
-            <button class="btn ghost">Join</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="thumbs" style="width:320px;margin-left:24px;">
-        <img src="https://images.unsplash.com/photo-1508609349937-5ec4ae374ebf?auto=format&fit=crop&w=800&q=70" alt="thumbA">
-        <img src="https://images.unsplash.com/photo-1529220502055-3b7a2e1d83df?auto=format&fit=crop&w=800&q=70" alt="thumbB">
-        <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=70" alt="thumbC">
-      </div>
-    </section>
-
-    <!-- Panel 3 - Team 3 -->
-    <section class="panel" data-panel="3" style="background:linear-gradient(180deg,#14080a,#2b0f12)">
-      <div class="title-vertical">PORTFOLIO</div>
-
-      <div class="card">
-        <div class="visual">
-          <img src="https://images.unsplash.com/photo-1519677100203-a0e668c92439?auto=format&fit=crop&w=1400&q=80" alt="Team photo 3">
-          <div class="img-overlay"></div>
-        </div>
-
-        <div class="info">
-          <h2>Team Three</h2>
-          <div class="meta">Coach: <strong>Jane Smith</strong> · Events & Culture</div>
-          <p>
-            Show off achievements, recent events, and media. Use the thumbnails on the right to link to galleries or videos.
-          </p>
-
-          <div class="roles">
-            <span class="role-pill">Events</span>
-            <span class="role-pill">Media</span>
-          </div>
-
-          <div class="achievements">
-            <div>• Community festival showcases</div>
-            <div>• Photo & video archive</div>
-          </div>
-
-          <div class="actions">
-            <button class="btn primary">See Gallery</button>
-            <button class="btn ghost">Invite to Event</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="thumbs" style="width:320px;margin-left:24px;">
-        <img src="https://images.unsplash.com/photo-1504461923275-5c8f31c8a8d4?auto=format&fit=crop&w=800&q=70" alt="t1">
-        <img src="https://images.unsplash.com/photo-1526240980533-5a56d0925b3b?auto=format&fit=crop&w=800&q=70" alt="t2">
-        <img src="https://images.unsplash.com/photo-1501901609772-6a70a3ae3e2b?auto=format&fit=crop&w=800&q=70" alt="t3">
-      </div>
-    </section>
-  </main>
-
-  <!-- Nav arrows -->
-  <div class="nav-arrow left" id="arrowLeft" title="Previous">◀</div>
-  <div class="nav-arrow right" id="arrowRight" title="Next">▶</div>
-
-  <!-- Scroll progress -->
-  <div class="scroll-progress" aria-hidden="true">
-    <div class="bar" id="scrollBar" style="width:0%"></div>
-  </div>
-
-  <!-- SCRIPT: Behaviors -->
-  <script>
-    (function () {
-      const pre = document.getElementById('preloader');
-      const wrapper = document.getElementById('hScroll');
-      const panels = Array.from(document.querySelectorAll('section.panel'));
-      const arrowLeft = document.getElementById('arrowLeft');
-      const arrowRight = document.getElementById('arrowRight');
-      const scrollBar = document.getElementById('scrollBar');
-      const settingsWrap = document.getElementById('settingsWrap');
-      const showSettings = document.getElementById('showSettings');
-      const settingsPanel = document.getElementById('settingsPanel');
-      const hideSettings = document.getElementById('hideSettings');
-      const toggleTheme = document.getElementById('toggleTheme');
-      const toggleDir = document.getElementById('toggleDir');
-      const toggleSnap = document.getElementById('toggleSnap');
-      const navItems = document.querySelectorAll('header nav li');
-
-      // Preloader finish
-      window.addEventListener('load', () => {
-        pre.classList.add('preloaded');
-        setTimeout(()=> pre.style.display='none',700);
-      });
-
-      // Arrow scroll helpers
-      function scrollToPanel(index) {
-        if (index < 0) index = 0;
-        if (index >= panels.length) index = panels.length - 1;
-        panels[index].scrollIntoView({behavior:'smooth', inline:'start'});
-      }
-
-      arrowLeft.addEventListener('click', () => {
-        const curIndex = Math.round(wrapper.scrollLeft / window.innerWidth);
-        scrollToPanel(curIndex - 1);
-      });
-      arrowRight.addEventListener('click', () => {
-        const curIndex = Math.round(wrapper.scrollLeft / window.innerWidth);
-        scrollToPanel(curIndex + 1);
-      });
-
-      // Update progress and active nav
-      function updateProgress() {
-        const maxScroll = wrapper.scrollWidth - wrapper.clientWidth;
-        const pos = wrapper.scrollLeft;
-        const pct = maxScroll <= 0 ? 0 : Math.round((pos / maxScroll) * 100);
-        scrollBar.style.width = pct + '%';
-
-        // update nav active based on nearest panel
-        const index = Math.round(wrapper.scrollLeft / window.innerWidth);
-        navItems.forEach((li,i)=> li.classList.toggle('active', i===index));
-      }
-      wrapper.addEventListener('scroll', throttle(updateProgress, 50));
-      updateProgress();
-
-      // keyboard nav
-      window.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowLeft') arrowLeft.click();
-        if (e.key === 'ArrowRight') arrowRight.click();
-      });
-
-      // settings toggle
-      showSettings.addEventListener('click', () => {
-        settingsWrap.classList.toggle('open');
-      });
-      hideSettings.addEventListener('click', () => settingsWrap.classList.remove('open'));
-
-      // Theme toggle
-      toggleTheme.addEventListener('click', () => {
-        document.body.classList.toggle('light');
-      });
-
-      // RTL toggle
-      toggleDir.addEventListener('click', () => {
-        const d = document.documentElement.getAttribute('dir') === 'rtl' ? 'ltr' : 'rtl';
-        document.documentElement.setAttribute('dir', d);
-        // mirror layout for header nav if rtl
-        if (d === 'rtl') document.body.setAttribute('dir','rtl'); else document.body.removeAttribute('dir');
-      });
-
-      // Snap toggle
-      toggleSnap.addEventListener('click', () => {
-        const snap = wrapper.style.scrollSnapType;
-        wrapper.style.scrollSnapType = snap === 'none' ? 'x mandatory' : 'none';
-      });
-
-      // nav items click to scroll to panels
-      navItems.forEach((li, i) => {
-        li.addEventListener('click', () => scrollToPanel(i));
-      });
-
-      // tiny throttler
-      function throttle(fn, wait) {
-        let t = 0;
-        return function() {
-          const now = Date.now();
-          if (now - t > wait) { t = now; fn.apply(this, arguments); }
-        };
-      }
-
-      // Make horizontal scroll work with mouse wheel (shift + wheel or normal wheel translate to x)
-      wrapper.addEventListener('wheel', (e) => {
-        // if vertical wheel, move horizontally (except when shift is pressed we let default)
-        if (!e.shiftKey) {
-          e.preventDefault();
-          wrapper.scrollLeft += e.deltaY + e.deltaX;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programming Team - Detail Page</title>
+    <script src="js/Info.js"></script>
+      <script src="js/Content_manger.js"></script>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Livvic:300,400,500,600,700,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <script src="js/ApiBot.js"></script>
+    <script src="js/Admin.js"></script>
+    <style>
+        /* =========================================================
+           CORE VARIABLES & RESET
+           ========================================================= */
+        :root {
+            /* DEFAULT DARK MODE VARIABLES */
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            --glass-blur: blur(20px);
+            --accent-primary: #2c5aa0;
+            --accent-secondary: #1e3a8a;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255,255,255,0.7);
+            --bg-primary: #0b0b0b;
+            --card-bg: #1c1c1c;
+            --nav-bg: rgba(255, 255, 255, 0.08);
+            
+            /* Settings Specific Colors */
+            --settings-bg: rgba(31, 41, 55, 0.85);
+            --settings-item-bg: rgba(55, 65, 81, 0.6);
+            --settings-text: #f9fafb;
         }
-      }, { passive:false });
 
-      // responsive: snap to nearest panel on resize
-      let resizeTimeout;
-      window.addEventListener('resize', () => {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
-          const idx = Math.round(wrapper.scrollLeft / window.innerWidth);
-          scrollToPanel(idx);
-        }, 120);
-      });
+        /* LIGHT MODE OVERRIDES */
+        body.light-mode {
+            --glass-bg: rgba(255, 255, 255, 0.65); 
+            --glass-border: rgba(0, 0, 0, 0.08);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            --accent-primary: #2c5aa0;
+            --accent-secondary: #1e3a8a;
+            --text-primary: #1a1a1a;
+            --text-secondary: rgba(0, 0, 0, 0.65);
+            --bg-primary: #f0f2f5;
+            --card-bg: #ffffff;
+            --nav-bg: rgba(255, 255, 255, 0.85);
 
-      // touch: allow natural momentum; nothing extra needed (scroll-snap handles alignment)
-    })();
-  </script>
+            /* Settings Light Mode */
+            --settings-bg: rgba(255, 255, 255, 0.85);
+            --settings-item-bg: rgba(255, 255, 255, 0.6);
+            --settings-text: #374151;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: "Livvic", sans-serif;
+            font-size: 18px;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            overflow: hidden; 
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+/* Chatbot Styles - Glass Morphism on Background Photo */
+.chatbot-toggle {
+  position: fixed;
+  bottom: 30px;
+  left: 30px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(44, 90, 160, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chatbot-toggle:hover {
+  transform: translateY(-2px);
+  background: rgba(44, 90, 160, 0.95);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.chatbot-toggle.open {
+  background: rgba(30, 58, 138, 0.9);
+  transform: scale(0.95);
+}
+
+.notification-dot {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 10px;
+  height: 10px;
+  background: #10b981;
+  border-radius: 50%;
+  border: 2px solid rgba(44, 90, 160, 0.9);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.7; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.chatbot-window {
+  position: fixed;
+  bottom: 100px;
+  left: 30px;
+  width: 380px;
+  height: 500px;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 20px;
+  backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+  display: none;
+  flex-direction: column;
+  z-index: 9999;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.chatbot-window.open {
+  display: flex;
+  animation: glassSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes glassSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px) translateY(10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) translateY(0) scale(1);
+  }
+}
+
+.chatbot-header {
+  background: linear-gradient(
+    135deg, 
+    rgba(44, 90, 160, 0.9) 0%, 
+    rgba(30, 58, 138, 0.9) 100%
+  );
+  color: white;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.chatbot-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 50%,
+    rgba(0, 0, 0, 0.1) 100%
+  );
+  pointer-events: none;
+}
+
+.chatbot-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ 
+  
+}
+
+.chatbot-avatar i {
+  font-size: 20px;
+}
+
+.chatbot-info {
+  z-index: 1000;
+  flex: 1;
+}
+
+.chatbot-info h4 {
+  z-index: 1000;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.status {
+  z-index: 1000;
+  font-size: 12px;
+  opacity: 0.9;
+  margin-top: 2px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.close-chatbot {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: all 0.2s;
+  padding: 6px;
+  border-radius: 8px;
+  backdrop-filter: blur(5px);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-chatbot:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+.chatbot-messages {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.message {
+  max-width: 85%;
+  animation: messageFloatIn 0.3s ease-out;
+}
+
+@keyframes messageFloatIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.user-message {
+  align-self: flex-end;
+}
+
+.assistant-message {
+  align-self: flex-start;
+}
+
+.message-content {
+  padding: 12px 16px;
+  border-radius: 18px;
+  font-size: 14px;
+  line-height: 1.4;
+  word-wrap: break-word;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.user-message .message-content {
+  background: linear-gradient(
+    135deg, 
+    rgba(44, 90, 160, 0.9) 0%, 
+    rgba(30, 58, 138, 0.9) 100%
+  );
+  color: white;
+  border-bottom-right-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.assistant-message .message-content {
+  background: rgba(255, 255, 255, 0.7);
+  color: #374151;
+  border-bottom-left-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.message-time {
+  font-size: 11px;
+  color: rgba(107, 114, 128, 0.8);
+  margin-top: 4px;
+  font-weight: 400;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.user-message .message-time {
+  text-align: right;
+  color: rgba(255, 255, 255, 0.8);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+}
+
+.assistant-message .message-time {
+  text-align: left;
+}
+
+.typing-indicator {
+  display: flex;
+  gap: 4px;
+  padding: 16px 20px;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  width: fit-content;
+  backdrop-filter: blur(10px);
+}
+
+.typing-indicator span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(156, 163, 175, 0.8);
+  animation: typing 1.4s infinite ease-in-out;
+}
+
+.typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+.typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes typing {
+  0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+.chatbot-input {
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.6);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.input-container {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+  box-shadow: 
+    0 2px 10px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.input-container:focus-within {
+  border-color: rgba(44, 90, 160, 0.6);
+  box-shadow: 
+    0 0 0 3px rgba(44, 90, 160, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  transform: translateY(-1px);
+}
+
+.input-container textarea {
+  flex: 1;
+  border: none;
+  border-radius: 16px;
+  padding: 12px 16px;
+  font-size: 14px;
+  resize: none;
+  max-height: 100px;
+  outline: none;
+  background: transparent;
+  font-family: inherit;
+  line-height: 1.4;
+  color: #374151;
+}
+
+.input-container textarea::placeholder {
+  color: rgba(156, 163, 175, 0.8);
+}
+
+.send-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(44, 90, 160, 0.9) 0%, rgba(30, 58, 138, 0.9) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2px;
+  backdrop-filter: blur(5px);
+  box-shadow: 
+    0 4px 15px rgba(44, 90, 160, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.send-button:hover:not(:disabled) {
+  transform: scale(1.05) translateY(-1px);
+  box-shadow: 
+    0 6px 20px rgba(44, 90, 160, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.send-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Scrollbar Styling for Glass Effect */
+.chatbot-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chatbot-messages::-webkit-scrollbar-track {
+  background: rgba(241, 245, 249, 0.3);
+  border-radius: 3px;
+}
+
+.chatbot-messages::-webkit-scrollbar-thumb {
+  background: rgba(203, 213, 225, 0.6);
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.chatbot-messages::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.8);
+}
+
+/* Dark Mode Glass Effect */
+body.dark-mode .chatbot-window {
+  background: rgba(31, 41, 55, 0.85);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .chatbot-messages {
+  background: transparent;
+}
+
+body.dark-mode .assistant-message .message-content {
+  background: rgba(55, 65, 81, 0.8);
+  color: #f9fafb;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .user-message .message-content {
+  background: linear-gradient(135deg, rgba(44, 90, 160, 0.9) 0%, rgba(30, 58, 138, 0.9) 100%);
+  color: #ffffff;
+}
+
+body.dark-mode .message-time {
+  color: rgba(156, 163, 175, 0.8);
+}
+
+body.dark-mode .chatbot-input {
+  background: rgba(31, 41, 55, 0.6);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .input-container {
+  background: rgba(55, 65, 81, 0.6);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .input-container textarea {
+  color: #f9fafb;
+}
+
+body.dark-mode .input-container textarea::placeholder {
+  color: rgba(156, 163, 175, 0.6);
+}
+
+body.dark-mode .typing-indicator {
+  background: rgba(55, 65, 81, 0.6);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .chatbot-toggle {
+    bottom: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+
+  .chatbot-window {
+    width: calc(100vw - 40px);
+    height: 60vh;
+    left: 20px;
+    right: 20px;
+    bottom: 80px;
+  }
+  
+  .message {
+    max-width: 90%;
+  }
+}
+
+/* Welcome Message with Glass Effect */
+.welcome-message {
+  text-align: center;
+  padding: 20px;
+  color: rgba(107, 114, 128, 0.8);
+  font-size: 14px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+  margin: 10px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.welcome-message strong {
+  color: rgba(44, 90, 160, 0.9);
+  display: block;
+  margin-bottom: 8px;
+  font-size: 15px;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+/* ===========================================
+        /* =========================================================
+           DESKTOP NAVIGATION
+           ========================================================= */
+        header {
+            position: fixed;
+            z-index: 1111;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            padding: 15px 0;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            animation: floatNavbar 6s ease-in-out infinite;
+        }
+
+        header .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            opacity: 1;
+            background: var(--nav-bg);
+            backdrop-filter: blur(25px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            margin: 0 30px;
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.05), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header .header-inner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                135deg,
+                rgba(44, 90, 160, 0.05) 0%,
+                transparent 100%
+            );
+            border-radius: 25px;
+            z-index: -1;
+            opacity: 0.7;
+        }
+
+        header .header-inner .menu ul {
+            display: flex;
+            gap: 10px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        header .header-inner .menu ul li {
+            font-size: 16px;
+            font-weight: 600;
+            position: relative;
+            perspective: 1000px;
+        }
+
+        header .header-inner .menu ul li span {
+            cursor: pointer;
+            position: relative;
+            font-weight: 600;
+            color: var(--text-primary);
+            padding: 12px 24px;
+            border-radius: 50px;
+            display: block;
+            text-decoration: none;
+            overflow: hidden;
+            z-index: 1;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        header .header-inner .menu ul li span:hover,
+        header .header-inner .menu ul li span.active {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: #ffffff;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 
+                0 10px 25px rgba(44, 90, 160, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border-color: transparent;
+        }
+
+        /* Back Button Styling */
+        header .header-inner .back-link-container a {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--text-primary);
+            padding: 10px 15px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            letter-spacing: 1px; 
+            display: inline-block;
+        }
+
+        header .header-inner .back-link-container a:hover {
+            color: var(--accent-primary);
+            transform: translateX(3px);
+            text-shadow: 0 0 10px rgba(44, 90, 160, 0.3);
+        }
+
+        @keyframes floatNavbar {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+
+        /* =========================================================
+           🎛️ SETTINGS PANEL (FROM YOUR MAIN CSS)
+           ========================================================= */
+        .settings {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 99999;
+            font-family: "Livvic", sans-serif;
+        }
+
+        #showSettings {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            font-size: 20px;
+        }
+
+        #showSettings:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 
+                0 12px 30px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .settings-panel {
+            background: var(--settings-bg);
+            border-radius: 20px;
+            padding: 20px;
+            backdrop-filter: blur(20px) saturate(180%);
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                0 0 0 1px var(--glass-border);
+            width: 280px;
+            display: none;
+            position: absolute;
+            bottom: 70px; /* Position above the gear icon */
+            right: 0;
+            border: 1px solid var(--glass-border);
+            animation: glassSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--settings-text);
+        }
+
+        .settings.open .settings-panel {
+            display: block;
+        }
+
+        @keyframes glassSlideIn {
+            from { opacity: 0; transform: translateY(10px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .settings-header h4 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--settings-text);
+        }
+
+        #hideSettings {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            color: var(--settings-text);
+            font-size: 14px;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 8px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        #hideSettings:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 16px 0;
+            padding: 12px 16px;
+            background: var(--settings-item-bg);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+
+        .setting-item:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .setting-item span {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--settings-text);
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(156, 163, 175, 0.6);
+            border-radius: 34px;
+            transition: .4s;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 3px;
+            background: white;
+            border-radius: 50%;
+            transition: .4s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        input:checked + .toggle-slider {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+
+        /* =========================================================
+           HAMBURGER MENU
+           ========================================================= */
+        #menuToggle {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 50px;
+            height: 50px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            cursor: pointer;
+            padding: 8px;
+            z-index: 11111;
+            position: fixed;
+            top: 25px;
+            right: 25px;
+        }
+
+        #menuToggle span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: var(--text-primary);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+            margin: 3px 0;
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: var(--bg-primary);
+            z-index: 11110; 
+            padding: 100px 30px 30px;
+            transform: translateX(-100%);
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            overflow-y: auto;
+        }
+
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+
+        .mobile-menu-close {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            width: 50px;
+            height: 50px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 24px;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            z-index: 11113;
+        }
+
+        .mobile-menu-close:hover {
+            background: var(--accent-primary);
+            color: #ffffff;
+            transform: rotate(90deg);
+        }
+
+        .mobile-menu-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 40px 0;
+        }
+
+        .mobile-menu-list li {
+            margin-bottom: 15px;
+        }
+
+        .mobile-menu-list li span {
+            display: block;
+            padding: 18px 25px;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 15px;
+            background: var(--glass-bg);
+            transition: all 0.3s ease;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+        }
+
+        .mobile-menu-list li span:hover {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(44, 90, 160, 0.3);
+        }
+
+        .mobile-menu-back {
+            margin-top: 30px;
+            padding: 20px;
+            background: var(--glass-bg);
+            border-radius: 15px;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+        
+        .mobile-menu-back a {
+            margin: 0;
+            color: var(--text-primary);
+            font-size: 18px;
+            font-weight: 500;
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        /* =========================================================
+           LAYOUT & SCROLL WRAPPER
+           ========================================================= */
+        #wrapper {
+            width: 100%;
+            height: 100vh;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scrollbar-width: none; 
+            -ms-overflow-style: none;  
+            scroll-behavior: smooth;
+        }
+        
+        #wrapper::-webkit-scrollbar { 
+            display: none; 
+        }
+
+        main {
+            display: flex;
+            height: 100%;
+            width: max-content;
+        }
+
+        section {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+            padding: 0 5vw;
+        }
+
+        /* =========================================================
+           ANIMATIONS & CONTENT STYLES
+           ========================================================= */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                        transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: opacity, transform;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-100 { transition-delay: 0.1s; }
+        .delay-200 { transition-delay: 0.2s; }
+        .delay-300 { transition-delay: 0.3s; }
+        .delay-400 { transition-delay: 0.4s; }
+
+        /* HOME */
+        .section-home { width: 80vw; justify-content: center; text-align: center; }
+        
+        .intro-title h1 {
+            font-size: 120px;
+            font-weight: 900;
+            margin: 0;
+            line-height: 1;
+            background: linear-gradient(135deg, var(--text-primary) 0%, #777 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* DESCRIPTION */
+        .section-description { width: 60vw; max-width: 800px; }
+        .intro-desc h2 { font-size: 40px; margin-bottom: 20px; color: var(--accent-primary); }
+        .intro-desc p { font-size: 18px; line-height: 1.8; color: var(--text-secondary); }
+
+        /* COACH */
+        .section-coach { width: 60vw; justify-content: center; }
+        .coach-profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 50px;
+            box-shadow: var(--glass-shadow);
+            width: 100%;
+            max-width: 450px;
+        }
+        .coach-profile img {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent-primary);
+            margin-bottom: 20px;
+        }
+        .coach-profile h3 { font-size: 32px; margin: 10px 0; color: var(--text-primary); }
+        .coach-profile p { color: var(--text-secondary); }
+        .coach-profile a.connect-btn {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            padding: 12px 30px;
+            border-radius: 30px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: transform 0.3s;
+        }
+        .coach-profile a.connect-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(44, 90, 160, 0.4);
+        }
+
+        /* BLOG */
+        .section-blog { width: auto; padding: 0 5vw; flex-direction: column; justify-content: center; }
+        .section-header {
+            font-size: 30px;
+            font-weight: 700;
+            margin-bottom: 40px;
+            color: var(--text-primary);
+            position: relative;
+            display: inline-block;
+        }
+        .section-header::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background: var(--accent-primary);
+            margin-top: 10px;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 350px);
+            grid-template-rows: repeat(2, 280px);
+            gap: 30px;
+        }
+
+        .blog-card {
+            position: relative;
+            border-radius: 25px;
+            overflow: hidden;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .blog-card:hover { transform: translateY(-10px); border-color: var(--accent-primary); }
+        .blog-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
+        .blog-card:hover img { transform: scale(1.1); }
+        .blog-card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 25px;
+            opacity: 1;
+        }
+        .blog-title { font-size: 22px; font-weight: 700; margin-bottom: 5px; color: #fff; }
+
+        /* PHOTOS */
+        .section-photos { width: 50vw; flex-direction: column; align-items: center; justify-content: center; }
+        .photo-scroll-container {
+            height: 70vh;
+            width: 100%;
+            max-width: 450px;
+            overflow-y: auto;
+            padding-right: 10px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-primary) var(--glass-bg);
+        }
+        .photo-item {
+            width: 100%;
+            height: 250px;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            border: 1px solid var(--glass-border);
+        }
+        .photo-item img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* SCROLL INDICATOR */
+        .scroll-indicator {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--text-secondary);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 50;
+        }
+        .scroll-indicator i { animation: bounceRight 2s infinite; }
+        @keyframes bounceRight {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(5px); }
+        }
+
+        /* =========================================================
+           MOBILE RESPONSIVE MEDIA QUERIES
+           ========================================================= */
+        @media (max-width: 1025px) {
+            header { display: none; }
+            #menuToggle { display: flex; }
+            .mobile-menu { display: block; }
+            .section-home, .section-description, .section-coach { width: 80vw; }
+            .intro-title h1 { font-size: 80px; }
+            .blog-grid { grid-template-columns: repeat(2, 300px); }
+        }
+
+        @media (max-width: 768px) {
+            html, body { overflow: auto; height: auto; }
+            #wrapper {
+                height: auto;
+                overflow-x: hidden;
+                overflow-y: visible;
+            }
+            main {
+                flex-direction: column;
+                width: 100%;
+                height: auto;
+            }
+            section {
+                width: 100%;
+                height: auto;
+                min-height: 100vh;
+                padding: 120px 20px 50px;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .settings {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .scroll-indicator { display: none; }
+            .section-home { width: 100%; }
+            .intro-title h1 { font-size: 60px; }
+            .section-description { width: 100%; }
+            .section-coach { width: 100%; }
+            .coach-profile { padding: 30px; }
+            .section-blog { width: 100%; }
+            .blog-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto;
+                width: 100%;
+                max-width: 400px;
+            }
+            .section-photos { width: 100%; }
+            .photo-scroll-container { height: auto; overflow: visible; }
+            .animate-on-scroll { transform: translateY(20px); }
+        }
+    </style>
+</head>
+<body class="dark-mode">
+
+    <!-- DESKTOP HEADER -->
+    <header>
+        <div class="header-inner">
+            <div class="menu">
+                <ul>
+                    <li><span class="nav-item active" onclick="scrollToSection('home')">Home</span></li>
+                    <li><span class="nav-item" onclick="scrollToSection('description')">Description</span></li>
+                    <li><span class="nav-item" onclick="scrollToSection('coach')">Coach</span></li>
+                    <li><span class="nav-item" onclick="scrollToSection('blog')">Blog</span></li>
+                    <li><span class="nav-item" onclick="scrollToSection('photos')">Gallery</span></li>
+                </ul>
+            </div>
+            <div class="back-link-container">
+                <a href="index.html">Back ></a> 
+            </div>
+        </div>
+    </header>
+
+    <!-- MOBILE TOGGLE BUTTON -->
+    <div id="menuToggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <!-- MOBILE MENU OVERLAY -->
+    <div class="mobile-menu">
+        <div class="mobile-menu-close">
+            <i class="fa fa-times"></i>
+        </div>
+        <ul class="mobile-menu-list">
+            <li><span onclick="scrollToSection('home'); closeMenu()">Home</span></li>
+            <li><span onclick="scrollToSection('description'); closeMenu()">Description</span></li>
+            <li><span onclick="scrollToSection('coach'); closeMenu()">Coach</span></li>
+            <li><span onclick="scrollToSection('blog'); closeMenu()">Blog</span></li>
+            <li><span onclick="scrollToSection('photos'); closeMenu()">Gallery</span></li>
+        </ul>
+        <div class="mobile-menu-back">
+            <a href="index.html">Back ></a>
+        </div>
+    </div>
+
+    <!-- SETTINGS PANEL -->
+    <div class="settings">
+        <div id="showSettings">
+            <i class="fa fa-cog"></i>
+        </div>
+        <div class="settings-panel">
+            <div class="settings-header">
+                <h4>Settings</h4>
+                <div id="hideSettings"><i class="fa fa-times"></i></div>
+            </div>
+            
+            <div class="setting-item">
+                <span>Light Mode</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="darkModeToggle">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <div class="setting-item">
+                <span>Arabic</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="languageToggle">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+<!-- Chatbot Widget -->
+<div id="chatbot-container">
+  <!-- Toggle Button -->
+  <button id="chatbot-toggle" class="chatbot-toggle">
+    <i class="fa-regular fa-comments"></i>
+    <span class="notification-dot"></span>
+  </button>
+
+  <!-- Chat Window -->
+  <div id="chatbot-window" class="chatbot-window">
+    <!-- Header -->
+    <div class="chatbot-header">
+      <div class="chatbot-avatar">
+        <img src="images/logo.png" alt="Zaha Chatbot" />
+      </div>
+    </style>
+
+       
+
+      <div class="chatbot-info">
+        <h4>مساعد زها</h4>
+        <span class="status">متصل الآن</span>
+      </div>
+      <button id="close-chatbot" class="close-chatbot">
+        <i class="fa-solid fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Messages Container -->
+    <div id="chatbot-messages" class="chatbot-messages">
+      <div class="message assistant-message">
+        <div class="message-content">
+          مرحباً! أنا مساعد مركز زها الثقافي. كيف يمكنني مساعدتك اليوم؟
+        </div>
+        <div class="message-time" id="current-time"></div>
+      </div>
+    </div>
+
+    <!-- Input Area -->
+    <div class="chatbot-input">
+      <div class="input-container">
+        <textarea 
+          id="chatbot-input" 
+          placeholder="اكتب رسالتك هنا..." 
+          rows="1"
+        ></textarea>
+        <button id="send-button" class="send-button">
+          <i class="fa-solid fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+    <!-- WRAPPER FOR SMOOTH SCROLL -->
+    <div id="wrapper">
+        <main>
+            
+            <!-- HOME -->
+            <section id="home" class="section-home">
+                <div class="intro-title animate-on-scroll">
+                    <h1>Programming<br>Team</h1>
+                </div>
+            </section>
+
+            <!-- DESCRIPTION -->
+            <section id="description" class="section-description">
+                <div class="intro-desc animate-on-scroll delay-100">
+                    <h2>What we do</h2>
+                    <p>
+                        The Programming Team creates the digital magic behind the screens. 
+                        From building responsive websites to complex algorithms, we ensure 
+                        everything runs smoothly. We focus on clean code, modern frameworks 
+                        like React and Angular, and creating seamless user experiences.
+                    </p>
+                    <br>
+                    <p>
+                        Join us to learn logic, problem-solving, and the art of turning coffee into code.
+                    </p>
+                </div>
+            </section>
+
+            <!-- COACH -->
+            <section id="coach" class="section-coach">
+                <div class="coach-profile animate-on-scroll delay-200">
+                    <img src="https://placehold.co/150x150/2C5AA0/ffffff?text=Coach" alt="Coach">
+                    <h3>Jane Doe</h3>
+                    <p>Lead Programming Mentor</p>
+                    <a href="#" class="connect-btn"><i class="fab fa-linkedin"></i> Connect</a>
+                </div>
+            </section>
+
+            <!-- BLOG -->
+            <section id="blog" class="section-blog">
+                <div class="section-header animate-on-scroll">Latest Updates</div>
+                <div class="blog-grid">
+                    <div class="blog-card animate-on-scroll delay-100">
+                        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Hackathon">
+                        <div class="blog-card-overlay">
+                            <div class="blog-title">Hackathon 2024</div>
+                            <span style="color:rgba(255,255,255,0.7); font-size:14px;">1st Place Victory</span>
+                        </div>
+                    </div>
+                    <div class="blog-card animate-on-scroll delay-200">
+                        <img src="https://images.unsplash.com/photo-1587620962725-abab7fe55159?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Setup">
+                        <div class="blog-card-overlay">
+                            <div class="blog-title">New Gear</div>
+                            <span style="color:rgba(255,255,255,0.7); font-size:14px;">Lab Upgrades</span>
+                        </div>
+                    </div>
+                    <div class="blog-card animate-on-scroll delay-300">
+                        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Workshop">
+                        <div class="blog-card-overlay">
+                            <div class="blog-title">Python Workshop</div>
+                            <span style="color:rgba(255,255,255,0.7); font-size:14px;">Learning Basics</span>
+                        </div>
+                    </div>
+                    <div class="blog-card animate-on-scroll delay-400">
+                        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Launch">
+                        <div class="blog-card-overlay">
+                            <div class="blog-title">Site Launch</div>
+                            <span style="color:rgba(255,255,255,0.7); font-size:14px;">Project Live</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PHOTOS -->
+            <section id="photos" class="section-photos">
+                <div class="section-header animate-on-scroll">Gallery</div>
+                <div class="photo-scroll-container animate-on-scroll delay-200">
+                    <div class="photo-item"><img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Team"></div>
+                    <div class="photo-item"><img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Coding"></div>
+                    <div class="photo-item"><img src="https://images.unsplash.com/photo-1516321497487-e288fb197135?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Setup"></div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Desktop Scroll Indicator -->
+    <div class="scroll-indicator">
+        Scroll horizontally <i class="fa fa-arrow-right"></i>
+    </div>
+
+    <script>
+        const wrapper = document.getElementById('wrapper');
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const closeBtn = document.querySelector('.mobile-menu-close');
+        const navItems = document.querySelectorAll('.nav-item');
+        
+        // Settings Elements
+        const settingsContainer = document.querySelector('.settings');
+        const showSettingsBtn = document.getElementById('showSettings');
+        const hideSettingsBtn = document.getElementById('hideSettings');
+        const themeToggle = document.getElementById('darkModeToggle');
+        const LanguageToggle = document.getElementById('languageToggle');
+
+        // ==========================================
+        // 1. ACCELERATED HORIZONTAL SCROLL
+        // ==========================================
+        wrapper.addEventListener('wheel', (evt) => {
+            if (window.innerWidth > 768) {
+                evt.preventDefault();
+                wrapper.scrollLeft += evt.deltaY * 3;
+            }
+        });
+
+        // ==========================================
+        // 2. SCROLL NAVIGATION (CENTERED)
+        // ==========================================
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (window.innerWidth > 768) {
+                // Desktop: Calculate center position
+                const scrollLeft = element.offsetLeft - (window.innerWidth / 2) + (element.offsetWidth / 2);
+                
+                wrapper.scrollTo({
+                    left: scrollLeft,
+                    behavior: 'smooth'
+                });
+            } else {
+                // Mobile: Center vertically
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        // ==========================================
+        // 3. HAMBURGER MENU LOGIC
+        // ==========================================
+        function openMenu() {
+            mobileMenu.classList.add('active');
+        }
+
+        function closeMenu() {
+            mobileMenu.classList.remove('active');
+        }
+
+        menuToggle.addEventListener('click', openMenu);
+        closeBtn.addEventListener('click', closeMenu);
+
+        // ==========================================
+        // 4. SETTINGS PANEL LOGIC
+        // ==========================================
+        showSettingsBtn.addEventListener('click', () => {
+            settingsContainer.classList.toggle('open');
+        });
+
+        hideSettingsBtn.addEventListener('click', () => {
+            settingsContainer.classList.remove('open');
+        });
+
+        // Theme Toggle
+        themeToggle.addEventListener('change', (e) => {
+            if(e.target.checked) {
+                document.body.classList.add('light-mode');
+                document.body.classList.remove('dark-mode');
+            } else {
+                document.body.classList.remove('light-mode');
+                document.body.classList.add('dark-mode');
+            }
+        });
+        LanguageToggle.addEventListener('change', (e) => {
+            if(e.target.checked) {
+            window.location.href = '/Ar.html';  // Goes to Arabic page
+            } else {
+
+            }
+        });
+        // ==========================================
+        // 5. ROBUST NAV HIGHLIGHT (CENTER CHECK)
+        // ==========================================
+        function updateActiveNav() {
+            const isDesktop = window.innerWidth > 768;
+            const centerPoint = isDesktop ? (window.innerWidth / 2) : (window.innerHeight / 2);
+            
+            let activeSectionId = '';
+            
+            document.querySelectorAll('section').forEach(section => {
+                const rect = section.getBoundingClientRect();
+                
+                if (isDesktop) {
+                    if (rect.left <= centerPoint && rect.right >= centerPoint) {
+                        activeSectionId = section.id;
+                    }
+                } else {
+                    if (rect.top <= centerPoint && rect.bottom >= centerPoint) {
+                        activeSectionId = section.id;
+                    }
+                }
+            });
+
+            if (activeSectionId) {
+                navItems.forEach(item => {
+                    item.classList.remove('active');
+                    if(item.getAttribute('onclick').includes(`'${activeSectionId}'`)) {
+                        item.classList.add('active');
+                    }
+                });
+            }
+        }
+
+        wrapper.addEventListener('scroll', updateActiveNav);
+        window.addEventListener('scroll', updateActiveNav);
+        updateActiveNav();
+
+        // ==========================================
+        // 6. ANIMATION OBSERVER
+        // ==========================================
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.2 });
+
+        document.querySelectorAll('.animate-on-scroll').forEach((el) => observer.observe(el));
+// Test if it works
+        setTimeout(() => {
+            if (window.updateContent) {
+                console.log('✅ Content Manager is working!');
+                
+
+                window.updateContent({
+
+                });
+                
+            } else {
+                console.log('❌ Content Manager not working');
+            }
+        }, 500);
+    </script>
 </body>
 </html>
