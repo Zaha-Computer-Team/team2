@@ -232,8 +232,9 @@ class Chatbot {
     this.messages = [];
 
     // Backend (must run separately)
-    this.backendUrl = options.backendUrl || "http://localhost:3000/api/gemini";
-    this.modelName = options.modelName || "gemini-2.0-flash-exp";
+// Backend (must run separately)
+   this.backendUrl = options.backendUrl || "https://team2-dk3c.onrender.com/api/gemini"; 
+   this.modelName = options.modelName || "gemini-2.0-flash-exp"; 
 
     // Conversation state
     this.conversationHistory = [];
